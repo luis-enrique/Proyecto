@@ -3,11 +3,9 @@
 
     // inclulle la conexion a la bd del archivo "conexion.php"
     include("conexion.php");
-    
 
     // Start Compara si contiene algundato la variable global $_POST["usuario"]
     if(!empty($_POST["usuario"])){  
-        echo "con usuario"; //  QUITAR ESTO 
         
         $v_user =  $_POST['usuario'];
         $v_pass = $_POST['password'];
@@ -22,19 +20,25 @@
         
         if($reg = mysqli_fetch_array($registro, MYSQLI_ASSOC)){
             
-            echo $reg['id_usuario'];
-            echo $reg['usuario'];
-            echo $reg['contrasena'];
-            echo $reg['t_nombre']." ".$reg['apellido_p']." ".$reg['apellido_m'];
-            echo $reg['e_mail'];            
-            echo $reg['tu_nombre'];
-            echo $reg['privilegios'];
-            echo $reg['foto_perfil'];
+            if($reg['contrasena'] == SHA1("$v_pass")){
+                // deve de ir un star cesion
+                $reg['id_usuario'];
+                $reg['usuario'];
+                $reg['contrasena'];
+                $reg['t_nombre']." ".$reg['apellido_p']." ".$reg['apellido_m'];
+                $reg['e_mail'];            
+                $reg['tu_nombre'];
+                $reg['privilegios'];
+                $reg['foto_perfil'];
+                
+                header('Location: sistema.php');                   
+            }else{
+                echo " Contraseña incorrecta ";
+                $v_mensaje = "Activo";
+            }
+        }else{
+            $v_noexiste = "Activo";
         }
-        
-        
-        
-        
         
     }else{
         echo "sin usuario"; //  QUITAR ESTO 
@@ -64,12 +68,20 @@
             <!-- INICIO DE FORMULARIO -->
             <form action="index.php" method="post">
                 <div class="body bg-gray">
+                    <?php if(!empty($v_noexiste)){ echo "no existe";} ?>
                     <div class="form-group">
-                        <input type="text" name="usuario" class="form-control" placeholder="Nombre de usuario"/>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" name="password" class="form-control" placeholder="Password"/>
+                        <input type="text" name="usuario" class="form-control" placeholder="Nombre de usuario" value="<?php if(!empty($v_mensaje)){echo $v_user;}?>"/>
+                    </div>                    
+                    
+                    <div class='form-group  has-error'>
+                        <?php
+                            if(!empty($v_mensaje)){
+                                echo "<label class='control-label' for='inputError'><i class='fa fa-times-circle-o'></i> Error contraseña incorrecta</label>";
+                            }                        
+                        ?>
+                        <input type='password' name='password' class='form-control' placeholder='Password'/>
                     </div>  
+                    
                 </div>
                 <div class="footer">                                                               
                     <button type="submit" class="btn bg-olive btn-block">Ingresar</button>                      
