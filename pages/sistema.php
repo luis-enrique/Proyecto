@@ -1,3 +1,15 @@
+<?php
+    session_start ();
+    $_insession = "activo";
+
+    if($_SESSION['session'] == $_insession){
+
+    }else{
+        session_destroy ();
+        header('Location: index.php'); 
+    }
+?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -81,14 +93,14 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
-                                <span>Nombre del usuario <i class="caret"></i></span>
+                                <span><?php echo $_SESSION['usuario']; ?><i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
                                     <img src="../img/avatar3.png" class="img-circle" alt="User Image" />
                                     <p>
-                                        Nombre completo
+                                        <?php echo $_SESSION['nombre']; ?>
                                         <small>Pendiente</small>
                                     </p>
                                 </li>
@@ -122,97 +134,106 @@
                             <img src="../img/avatar3.png" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Tipo de usuario</p>
+                            <p><?php echo $_SESSION['tipo_usuario']; ?></p>
 
-                            <a href="#"><i class="text-success"></i> Nombre de usuario</a>
+                            <a><i class="text-success"></i><?php echo $_SESSION['usuario']; ?></a>
                         </div>
                     </div>
                     
                     
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
-                    
-                    <!-- Apartado solo para el vendedor -->
                     <ul class="sidebar-menu">
-                        
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-shopping-cart"></i> <span>Realizar Venta</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-truck"></i> <span>Pedidos</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-users"></i> <span>Clientes</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-archive"></i> <span>Adquicision de productos</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-folder"></i>
-                                <span>Mis consultas</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Ventas del dìa</a></li>
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Pedidos</a></li>
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Adquicisiones realizadas</a></li>
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Asistencia de trabajadores</a></li>
-                            </ul>
-                        </li>
+                    <!-- Apartado solo para el vendedor -->
+                    <?php
+                       if($_SESSION['privilegios'] == "Solo venta"){
+                           echo "
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-truck'></i> <span>Pedidos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-users'></i> <span>Clientes</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-archive'></i> <span>Adquicision de productos</span>
+                                    </a>
+                                </li>
+                                <li class='treeview'>
+                                    <a href='#'>
+                                        <i class='fa fa-folder'></i>
+                                        <span>Mis consultas</span>
+                                        <i class='fa fa-angle-left pull-right'></i>
+                                    </a>
+                                    <ul class='treeview-menu'>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+                                    </ul>
+                                </li>
+                               ";
+                       }
+                    ?>
                         <!-- Fin Apartado solo para el vendedor -->
                         
                         <!-- Apartado solo para el administrador -->
-                         <li>
-                            <a href="#">
-                                <i class="fa fa-shopping-cart"></i> <span>Realizar Venta</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-truck"></i> <span>Pedidos</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-users"></i> <span>Clientes</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-list-alt"></i> <span>Productos</span>
-                            </a>
-                        </li>
-                        <li class="treeview">
-                            <a href="#">
-                                <i class="fa fa-archive"></i>
-                                <span>Adquicisiones</span>
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Adquicision de productos</a></li>
-                                <li><a href="#"><i class="fa fa-angle-double-right"></i> Proveedores</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-user"></i> <span>Usuarios</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa  fa-briefcase"></i> <span>Trabajadores</span>
-                            </a>
-                        </li>
-                        <!-- Fin Apartado solo para el administrador -->
-                        
+                    <?php
+                       if($_SESSION['privilegios'] == "Todos"){
+                           echo "
+                                 <li>
+                                    <a href='#'>
+                                        <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-truck'></i> <span>Pedidos</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-users'></i> <span>Clientes</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-list-alt'></i> <span>Productos</span>
+                                    </a>
+                                </li>
+                                <li class='treeview'>
+                                    <a href='#'>
+                                        <i class='fa fa-archive'></i>
+                                        <span>Adquicisiones</span>
+                                        <i class='fa fa-angle-left pull-right'></i>
+                                    </a>
+                                    <ul class='treeview-menu'>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquicision de productos</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa fa-user'></i> <span>Usuarios</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href='#'>
+                                        <i class='fa  fa-briefcase'></i> <span>Trabajadores</span>
+                                    </a>
+                                </li>
+                               ";
+                       }
+                    ?>
+                    <!-- Fin Apartado solo para el administrador --> 
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>
