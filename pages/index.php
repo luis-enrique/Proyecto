@@ -68,7 +68,7 @@
             <!-- INICIO DE FORMULARIO -->
             <form action="index.php" method="post">
                 <div class="body bg-gray">
-                    <?php if(!empty($v_noexiste)){ echo "no existe";} ?>
+                    <?php if(!empty($v_noexiste)){ echo "<strong><p style='color:#EB440C'><samp class='fa fa-times-circle-o'></samp> Eror el usuario ".$v_user." no existe</p></strong>";} ?>
                     <div class="form-group">
                         <input type="text" name="usuario" class="form-control" placeholder="Nombre de usuario" value="<?php if(!empty($v_mensaje)){echo $v_user;}?>"/>
                     </div>                    
