@@ -98,7 +98,7 @@
                                         <a href="#" class="btn btn-default btn-flat">Mi perfil</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Salir</a>
+                                        <a href="close_session.php" class="btn btn-default btn-flat">Salir</a>
                                     </div>
                                 </li>
                             </ul>

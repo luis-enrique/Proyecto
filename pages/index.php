@@ -1,3 +1,13 @@
+<?php
+    session_start ();
+
+    if(!empty($_SESSION['session'])){
+        header('Location: sistema.php');
+    }else{
+        session_destroy ();
+    }
+?>
+
 
 <?php
 
@@ -21,27 +31,24 @@
         if($reg = mysqli_fetch_array($registro, MYSQLI_ASSOC)){
             
             if($reg['contrasena'] == SHA1("$v_pass")){
-                // deve de ir un star cesion
-                $reg['id_usuario'];
-                $reg['usuario'];
-                $reg['contrasena'];
-                $reg['t_nombre']." ".$reg['apellido_p']." ".$reg['apellido_m'];
-                $reg['e_mail'];            
-                $reg['tu_nombre'];
-                $reg['privilegios'];
-                $reg['foto_perfil'];
-                
+                session_start();
+                $_SESSION['session']       = "activo";
+                $_SESSION['id_usuario']    = $reg['id_usuario'];
+                $_SESSION['usuario']       = $reg['usuario'];
+                $_SESSION['contrasena']    = $reg['contrasena'];
+                $_SESSION['nombre']        = $reg['t_nombre']." ".$reg['apellido_p']." ".$reg['apellido_m'];
+                $_SESSION['e_mail']        = $reg['e_mail'];            
+                $_SESSION['tipo_usuario']  = $reg['tu_nombre'];
+                $_SESSION['privilegios']   = $reg['privilegios'];
+                $_SESSION['foto_perfil']   = $reg['foto_perfil'];
                 header('Location: sistema.php');                   
             }else{
-                echo " Contraseña incorrecta ";
                 $v_mensaje = "Activo";
             }
         }else{
             $v_noexiste = "Activo";
         }
         
-    }else{
-        echo "sin usuario"; //  QUITAR ESTO 
     }
 ?>   
 
