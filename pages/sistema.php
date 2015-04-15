@@ -8,7 +8,10 @@
         session_destroy ();
         header('Location: index.php'); 
     }
-?>
+    include ("conexion.php");
+  ?>
+
+    
 
 <!DOCTYPE html>
 <html>
@@ -44,50 +47,107 @@
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
+<!-- ##################inicia el codigo para las alertas de perdidos favor de agregar en las demas paginas#####################################-->
                         
                         <!-- Inicio Notificaciones: Sobre Pedidos -->
+                         <!--Inicia la consulta de cuantos pedidos hay  -->
+
+                        <?php
+                         $v_query = "SELECT * FROM pedidos";
+                         $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
+                         $v_total = mysqli_num_rows($v_registros);                                      
+                        ?>
+                        <!--termina la consulta de cuantos pedidos hay  --> 
+                        
+
+                        <!--Inicia consulta de pedidos que deben ser entreados hoy  -->
+                        <?php
+                         $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega=CURDATE()";
+                         $v_registro = mysqli_query($link,$v_query2) or die ("Problemas en el select:".mysql_error());
+                         $v_tota = mysqli_num_rows($v_registro);                                     
+                        ?>
+                          <!--Termina consulta de pedidos que deben ser entreados hoy  -->
+                        
+                        
+                         <!--Inicia consulta de pedidos atrasados -->
+                        <?php
+                         $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega<CURDATE()";
+                         $v_reg = mysqli_query($link,$v_query3) or die ("Problemas en el select:".mysql_error());
+                         $v_to = mysqli_num_rows($v_reg);                        
+                        ?>
+                        <!--Termina consulta de pedidosatrasados -->
+                        
+                        
+                        <!--Inicia consulta de pedidos con fecha faltante -->
+                        <?php
+                         $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega>CURDATE()";
+                         $v_re = mysqli_query($link,$v_query4) or die ("Problemas en el select:".mysql_error());
+                         $v_t = mysqli_num_rows($v_re);
+                         ?>
+                         <!--Termina consulta  -->
+                          
+                        <!--Inicia consulta de stock de pedidos   -->
+                       <?php
+                       //  $v_query = "SELECT * FROM pedidos";
+                        // $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
+                         //$v_total = mysqli_num_rows($v_registros);                                      
+                      
+                      
+                       //   while($datos=mysqli_fetch_array($v_registros)){
+                       // echo $datos["id_producto"];
+                       //   echo $datos["nombre"];
+                       // echo $datos["descripcion"];
+                       //echo $datos["stock"];
+                       //echo $datos["precio_venta"];
+                      // } ?>
+ 
+                         <!--Termina consulta  -->
+                        
+                        
+
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-warning"></i>
-                                <span class="label label-warning">10</span>
+                                <span class="label label-warning"><?php echo "$v_total";?> </span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 10 notifications</li>
+                                
+                                
+                                <li class="header"><?php
+                               if ($v_total< "1") {
+                                   
+                                 echo "Usted tiene $v_total pedido pendiente";
+
+                                 } else {
+                                    echo "Usted tiene $v_total pedidos pendientes";
+                               
+                               }
+                                 ?></li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-people info"></i> 5 new members joined today
-                                            </a>
+                                                <i class="fa fa-warning danger"></i> <?php echo "Sus pedidos atrasado son $v_to";?>                                                            </a>
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="fa fa-warning danger"></i> Very long description here that may not fit into the page and may cause design problems
-                                            </a>
+                                               <i class="ion ion-ios7-cart success"></i><?php echo "Sus pedidos para entregar hoy $v_tota";?>                                                  </a>
                                         </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa fa-users warning"></i> 5 new members joined
-                                            </a>
-                                        </li>
+                                        
 
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-cart success"></i> 25 sales made
-                                            </a>
+                                                 <i class="ion ion-ios7-people info"></i><?php echo "Sus pedidos para fechas proximas son $v_t";?>   
                                         </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ion ion-ios7-person danger"></i> You changed your username
-                                            </a>
-                                        </li>
+                                       
                                     </ul>
                                 </li>
-                                <li class="footer"><a href="#">View all</a></li>
+                                <li class="footer"><a></a></li>
                             </ul>
                         </li>
                         <!-- Fin Notificaciones: Sobre Pedidos -->
+<!-- ################## el codigo para las alertas de perdidos favor de agregar en las demas paginas#####################################-->
                         
                         <!-- Informaciòn de usuario: Especificaciones -->
                         <li class="dropdown user user-menu">
