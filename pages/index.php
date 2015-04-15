@@ -1,6 +1,9 @@
+<<<<<<< HEAD
+ <?php
+=======
 <?php
     // verifica si ya se a iniciado una sesion 
-   // origin/master
+>>>>>>> origin/master
     session_start ();
 
     if(!empty($_SESSION['session'])){
