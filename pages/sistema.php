@@ -148,7 +148,7 @@
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-                                    <a href='../ventas.php'>
+                                    <a href='ventas.php'>
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
@@ -190,7 +190,7 @@
                        if($_SESSION['privilegios'] == "Todos"){
                            echo "
                                  <li>
-                                    <a href='../ventas.php'>
+                                    <a href='ventas.php'>
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
