@@ -6,7 +6,7 @@
 
     }else{
         session_destroy ();
-        header('Location: index.php'); 
+        header('Location: index.php');
     }
 ?>
 
@@ -44,7 +44,7 @@
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                        
+
                         <!-- Inicio Notificaciones: Sobre Pedidos -->
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -88,7 +88,7 @@
                             </ul>
                         </li>
                         <!-- Fin Notificaciones: Sobre Pedidos -->
-                        
+
                         <!-- Informaciòn de usuario: Especificaciones -->
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -116,16 +116,16 @@
                             </ul>
                         </li>
                         <!-- Fin Informaciòn de usuario: Especificaciones -->
-                        
+
                     </ul>
                 </div>
             </nav>
         </header>
-        
-        
+
+
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">                
+            <aside class="left-side sidebar-offcanvas">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
@@ -139,8 +139,8 @@
                             <a><i class="text-success"></i><?php echo $_SESSION['usuario']; ?></a>
                         </div>
                     </div>
-                    
-                    
+
+
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
                     <!-- Apartado solo para el vendedor -->
@@ -148,7 +148,7 @@
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-                                    <a href='#'>
+                                    <a href='../ventas.php'>
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
@@ -184,13 +184,13 @@
                        }
                     ?>
                         <!-- Fin Apartado solo para el vendedor -->
-                        
+
                         <!-- Apartado solo para el administrador -->
                     <?php
                        if($_SESSION['privilegios'] == "Todos"){
                            echo "
                                  <li>
-                                    <a href='#'>
+                                    <a href='../ventas.php'>
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
@@ -233,14 +233,14 @@
                                ";
                        }
                     ?>
-                    <!-- Fin Apartado solo para el administrador --> 
+                    <!-- Fin Apartado solo para el administrador -->
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>
             </aside>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">                
+            <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
@@ -255,7 +255,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    Hola mundo                    
+                    Hola mundo
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->
