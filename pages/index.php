@@ -1,4 +1,9 @@
+<<<<<<< HEAD
  <?php
+=======
+<?php
+    // verifica si ya se a iniciado una sesion 
+>>>>>>> origin/master
     session_start ();
 
     if(!empty($_SESSION['session'])){
@@ -14,20 +19,24 @@
     // inclulle la conexion a la bd del archivo "conexion.php"
     include("conexion.php");
 
-    // Start Compara si contiene algundato la variable global $_POST["usuario"]
+    // Start Compara si contiene algundato la variable global $_POST["usuario"] mandada del formulario
     if(!empty($_POST["usuario"])){  
         
+        // Almacena los datos del formulario en variables $_POST[]
         $v_user =  $_POST['usuario'];
         $v_pass = $_POST['password'];
         
+        // Almacena una consulta en la variable $v_query
         $v_query = "SELECT u.id_usuario, u.usuario, u.contrasena, 
                            t.nombre AS 't_nombre', t.apellido_p, t.apellido_m, t.e_mail, 
                            tu.nombre AS 'tu_nombre', tu.privilegios, u.foto_perfil
                     FROM usuarios u, trabajadores t, tipo_usuario tu
                     WHERE u.id_trabajador = t.id_trabajador AND u.id_tipo_usuario = tu.id_tipo_usuario AND u.usuario ='".$v_user."'";
         
+        // Almacena los datos de la consulta en un array
         $registro = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
         
+        // Verifica si la contraseña es correcta o no y se ejuta una toma de desisiones
         if($reg = mysqli_fetch_array($registro, MYSQLI_ASSOC)){
             
             if($reg['contrasena'] == SHA1("$v_pass")){
@@ -50,6 +59,7 @@
         }
         
     }
+    // End Compara si contiene algundato la variable global $_POST["usuario"]
 ?>   
 
 
@@ -75,17 +85,25 @@
             <!-- INICIO DE FORMULARIO -->
             <form action="index.php" method="post">
                 <div class="body bg-gray">
-                    <?php if(!empty($v_noexiste)){ echo "<strong><p style='color:#EB440C'><samp class='fa fa-times-circle-o'></samp> Eror el usuario ".$v_user." no existe</p></strong>";} ?>
+                    
+                    <?php
+                        // Mensaje de error si el usuario no existe
+                        if(!empty($v_noexiste)){ echo "<strong><p style='color:#EB440C'><samp class='fa fa-times-circle-o'></samp> Eror el usuario ".$v_user." no existe</p></strong>";}
+                    ?>
+                    
                     <div class="form-group">
                         <input type="text" name="usuario" class="form-control" placeholder="Nombre de usuario" value="<?php if(!empty($v_mensaje)){echo $v_user;}?>"/>
                     </div>                    
                     
                     <div class='form-group  has-error'>
+                        
                         <?php
+                            // Mensaje de error si la contraseña no existe
                             if(!empty($v_mensaje)){
                                 echo "<label class='control-label' for='inputError'><i class='fa fa-times-circle-o'></i> Error contraseña incorrecta</label>";
                             }                        
                         ?>
+                        
                         <input type='password' name='password' class='form-control' placeholder='Password'/>
                     </div>  
                     
