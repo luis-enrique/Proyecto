@@ -47,7 +47,6 @@
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-<<<<<<< HEAD
 <!-- ##################inicia el codigo para las alertas de perdidos favor de agregar en las demas paginas#####################################-->
                         
 =======
@@ -151,7 +150,7 @@
                             </ul>
                         </li>
                         <!-- Fin Notificaciones: Sobre Pedidos -->
-<<<<<<< HEAD
+
 <!-- ################## el codigo para las alertas de perdidos favor de agregar en las demas paginas#####################################-->
                         
 =======
@@ -217,10 +216,14 @@
                            echo "
                                 <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     <a href='ventas.php'>
 =======
                                     <a href='pages/ventas.php'>
 >>>>>>> origin/master
+=======
+                                    <a href='../ventas.php'>
+>>>>>>> parent of 8dee531... denuevo cambios
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
@@ -263,10 +266,14 @@
                            echo "
                                  <li>
 <<<<<<< HEAD
+<<<<<<< HEAD
                                     <a href='ventas.php'>
 =======
                                     <a href='pages/ventas.php'>
 >>>>>>> origin/master
+=======
+                                    <a href='../ventas.php'>
+>>>>>>> parent of 8dee531... denuevo cambios
                                         <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                                     </a>
                                 </li>
