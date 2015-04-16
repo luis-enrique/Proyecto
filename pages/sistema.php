@@ -9,6 +9,8 @@
         session_destroy ();
         header('Location: index.php');
     }
+    
+    include("conexion.php");
 ?>
 
 <!DOCTYPE html>
@@ -69,23 +71,12 @@
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="fa fa-users warning"></i> 5 new members joined
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#">
                                                 <i class="ion ion-ios7-cart success"></i> 25 sales made
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ion ion-ios7-person danger"></i> You changed your username
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="footer"><a href="#">View all</a></li>
+                                <li class="footer"><a></a></li>
                             </ul>
                         </li>
                         <!-- Fin Notificaciones: Sobre Pedidos -->
@@ -144,29 +135,26 @@
 
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
+                        
+                        <li>
+                            <a href='ventas.php'>
+                                <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='#'>
+                                <i class='fa fa-truck'></i> <span>Pedidos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='#'>
+                                <i class='fa fa-users'></i> <span>Clientes</span>
+                            </a>
+                        </li>
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
-                                <li>
-<<<<<<< HEAD
-                                    <a href='ventas.php'>
-=======
-                                    <a href='pages/ventas.php'>
->>>>>>> origin/master
-                                        <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href='#'>
-                                        <i class='fa fa-truck'></i> <span>Pedidos</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href='#'>
-                                        <i class='fa fa-users'></i> <span>Clientes</span>
-                                    </a>
-                                </li>
                                 <li>
                                     <a href='#'>
                                         <i class='fa fa-archive'></i> <span>Adquicision de productos</span>
@@ -194,25 +182,6 @@
                     <?php
                        if($_SESSION['privilegios'] == "Todos"){
                            echo "
-                                 <li>
-<<<<<<< HEAD
-                                    <a href='ventas.php'>
-=======
-                                    <a href='pages/ventas.php'>
->>>>>>> origin/master
-                                        <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href='#'>
-                                        <i class='fa fa-truck'></i> <span>Pedidos</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href='#'>
-                                        <i class='fa fa-users'></i> <span>Clientes</span>
-                                    </a>
-                                </li>
                                 <li>
                                     <a href='#'>
                                         <i class='fa fa-list-alt'></i> <span>Productos</span>
