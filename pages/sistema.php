@@ -50,28 +50,28 @@
 
                         <!-- Inicio Notificaciones: Sobre Pedidos -->
                         <li class="dropdown notifications-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-warning"></i>
                                 <span class="label label-warning">10</span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">You have 10 notifications</li>
+                                <li class="header">Tu tienes 10 pedidos pendientes</li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-people info"></i> 5 new members joined today
+                                                <i class="fa fa-warning danger"></i> 5 Pedidos atrasados
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="fa fa-warning danger"></i> Very long description here that may not fit into the page and may cause design problems
+                                                <i class="ion ion-ios7-cart success"></i> 25 Pedidos para el dia de hoy
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-cart success"></i> 25 sales made
+                                                <i class="ion ion-ios7-people info"></i> 6 Pedidos futuros
                                             </a>
                                         </li>
                                     </ul>
