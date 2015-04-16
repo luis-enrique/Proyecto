@@ -49,31 +49,93 @@
                     <ul class="nav navbar-nav">
 
                         <!-- Inicio Notificaciones: Sobre Pedidos -->
+                        <?php
+                         $v_query = "SELECT * FROM pedidos";
+                         $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
+                         $v_total = mysqli_num_rows($v_registros);                                      
+                        ?>
+                        <!--termina la consulta de cuantos pedidos hay  --> 
+                        
+
+                        <!--Inicia consulta de pedidos que deben ser entreados hoy  -->
+                        <?php
+                         $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega=CURDATE()";
+                         $v_registro = mysqli_query($link,$v_query2) or die ("Problemas en el select:".mysql_error());
+                         $v_tota = mysqli_num_rows($v_registro);                                     
+                        ?>
+                          <!--Termina consulta de pedidos que deben ser entreados hoy  -->
+                        
+                        
+                         <!--Inicia consulta de pedidos atrasados -->
+                        <?php
+                         $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega<CURDATE()";
+                         $v_reg = mysqli_query($link,$v_query3) or die ("Problemas en el select:".mysql_error());
+                         $v_to = mysqli_num_rows($v_reg);                        
+                        ?>
+                        <!--Termina consulta de pedidosatrasados -->
+                        
+                        
+                        <!--Inicia consulta de pedidos con fecha faltante -->
+                        <?php
+                         $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega>CURDATE()";
+                         $v_re = mysqli_query($link,$v_query4) or die ("Problemas en el select:".mysql_error());
+                         $v_t = mysqli_num_rows($v_re);
+                         ?>
+                         <!--Termina consulta  -->
+                          
+                        <!--Inicia consulta de stock de pedidos   -->
+                       <?php
+                       //  $v_query = "SELECT * FROM pedidos";
+                        // $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
+                         //$v_total = mysqli_num_rows($v_registros);                                      
+                      
+                      
+                       //   while($datos=mysqli_fetch_array($v_registros)){
+                       // echo $datos["id_producto"];
+                       //   echo $datos["nombre"];
+                       // echo $datos["descripcion"];
+                       //echo $datos["stock"];
+                       //echo $datos["precio_venta"];
+                      // } ?>
+ 
+                         <!--Termina consulta  -->
+
                         <li class="dropdown notifications-menu">
-                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-warning"></i>
-                                <span class="label label-warning">10</span>
+                                <span class="label label-warning"><?php echo "$v_total";?> </span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">Tu tienes 10 pedidos pendientes</li>
+                                
+                                
+                                <li class="header"><?php
+                               if ($v_total< "1") {
+                                   
+                                 echo "Usted tiene $v_total pedido pendiente";
+
+                                 } else {
+                                    echo "Usted tiene $v_total pedidos pendientes";
+                               
+                               }
+                                 ?></li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li>
                                             <a href="#">
-                                                <i class="fa fa-warning danger"></i> 5 Pedidos atrasados
-                                            </a>
+                                                <i class="fa fa-warning danger"></i> <?php echo "Pedidos atrasados $v_to";?>                                                            </a>
                                         </li>
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-cart success"></i> 25 Pedidos para el dia de hoy
-                                            </a>
+                                               <i class="ion ion-ios7-cart success"></i><?php echo "Pedidos del dìa $v_tota";?>                                                  </a>
                                         </li>
+                                        
+
                                         <li>
                                             <a href="#">
-                                                <i class="ion ion-ios7-people info"></i> 6 Pedidos futuros
-                                            </a>
+                                                 <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>   
                                         </li>
+                                       
                                     </ul>
                                 </li>
                                 <li class="footer"><a></a></li>
