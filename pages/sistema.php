@@ -90,7 +90,7 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="../img/avatar3.png" class="img-circle" alt="User Image" />
+                                    <img src="<?php echo $_SESSION['foto_perfil']; ?>" class="img-circle" alt="User Image" />
                                     <p>
                                         <?php echo $_SESSION['nombre']; ?>
                                         <small>Pendiente</small>
@@ -123,7 +123,7 @@
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="../img/avatar3.png" class="img-circle" alt="User Image" />
+                            <img src="<?php echo $_SESSION['foto_perfil']; ?>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p><?php echo $_SESSION['tipo_usuario']; ?></p>
