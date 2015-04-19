@@ -201,13 +201,13 @@
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-<<<<<<< HEAD
+
                                     <a href='#'>
                                         <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
-=======
+
                                     <a href='adquisicion_productos.php'>
                                         <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
->>>>>>> origin/master
+
                                     </a>
                                 </li>
                                 <li class='treeview'>
@@ -217,17 +217,18 @@
                                         <i class='fa fa-angle-left pull-right'></i>
                                     </a>
                                     <ul class='treeview-menu'>
-<<<<<<< HEAD
+
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
-=======
+
                                         <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
                                         <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
                                         <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
->>>>>>> origin/master
+
+
                                     </ul>
                                 </li>
                                ";
