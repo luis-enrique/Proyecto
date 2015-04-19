@@ -182,7 +182,7 @@
                     <ul class="sidebar-menu">
                         
                         <li>
-                            <a href='ventas.php'>
+                            <a href='#'>
                                 <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                             </a>
                         </li>
@@ -267,11 +267,11 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Blank page
-                        <small>Control panel</small>
+                        Bienbenido
+                        <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Inico</a></li>
+                        <li><a href="sistema.php"><i class="fa fa-dashboard"></i> Inico</a></li>
                         <li class="active">Blank page</li>
                     </ol>
                 </section>
