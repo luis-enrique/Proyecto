@@ -202,7 +202,7 @@
                            echo "
                                 <li>
                                     <a href='#'>
-                                        <i class='fa fa-archive'></i> <span>Adquicision de productos</span>
+                                        <i class='fa fa-archive'></i> <span>Adquisicion de productos</span>
                                     </a>
                                 </li>
                                 <li class='treeview'>
@@ -214,7 +214,7 @@
                                     <ul class='treeview-menu'>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
                                     </ul>
                                 </li>
