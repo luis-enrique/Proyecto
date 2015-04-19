@@ -59,7 +59,7 @@
 
                         <!--Inicia consulta de pedidos que deben ser entreados hoy  -->
                         <?php
-                         $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega=CURDATE()";
+                         $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega = CURDATE()";
                          $v_registro = mysqli_query($link,$v_query2) or die ("Problemas en el select:".mysql_error());
                          $v_tota = mysqli_num_rows($v_registro);                                     
                         ?>
@@ -68,7 +68,7 @@
                         
                          <!--Inicia consulta de pedidos atrasados -->
                         <?php
-                         $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega<CURDATE()";
+                         $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega < CURDATE()";
                          $v_reg = mysqli_query($link,$v_query3) or die ("Problemas en el select:".mysql_error());
                          $v_to = mysqli_num_rows($v_reg);                        
                         ?>
@@ -77,28 +77,12 @@
                         
                         <!--Inicia consulta de pedidos con fecha faltante -->
                         <?php
-                         $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega>CURDATE()";
+                         $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega > CURDATE()";
                          $v_re = mysqli_query($link,$v_query4) or die ("Problemas en el select:".mysql_error());
                          $v_t = mysqli_num_rows($v_re);
                          ?>
                          <!--Termina consulta  -->
                           
-                        <!--Inicia consulta de stock de pedidos   -->
-                       <?php
-                       //  $v_query = "SELECT * FROM pedidos";
-                        // $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
-                         //$v_total = mysqli_num_rows($v_registros);                                      
-                      
-                      
-                       //   while($datos=mysqli_fetch_array($v_registros)){
-                       // echo $datos["id_producto"];
-                       //   echo $datos["nombre"];
-                       // echo $datos["descripcion"];
-                       //echo $datos["stock"];
-                       //echo $datos["precio_venta"];
-                      // } ?>
- 
-                         <!--Termina consulta  -->
 
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -155,7 +139,6 @@
                                     <img src="<?php echo $_SESSION['foto_perfil']; ?>" class="img-circle" alt="User Image" />
                                     <p>
                                         <?php echo $_SESSION['nombre']; ?>
-                                        <small>Pendiente</small>
                                     </p>
                                 </li>
                                 <!-- Menu Footer-->
