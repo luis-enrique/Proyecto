@@ -252,7 +252,7 @@
                                         <i class='fa fa-angle-left pull-right'></i>
                                     </a>
                                     <ul class='treeview-menu'>
-                                        <li><a href='adquisicion_productos.php'><i class='fa fa-angle-double-right'></i> Adquicision de productos</a></li>
+                                        <li><a href='adquisicion_productos.php'><i class='fa fa-angle-double-right'></i> Adquisiciòn de productos</a></li>
                                         <li><a href='admin_proveedores.php'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
                                     </ul>
                                 </li>
