@@ -106,17 +106,17 @@
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                         <li>
-                                            <a href="#">
+                                            <a href="pedidos_atrasados.php">
                                                 <i class="fa fa-warning danger"></i> <?php echo "Pedidos atrasados $v_to";?>                                                            </a>
                                         </li>
                                         <li>
-                                            <a href="#">
+                                            <a href="pedidos_hoy.php">
                                                <i class="ion ion-ios7-cart success"></i><?php echo "Pedidos del dìa $v_tota";?>                                                  </a>
                                         </li>
                                         
 
                                         <li>
-                                            <a href="#">
+                                            <a href="pedidos_proximos.php">
                                                  <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>   
                                         </li>
                                        
@@ -144,7 +144,7 @@
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Mi perfil</a>
+                                        <a href="mi_perfil.php" class="btn btn-default btn-flat">Mi perfil</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="close_session.php" class="btn btn-default btn-flat">Salir</a>
@@ -182,17 +182,17 @@
                     <ul class="sidebar-menu">
                         
                         <li>
-                            <a href='#'>
+                            <a href='ventas.php'>
                                 <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                             </a>
                         </li>
                         <li>
-                            <a href='#'>
+                            <a href='pedidos.php'>
                                 <i class='fa fa-truck'></i> <span>Pedidos</span>
                             </a>
                         </li>
                         <li>
-                            <a href='#'>
+                            <a href='clientes.php'>
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
@@ -201,8 +201,13 @@
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
+<<<<<<< HEAD
                                     <a href='#'>
                                         <i class='fa fa-archive'></i> <span>Adquisicion de productos</span>
+=======
+                                    <a href='adquisicion_productos.php'>
+                                        <i class='fa fa-archive'></i> <span>Adquicision de productos</span>
+>>>>>>> origin/master
                                     </a>
                                 </li>
                                 <li class='treeview'>
@@ -212,10 +217,17 @@
                                         <i class='fa fa-angle-left pull-right'></i>
                                     </a>
                                     <ul class='treeview-menu'>
+<<<<<<< HEAD
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+=======
+                                        <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
+                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
+                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+>>>>>>> origin/master
                                     </ul>
                                 </li>
                                ";
@@ -228,7 +240,7 @@
                        if($_SESSION['privilegios'] == "Todos"){
                            echo "
                                 <li>
-                                    <a href='#'>
+                                    <a href='admin_productos.php'>
                                         <i class='fa fa-list-alt'></i> <span>Productos</span>
                                     </a>
                                 </li>
@@ -239,17 +251,17 @@
                                         <i class='fa fa-angle-left pull-right'></i>
                                     </a>
                                     <ul class='treeview-menu'>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquicision de productos</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
+                                        <li><a href='adquisicion_productos.php'><i class='fa fa-angle-double-right'></i> Adquicision de productos</a></li>
+                                        <li><a href='admin_proveedores.php'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href='#'>
+                                    <a href='admin_usuaios.php'>
                                         <i class='fa fa-user'></i> <span>Usuarios</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href='#'>
+                                    <a href='admin_trabajadores.php'>
                                         <i class='fa  fa-briefcase'></i> <span>Trabajadores</span>
                                     </a>
                                 </li>
@@ -267,7 +279,7 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Bienbenido
+                        Bienvenido
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
