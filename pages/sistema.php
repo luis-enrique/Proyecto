@@ -203,10 +203,10 @@
                                 <li>
 <<<<<<< HEAD
                                     <a href='#'>
-                                        <i class='fa fa-archive'></i> <span>Adquisicion de productos</span>
+                                        <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
 =======
                                     <a href='adquisicion_productos.php'>
-                                        <i class='fa fa-archive'></i> <span>Adquicision de productos</span>
+                                        <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
 >>>>>>> origin/master
                                     </a>
                                 </li>
