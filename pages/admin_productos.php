@@ -307,10 +307,21 @@
                         <?php
                             if(!empty($_POST["p_nombre"])){
                                 
-                                $v_query = "INSERT INTO productos
-                                VALUES('','".$_POST["p_nombre"]."','".$_POST['p_descripcion']."','','".$_POST['p_presio']."')"; 
+                                $v_query = "SELECT * FROM productos WHERE nombre='".$_POST["p_nombre"]."'";
+                                $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
                                 
-                                $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+                                if($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
+                                    
+                                    echo "El articulo ya existe";                                                                        
+                                
+                                }else{
+                                    
+                                    $v_query = "INSERT INTO productos
+                                    VALUES('','".$_POST["p_nombre"]."','".$_POST['p_descripcion']."','','".$_POST['p_presio']."')"; 
+
+                                    $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error()); 
+                                }      
+                                
                             }  
                         ?>
                         
@@ -393,6 +404,7 @@
                                         <th>Descripciòn</th>
                                         <th>Stock</th>
                                         <th>Precio de venta</th>
+                                        <th>Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -407,6 +419,7 @@
                                             echo    "<td>".$reg['descripcion']."</td>";
                                             echo    "<td>".$reg['stock']."</td>";
                                             echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
+                                            echo    "<td> </td>";
                                             echo"</tr>";
                                         }
                                     ?>
@@ -415,17 +428,7 @@
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                     <!-- FIN tabla de productos -->
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
+                                
                     
                     
                     
@@ -439,6 +442,7 @@
         
          <!-- jQuery 2.0.2 -->
         <script src="../js/jquery.min.js"></script>
+        <script src="../js/jquery.js"></script>
         <!-- Bootstrap -->
         <script src="../js/bootstrap.min.js" type="text/javascript"></script>
         <!-- AdminLTE App -->
