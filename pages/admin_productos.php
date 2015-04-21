@@ -303,7 +303,10 @@
                             <h3 class="box-title">Ingresa tus productos!</h3>
                         </div>
                         <!-- FIN titulo -->
-                        
+                    
+                    
+                    
+                        <!-- Caciones para cuando se pulza un boton  -->
                         <?php
                             // se inserta en la base de datos si preciona el boton insertar
                             if(isset($_POST["insertar_producto"])){
@@ -312,29 +315,42 @@
                                 $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
                                 
                                 if($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
-                                    
-                                    echo "El articulo ya existe";                                                                        
-                                
+                                    $_mjerror_exist_articulo = "activo";
                                 }else{
                                     
                                     $v_query = "INSERT INTO productos
                                     VALUES('','".$_POST["p_nombre"]."','".$_POST['p_descripcion']."','','".$_POST['p_presio']."')"; 
 
                                     $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error()); 
+                                    $_mjfull_ingresed_articulo = "activo";
                                 }      
                                 
                             }
 
-                            // se actualiza en la base de datos si preciona el boton actualizar y almacena en las varibles
-                            if(isset($_POST['actualizar_producto'])){
-                                $v_query_actualizar_productos = "SELECT * FROM productos WHERE id_producto=".$_POST['actualizar_producto']." "; 
-                                $v_registro_mf = mysqli_query($link,$v_query_actualizar_productos) or die("Problemas al insertar:".mysql_error());
-  
-                                $v_id = $v_registro_mf['id_producto'];
-                                $v_nombre = $v_registro_mf['nombre'];
-                                $v_descripcion = $v_registro_mf['id_producto'];
-                                $v_nombre = $v_registro_mf['stock'];
-                                $v_nombre = $v_registro_mf['precio_venta'];
+                            // si se presiona un boton con el icono actualizar entra a esta condicion 
+                            // y ase una consulta y almasena los datos en variables para mostrarlas en las cajas de texto
+                            if(isset($_GET['producto_actualizar'])){
+                                $v_query_actualizar_productos = " SELECT * FROM productos WHERE id_producto = ".$_GET['producto_actualizar']; 
+                                $v_query_actualizar_mf = mysqli_query($link,$v_query_actualizar_productos) or die("Problemas:".mysql_error());
+                                                                
+                                if($v_registro_mf = mysqli_fetch_array($v_query_actualizar_mf, MYSQLI_ASSOC)){
+                                    $_SESSION['p_id_producto']  =  $v_registro_mf['id_producto'];
+                                    $v_nombre                   =  $v_registro_mf['nombre'];
+                                    $v_descripcion              =  $v_registro_mf['id_producto'];
+                                    $v_stock                    =  $v_registro_mf['stock'];
+                                    $v_precio_venta             =  $v_registro_mf['precio_venta'];
+                                } 
+                            }
+
+                            // Si se preciona el boton actualizar del emergente se actualiza el producto
+                            if(isset($_POST["actualizar_product_start"])){
+                                $v_query_actualizar_productos_start = "UPDATE productos SET 
+                                nombre='".$_POST['p_nombre']."', 
+                                descripcion='".$_POST['p_descripcion']."', 
+                                precio_venta=".$_POST['p_presio']." 
+                                WHERE id_producto= ".$_SESSION['p_id_producto']."";                                                    
+                                $v_actualizar_producto_start = mysqli_query($link,$v_query_actualizar_productos_start) or die("Problemas:".mysql_error());
+                                $_mjwarning_articulo_actualizado = "activo";
                             }
 
                         ?>                        
@@ -346,11 +362,11 @@
                                 <!-- form start -->
                                 <form action="admin_productos.php" method="post">
                                     <div class="box-body">
-
+                                        
                                         <label>Nombre del producto *</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                            <input name="p_nombre" type="text" class="form-control" placeholder="Ejemplo: Grarrafon" value='<?php if(empty($v_stock)){echo "";}?>'>
+                                            <input name="p_nombre" type="text" class="form-control" placeholder="Ejemplo: Grarrafon" value='<?php if(isset($_GET['producto_actualizar'])){ echo $v_nombre;}?>' required/>
                                         </div>
                                         <br/>
 
@@ -364,7 +380,7 @@
                                             <div class="col-xs-5">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-star"></i></span>
-                                                    <input name="p_stock" type="text" class="form-control" id="disabledTextInput" placeholder="0" disabled/>
+                                                    <input name="p_stock" type="text" class="form-control" id="disabledTextInput" placeholder="0" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_stock;}?>" disabled/>
                                                 </div>
                                             </div>
                                         </div>
@@ -375,7 +391,7 @@
                                             <div class="col-xs-5">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
-                                                    <input name="p_presio" type="text" class="form-control" placeholder="Ejemplo: 20">
+                                                    <input name="p_presio" type="text" class="form-control" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" required/>
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
@@ -383,10 +399,33 @@
                                         <br/>
 
                                         <div class="box-footer">
-                                            <button type="submit" name="insertar_producto" class="btn btn-success">Ingresar producto</button>
+                                            <button type="submit" name="insertar_producto" class="btn btn-success" value="1">Ingresar producto</button>
                                             <?php
+                                                // Boton se activa si se pulsa el boton actualizar y manda los datos para
+                                                // actualizarse por post el nombre del boton es actualizar_product_start
                                                 if(isset($_GET['producto_actualizar'])){
-                                                    echo "<button type='submit' name='actualizar_producto' class='btn btn-primary'>Actualizar</button>";
+                                                    echo "
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='exampleModalLabel'>Actualización de productos</h4>
+                                                          </div>
+                                                          <div class='modal-body'>
+
+                                                              contenido
+
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='actualizar_product_start' type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    ";
                                                 }
                                             ?>
                                         </div>
@@ -397,7 +436,66 @@
                             </div> 
                             
                             <div class="col-sm-6 col-md-6">
-                                hola
+                                <div class="box-body">
+                                    <div class="box-body">
+                                    <div class="callout callout-info">
+                                        <h4>Información!</h4>
+                                        <p>En esta parte podras visualizar tus alertas.</p>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                                </br> 
+                                <?php 
+                                    // Mensaje de alerta si se ingresa el producto correctamente
+                                    if(!empty( $_mjfull_ingresed_articulo)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Correcto!</b> El producto se agregrego correctamente.
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta el articulo ya existe
+                                    if(!empty( $_mjerror_exist_articulo)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Alerta!</b> El producto ya existe, Porfavor ingrese un producto nuevo.
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    } 
+
+
+                                    // Mensaje de alerta si se actualiza el producto correctamente
+                                    if(!empty($_mjwarning_articulo_actualizado)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Correcto!</b> El producto a sido aactualizado correctamente.
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+
+                                ?>
+                            
                             </div>
                         </div>
                         <!-- Fin de celdas -->        
@@ -405,20 +503,6 @@
                     <!-- FIN Div Blanco ingresa productos -->
                     
                     
-                
-                
-                
-                
-                
-                
-                
-                <?php if(isset($_GET['producto_actualizar'])){ echo ""; }?>
-                
-                
-                
-                
-                
-                
                 
                 
                 
@@ -455,18 +539,15 @@
                                             echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
                                             echo    "<td style='text-align:center'>
                                                         
-<a href='admin_productos.php?producto_eliminar='".$reg['id_producto']."' class='btn btn-danger'><i class='fa fa-times-circle'></i></a>
+<a href='admin_productos.php?producto_eliminar=".$reg['id_producto']."' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-times-circle'></i></a>
  
-<a href='admin_productos.php?producto_actualizar='".$reg['id_producto']."' class='btn btn-primary'><i class='fa fa fa-pencil'></i></a>
+<a href='admin_productos.php?producto_actualizar=".$reg['id_producto']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>
                                                         
                                                     </td>";
                                             echo"</tr>";
                                         }
                                     ?>
-                                    
-                                    
-
-                                    
+              
                                     
                                 </tbody>
                             </table>
