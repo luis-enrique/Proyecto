@@ -1,4 +1,3 @@
-
 <?php
     session_start ();
     $_insession = "activo";
@@ -300,12 +299,14 @@
                     <div class="box box-primary">
                         <!-- Inicia titulo -->
                         <div class="box-header">
+                            </br>
                             <h3 class="box-title">Ingresa tus productos!</h3>
                         </div>
                         <!-- FIN titulo -->
                         
                         <?php
-                            if(!empty($_POST["p_nombre"])){
+                            // se inserta en la base de datos si preciona el boton insertar
+                            if(isset($_POST["insertar_producto"])){
                                 
                                 $v_query = "SELECT * FROM productos WHERE nombre='".$_POST["p_nombre"]."'";
                                 $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
@@ -322,9 +323,21 @@
                                     $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error()); 
                                 }      
                                 
-                            }  
-                        ?>
-                        
+                            }
+
+                            // se actualiza en la base de datos si preciona el boton actualizar y almacena en las varibles
+                            if(isset($_POST['actualizar_producto'])){
+                                $v_query_actualizar_productos = "SELECT * FROM productos WHERE id_producto=".$_POST['actualizar_producto']." "; 
+                                $v_registro_mf = mysqli_query($link,$v_query_actualizar_productos) or die("Problemas al insertar:".mysql_error());
+  
+                                $v_id = $v_registro_mf['id_producto'];
+                                $v_nombre = $v_registro_mf['nombre'];
+                                $v_descripcion = $v_registro_mf['id_producto'];
+                                $v_nombre = $v_registro_mf['stock'];
+                                $v_nombre = $v_registro_mf['precio_venta'];
+                            }
+
+                        ?>                        
                         
                         
                         <!-- Inicia de celdas -->
@@ -337,7 +350,7 @@
                                         <label>Nombre del producto *</label>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                            <input name="p_nombre" type="text" class="form-control" placeholder="Ejemplo: Grarrafon">
+                                            <input name="p_nombre" type="text" class="form-control" placeholder="Ejemplo: Grarrafon" value='<?php if(empty($v_stock)){echo "";}?>'>
                                         </div>
                                         <br/>
 
@@ -370,9 +383,12 @@
                                         <br/>
 
                                         <div class="box-footer">
-                                            <button type="submit" class="btn btn-success">Ingresar producto</button>
-                                            <button type="submit" class="btn btn-warning">Actualizar</button>
-                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                            <button type="submit" name="insertar_producto" class="btn btn-success">Ingresar producto</button>
+                                            <?php
+                                                if(isset($_GET['producto_actualizar'])){
+                                                    echo "<button type='submit' name='actualizar_producto' class='btn btn-primary'>Actualizar</button>";
+                                                }
+                                            ?>
                                         </div>
 
                                      </div>
@@ -389,22 +405,40 @@
                     <!-- FIN Div Blanco ingresa productos -->
                     
                     
+                
+                
+                
+                
+                
+                
+                
+                <?php if(isset($_GET['producto_actualizar'])){ echo ""; }?>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                     <!-- INICIO tabla de productos -->
-                    
                     <div class="box">
                         <div class="box-header">
+                            </br>
                             <h3 class="box-title">Tabla de Productos</h3>                                    
                         </div><!-- /.box-header -->
                         <div class="box-body table-responsive">
                             <table id="example2" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
+                                        <th style='text-align:center'>Id</th>
                                         <th>Nombre</th>
                                         <th>Descripciòn</th>
-                                        <th>Stock</th>
+                                        <th>Stock de producto</th>
                                         <th>Precio de venta</th>
-                                        <th>Opciones</th>
+                                        <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -414,20 +448,35 @@
 
                                         while($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
                                             echo"<tr>";
-                                            echo    "<td>".$reg['id_producto']."</td>";
+                                            echo    "<td style='text-align:center'>".$reg['id_producto']."</td>";
                                             echo    "<td>".$reg['nombre']."</td>";
                                             echo    "<td>".$reg['descripcion']."</td>";
                                             echo    "<td>".$reg['stock']."</td>";
                                             echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
-                                            echo    "<td> </td>";
+                                            echo    "<td style='text-align:center'>
+                                                        
+<a href='admin_productos.php?producto_eliminar='".$reg['id_producto']."' class='btn btn-danger'><i class='fa fa-times-circle'></i></a>
+ 
+<a href='admin_productos.php?producto_actualizar='".$reg['id_producto']."' class='btn btn-primary'><i class='fa fa fa-pencil'></i></a>
+                                                        
+                                                    </td>";
                                             echo"</tr>";
                                         }
                                     ?>
+                                    
+                                    
+
+                                    
+                                    
                                 </tbody>
                             </table>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->
                     <!-- FIN tabla de productos -->
+            
+            
+            
+                    
                                 
                     
                     
