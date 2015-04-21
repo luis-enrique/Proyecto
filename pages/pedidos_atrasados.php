@@ -225,9 +225,9 @@
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
                                         <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
-                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
-                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+                                        <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos                                                       realizados</a></li>
+                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones                                               realizadas</a></li>
+                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de                                                 trabajadores</a></li>c 
 
 
                                     </ul>
@@ -253,7 +253,7 @@
                                         <i class='fa fa-angle-left pull-right'></i>
                                     </a>
                                     <ul class='treeview-menu'>
-                                        <li><a href='adquisicion_productos.php'><i class='fa fa-angle-double-right'></i> Adquicision de productos</a></li>
+                                        <li><a href='adquisicion_productos.php'><i class='fa fa-angle-double-right'></i> Adquicision de                                                    productos</a></li>
                                         <li><a href='admin_proveedores.php'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
                                     </ul>
                                 </li>
@@ -301,7 +301,7 @@
                  CONCAT(c.nombre,' ',c.apellido_p,' ',c.apellido_m) AS 'nombre',
                  CONCAT('Estado: ',c.estado,' Ciudad: ',c.ciudad,' CP: ',c.codigo_postal,' Calle: ',c.calle,' ',c.no_casa) AS 'direccion',
                  CONCAT('Tel:',c.telefono,' e-mail',c.e_mail) AS 'contacto',
-                 ped.fecha_entrega AS 'fecha_entrega'
+                 CONCAT(ped.fecha_entrega,' / ', ped.hora_entrega) AS 'fecha_entrega'
                  FROM clientes c,pedidos ped      
                  WHERE c.id_cliente = ped.id_cliente AND ped.fecha_entrega <CURDATE()"; //código MySQL
                  $datos=mysqli_query($link,$sql) or die ("Problemas en el select:".mysql_error()); //enviar código MySQL
@@ -318,7 +318,12 @@
                                         <thead>
                                             <tr>
                                                 <th>Id pedido</th>
-                                                <th>Nombre</th>
+                                                <th>Producto</th>
+                                                <th>Precio Unitario</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                                <th>Total</th>
+                                                <th>Cliente</th>
                                                 <th>Dirección</th>
                                                 <th>Contacto</th>
                                                 <th>Fecha de entrega</th>
@@ -328,12 +333,84 @@
                                             <?php
                                                 while ($row=mysqli_fetch_array($datos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
                                                     echo "<tr>";
-                                                    echo    "<td>".$row['id_pedidos']."</td>";
-                                                    echo    "<td>".$row['nombre']."</td>";
-                                                    echo    "<td>".$row['direccion']."</td>";
-                                                    echo    "<td>".$row['contacto']."</td>";
-                                                    echo    "<td>".$row['fecha_entrega']."</td>";
-                                                    echo "</tr>";
+                                                    echo "<td>".$row['id_pedidos']."</td>";
+                                                    echo "<td>";
+                                                    echo "<table >";
+                                    $productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal 
+                                    FROM productos_pedido pp, productos p
+                                    WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
+                                    $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+                        while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                                                   echo " <tr>";
+                                                   echo " <td>".$rowss['nombre'].".</td>";
+                                                   echo " </tr>";
+                                                   }
+                                                    echo " </table>";
+                                                    echo "</td>";
+                                                    
+                                                        echo "<td>";
+                                                    echo "<table >";
+                                  
+                        $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+                        while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                                                   echo " <tr>";
+                                                   echo " <td>$".$rowss['precio_unitario'].".00</td>";
+                                                   echo " </tr>";
+                                                   }
+                                                    echo " </table>";
+                                                    echo "</td>";
+                                                    
+                                                    
+                                                       echo "<td>";
+                                                    echo "<table >";
+                                    
+                        $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+                        while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                                                   echo " <tr>";
+                                                   echo " <td>".$rowss['cantidad']."</td>";
+                                                   echo " </tr>";
+                                                   }
+                                                   echo " </table>";
+                                                   echo "</td>";
+                                                
+                                                   echo "<td>";
+                                                   echo "<table >";
+                                    
+                        $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+                        while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                                                   echo " <tr>";
+                                                   echo " <td>$".$rowss['subtotal'].".00</td>";
+                                                   echo " </tr>";
+                                                   }
+                                                   echo " </table>";
+                                                   echo "</td>";
+                                                    
+                                                    
+                                                    
+                                                    
+                                                         echo "<td>";
+                                                    echo "<table >";
+                                    $productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal,                                     sum(pp.subtotal) AS 'TOTAL'
+                                    FROM productos_pedido pp, productos p
+                                    WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
+                                    $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+                        while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                                                   echo " <tr>";
+                                                   echo " <td>$".$rowss['TOTAL'].".00</td>";
+                                                   echo " </tr>";
+                                                   }
+                                                    echo " </table>";
+                                                    echo "</td>";
+                                                    
+                                                    
+                                                    
+                                                    
+                                                   
+                                                   echo "<td>".$row['nombre']."</td>";
+                                                   echo "<td>".$row['direccion']."</td>";
+                                                   echo "<td>".$row['contacto']."</td>";
+                                                   echo "<td>".$row['fecha_entrega']."</td>";
+                                                   echo "</tr>";
                                                 }
                                             ?>                                     
                                     </table>
