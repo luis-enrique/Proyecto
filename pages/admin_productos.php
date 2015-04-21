@@ -404,6 +404,7 @@
                                                 // Boton se activa si se pulsa el boton actualizar y manda los datos para
                                                 // actualizarse por post el nombre del boton es actualizar_product_start
                                                 if(isset($_GET['producto_actualizar'])){
+                                                    $time = time();
                                                     echo "
                                                     <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo'>Actualizar</button>
 
@@ -413,9 +414,61 @@
                                                           <div class='modal-header'>
                                                             <h4 class='modal-title' id='exampleModalLabel'>Actualización de productos</h4>
                                                           </div>
-                                                          <div class='modal-body'>
+                                                          <div class='modal-body'>                                                    
+                                                              <div class='row'>
+                                                                  <div class=' col-xs-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/producto_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  </div>
+                                                                  <div class=' col-xs-7 col-md-7'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    ".date('d-m-Y',$time)."
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
 
-                                                              contenido
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                                                                    <h3 class='timeline-header'><a>Producto</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                    Actualizaras el siguiente producto: 
+                                                                                    </br>
+                                                                                    </br>
+                                                                                        ".$v_nombre."
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
+                                                              
 
                                                           </div>
                                                           <div class='modal-footer'>
@@ -428,6 +481,8 @@
                                                     ";
                                                 }
                                             ?>
+         
+                                            
                                         </div>
 
                                      </div>
@@ -495,6 +550,85 @@
 
 
                                 ?>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='exampleModalLabel'>Actualización de productos</h4>
+                                                          </div>
+                                                          <div class='modal-body'>
+                                                              <div class='row'>
+                                                                  <div class=' col-xs-6 col-md-6'>
+                                                                      <img src='img_pages/producto_actualizar.png'alt="Responsive image" class="img-rounded">
+                                                                  </div>
+                                                                  <div class=' col-xs-6 col-md-6'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    10 Feb. 2014
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
+
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i> 12:05</span>
+
+                                                                                    <h3 class='timeline-header'><a>Producto</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                        nombre de producto
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+
+                                                              
+
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
                             
                             </div>
                         </div>
