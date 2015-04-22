@@ -384,7 +384,7 @@
 
                                         <div class="form-group">
                                             <label>Descripciòn del producto</label>
-                                            <textarea name="p_descripcion" class="form-control" rows="3" placeholder="Ingresa la descipción"></textarea>
+                                            <textarea name="p_descripcion" class="form-control" rows="3" placeholder="Ingresa la descipción" maxlength="50"><?php if(isset($_GET['producto_actualizar'])){ echo $v_descripcion;}?></textarea>
                                         </div>
 
                                         <label>Stock</label>
@@ -403,7 +403,7 @@
                                             <div class="col-xs-5">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
-                                                    <input name="p_presio" type="text" class="form-control" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" onkeypress="return numeros(event)" required/>
+                                                    <input name="p_presio" type="text" class="form-control" maxlength="10" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" onkeypress="return numeros(event)" required/>
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
@@ -560,8 +560,7 @@
                                         ";
                                     }
                                 ?>
-                            
-                    
+                          
                             
                             
                             </div>
@@ -698,6 +697,12 @@
                 <!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+
+        <!-- Escrip solo deja insertar un total de 50 caracteres" -->
+        
+
+
+
         
        <!-- Escrip solo deja insertar numeros en un imput de un formulario sele agrega: onkeypress="return numeros(event)" -->
         <script>
