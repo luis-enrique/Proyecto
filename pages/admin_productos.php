@@ -403,7 +403,7 @@
                                             <div class="col-xs-5">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
-                                                    <input name="p_presio" type="text" class="form-control" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" required/>
+                                                    <input name="p_presio" type="text" class="form-control" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" onkeypress="return numeros(event)" required/>
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
@@ -699,6 +699,27 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
         
+       <!-- Escrip solo deja insertar numeros en un imput de un formulario sele agrega: onkeypress="return numeros(event)" -->
+        <script>
+            function numeros(e){
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = " 0123456789";
+                especiales = [8,37,39,46];
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    } 
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+        </script>
+
         
          <!-- jQuery 2.0.2 -->
         <script src="../js/jquery.min.js"></script>
