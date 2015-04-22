@@ -336,7 +336,7 @@
                                 if($v_registro_mf = mysqli_fetch_array($v_query_actualizar_mf, MYSQLI_ASSOC)){
                                     $_SESSION['p_id_producto']  =  $v_registro_mf['id_producto'];
                                     $v_nombre                   =  $v_registro_mf['nombre'];
-                                    $v_descripcion              =  $v_registro_mf['id_producto'];
+                                    $v_descripcion              =  $v_registro_mf['descripcion'];
                                     $v_stock                    =  $v_registro_mf['stock'];
                                     $v_precio_venta             =  $v_registro_mf['precio_venta'];
                                 } 
@@ -351,6 +351,18 @@
                                 WHERE id_producto= ".$_SESSION['p_id_producto']."";                                                    
                                 $v_actualizar_producto_start = mysqli_query($link,$v_query_actualizar_productos_start) or die("Problemas:".mysql_error());
                                 $_mjwarning_articulo_actualizado = "activo";
+                            }
+
+
+
+
+                            // si se presiona un boton con el icono eliminar entra a esta condicion 
+                            // y ase una consulta y almasena los datos en variables para tomar el id_productos y mandarla a una variable sesion
+                            //para mostrarlos en el emergente
+                            if(isset($_GET['producto_eliminar'])){
+                                $v_query_eliminar_productos = "DELETE FROM productos WHERE id_producto=".$_GET['producto_eliminar']; 
+                                $v_query_eliminar_me = mysqli_query($link,$v_query_eliminar_productos) or die("Problemas:".mysql_error());
+                                $_mjwarning_articulo_eliminado = "activo";
                             }
 
                         ?>                        
@@ -406,15 +418,15 @@
                                                 if(isset($_GET['producto_actualizar'])){
                                                     $time = time();
                                                     echo "
-                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo'>Actualizar</button>
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
 
-                                                    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                                    <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
                                                       <div class='modal-dialog'>
                                                         <div class='modal-content'>
                                                           <div class='modal-header'>
-                                                            <h4 class='modal-title' id='exampleModalLabel'>Actualización de productos</h4>
+                                                            <h4 class='modal-title' id='ActualizarModalLabel'>Actualización de productos</h4>
                                                           </div>
-                                                          <div class='modal-body'>                                                    
+                                                          <div class='modal-body'>                   
                                                               <div class='row'>
                                                                   <div class=' col-xs-5 col-md-5'>
                                                                       <img style='max-width: 250px' src='img_pages/producto_actualizar.png'alt='Responsive image' class='img-rounded'>
@@ -443,7 +455,7 @@
                                                                                     Actualizaras el siguiente producto: 
                                                                                     </br>
                                                                                     </br>
-                                                                                        ".$v_nombre."
+                                                                                        <code>".$v_nombre."</code>
                                                                                     </div>
 
                                                                                     <div class='timeline-footer'>
@@ -455,21 +467,6 @@
                                                                   </div>
                                                               </div>
                                                               
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-                                                              
-
                                                           </div>
                                                           <div class='modal-footer'>
                                                             <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
@@ -541,93 +538,30 @@
                                                 <div class='alert alert-success alert-dismissable'>
                                                     <i class='fa fa-check'></i>
                                                     <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-                                                    <b>Correcto!</b> El producto a sido aactualizado correctamente.
+                                                    <b>Correcto!</b> El producto a sido actualizado correctamente.
                                                 </div>
                                                 </div>
                                             </div>
                                         ";
                                     }
 
-
+                                    // Mensaje de alerta si se a eliminado el producto correctamente
+                                    if(!empty($_mjwarning_articulo_eliminado)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Correcto!</b> El producto a sido eliminado correctamente.
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
                                 ?>
                             
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#exampleModal' data-whatever='@mdo'>Actualizar</button>
-
-                                                    <div class='modal fade' id='exampleModal' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                                                      <div class='modal-dialog'>
-                                                        <div class='modal-content'>
-                                                          <div class='modal-header'>
-                                                            <h4 class='modal-title' id='exampleModalLabel'>Actualización de productos</h4>
-                                                          </div>
-                                                          <div class='modal-body'>
-                                                              <div class='row'>
-                                                                  <div class=' col-xs-6 col-md-6'>
-                                                                      <img src='img_pages/producto_actualizar.png'alt="Responsive image" class="img-rounded">
-                                                                  </div>
-                                                                  <div class=' col-xs-6 col-md-6'>
-                                                                      <ul class='timeline'>
-                                                                            <!-- timeline time label -->
-                                                                            <li class='time-label'>
-                                                                                <span class='bg-red'>
-                                                                                    10 Feb. 2014
-                                                                                </span>
-                                                                            </li>
-                                                                            <!-- /.timeline-label -->
-
-                                                                            <!-- timeline item -->
-                                                                            <li>
-                                                                                <!-- timeline icon -->
-                                                                                <i class='fa fa-envelope bg-blue'></i>
-                                                                                <div class='timeline-item'>
-                                                                                    <span class='time'><i class='fa fa-clock-o'></i> 12:05</span>
-
-                                                                                    <h3 class='timeline-header'><a>Producto</a></h3>
-
-                                                                                    <div class='timeline-body'>
-                                                                                        nombre de producto
-                                                                                    </div>
-
-                                                                                    <div class='timeline-footer'>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                            <!-- END timeline item -->
-                                                                        </ul>
-                                                                  </div>
-                                                              </div>
-
-                                                              
-
-                                                          </div>
-                                                          <div class='modal-footer'>
-                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
-                                                            <button type='submit' class='btn btn-primary'>Actualizar</button>
-                                                          </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
+                    
                             
                             
                             </div>
@@ -661,6 +595,7 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                        $time = time();
                                         $v_query = "SELECT * FROM productos";
                                         $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
 
@@ -673,8 +608,71 @@
                                             echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
                                             echo    "<td style='text-align:center'>
                                                         
-<a href='admin_productos.php?producto_eliminar=".$reg['id_producto']."' class='btn btn-danger' data-toggle='tooltip' data-placement='top' title='Eliminar'><i class='fa fa-times-circle'></i></a>
- 
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg['id_producto']."' data-whatever='@mdo'><i class='fa fa-times-circle'></i></a> 
+                            
+<div class='modal fade' id='".$reg['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='".$reg['id_producto']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='".$reg['id_producto']."Label'>Eliminación de producto</h4>
+      </div>
+      <div class='modal-body'>                   
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/producto_eliminar.png'alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Producto</a></h3>
+
+                                <div class='timeline-body'>
+                                Eliminaras el siguiente producto: </br>
+                                <code>".$reg['nombre']."</code> </br>
+                                Stock: ".$reg['stock']." </br>
+                                Precio de venta: $".$reg['precio_venta'].".00
+                                </br>
+                                </br>
+                                    <!-- <code>producto</code> -->
+                                </div>
+
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='admin_productos.php?producto_eliminar=".$reg['id_producto']."'  class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comienza el primer boton para actualizar -->
+
 <a href='admin_productos.php?producto_actualizar=".$reg['id_producto']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>
                                                         
                                                     </td>";
