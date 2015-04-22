@@ -610,8 +610,7 @@
                                                         
 <!-- Comienza el primer boton para eliminar -->
 
-<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg['id_producto']."' data-whatever='@mdo'><i class='fa fa-times-circle'></i></a> 
-                            
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg['id_producto']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a>                           
 <div class='modal fade' id='".$reg['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='".$reg['id_producto']."Label' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
@@ -679,7 +678,6 @@
                                             echo"</tr>";
                                         }
                                     ?>
-              
                                     
                                 </tbody>
                             </table>
