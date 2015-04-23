@@ -696,10 +696,7 @@
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->
-        </div><!-- ./wrapper -->
-
-        <!-- Escrip solo deja insertar un total de 50 caracteres" -->
-        
+        </div><!-- ./wrapper -->        
 
 
 
