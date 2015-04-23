@@ -528,10 +528,10 @@
                                                           </div>
                                                           <div class='modal-body'>                   
                                                               <div class='row'>
-                                                                  <div class=' col-xs-5 col-md-5'>
-                                                                      <img style='max-width: 250px' src='img_pages/producto_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  <div class=' col-sm-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/usuario_actualizar.png'alt='Responsive image' class='img-rounded'>
                                                                   </div>
-                                                                  <div class=' col-xs-7 col-md-7'>
+                                                                  <div class=' col-sm-7 col-md-7'>
                                                                       <ul class='timeline'>
                                                                             <!-- timeline time label -->
                                                                             <li class='time-label'>
@@ -640,8 +640,7 @@
                                                 <div class='alert alert-success alert-dismissable'>
                                                     <i class='fa fa-check'></i>
                                                     <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-                                                    <b>El rabajador a sido actualizado 
-                                                    or!</b>
+                                                    <b>El rabajador a sido actualizado!</b>
                                                 </div>
                                                 </div>
                                             </div>
