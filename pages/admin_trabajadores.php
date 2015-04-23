@@ -295,8 +295,24 @@
                     <?php
 
                     // Si se preciona el boton ingresar trabajador se entra en esta condicion para insertar al trabajador
+                    // si no existe lo inserta
                     if(isset($_POST['insert_trabajador'])){
-                        $v_insert_trabajador = "INSERT INTO trabajadores VALUES (
+                        
+                        $v_query_comprovacio_trabajador = "SELECT * FROM trabajadores WHERE 
+                                                           nombre='".$_POST["nombre"]."' AND 
+                                                           apellido_p='".$_POST["ap_p"]."' AND 
+                                                           apellido_M='".$_POST["ap_m"]."'";
+                        
+                        $registros_comparacion = mysqli_query($link,$v_query_comprovacio_trabajador) 
+                                                 or die("Problemas comparacion:".mysql_error());
+                        
+                        
+                        if($reg = mysqli_fetch_array($registros_comparacion, MYSQLI_ASSOC)){
+                            
+                            $_mjerror_exist_trabajador = "activo";
+                            
+                        }else{
+                            $v_insert_trabajador = "INSERT INTO trabajadores VALUES (
                                                '',
                                                '".$_POST['nombre']."', '".$_POST['ap_p']."', '".$_POST['ap_m']."', 
                                                '".$_POST['categoria']."', 
@@ -311,8 +327,42 @@
                                                'CURDATE()'
                                                )";
                         
-                        $v_query_insert_trabajador = mysqli_query($link,$v_insert_trabajador) or die ("Problemas al insertar".mysql_errno());
-                    }       
+                            $v_query_insert_trabajador = mysqli_query($link,$v_insert_trabajador) 
+                                                         or die ("Problemas insertar".mysql_errno());
+                            
+                            $_mjfull_insert_trabajador = "activo";
+                            
+                        }
+                        
+                    }  
+
+                     // Si se preciona el boton actualizar del emergente entrara a esta condicion para actualizar
+                     if(isset($_POST['trabajador_actualizar_start'])){
+                         $v_update_trabajador = "UPDATE trabajadores SET 
+                                                     nombre=            '".$_POST['nombre']."',
+                                                     apellido_p=        '".$_POST['ap_p']."',
+                                                     apellido_m=        '".$_POST['ap_m']."',
+                                                     id_categoria=       ".$_POST['categoria'].",
+                                                     estado=            '".$_POST['estado']."',
+                                                     ciudad=            '".$_POST['ciudad']."',
+                                                     codigo_postal=     '".$_POST['cp']."',
+                                                     colonia=           '".$_POST['colonia']."',
+                                                     calle=             '".$_POST['calle']."',
+                                                     no_casa=           '".$_POST['n_casa']."',
+                                                     Telefono=          '".$_POST['tel']."',
+                                                     e_mail=            '".$_POST['mail']."'
+                                                 WHERE id_trabajador=".$_SESSION['id_trabajador'];
+                                                 
+                         mysqli_query($link,$v_update_trabajador) or die("Problemas Actualizar:".mysql_error());
+                         $_mjwarning_actualizado_trabajador = "activo";
+                     }
+
+                    // Si se preciona el boton eliminar del emergente entrara a esta condicion para eliminarlo
+                    if(isset($_GET['trabajador_eliminar'])){
+                        $v_delete_trabajador = "DELETE FROM trabajadores WHERE id_trabajador=".$_GET['trabajador_eliminar']; 
+                        mysqli_query($link,$v_delete_trabajador) or die("Problemas eliminar:".mysql_error());
+                        $_mjwarning_delete_trabajador = "activo";
+                    }
 
 
                     // Consulta para mostrar en el combo box las categorias
@@ -353,21 +403,21 @@
                                                 <label>Nombre del trabajador *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                <input name="nombre" type="text" class="form-control" placeholder="Ejemplo: Juan" maxlength="20" required/>
+                                                <input name="nombre" type="text" class="form-control" placeholder="Ejemplo: Juan" maxlength="20" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['nombre'];} ?>" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Apellido paterno *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                <input name="ap_p" type="text" class="form-control" placeholder="Ejemplo: Morales"  maxlength="20" required/>
+                                                <input name="ap_p" type="text" class="form-control" placeholder="Ejemplo: Morales"  maxlength="20" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['apel_p'];} ?>" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Apellido materno *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-font"></i></span>    
-                                                <input name="ap_m" type="text" class="form-control" placeholder="Emplo: Gracia" maxlength="20" required/>
+                                                <input name="ap_m" type="text" class="form-control" placeholder="Emplo: Gracia" maxlength="20" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['apel_m'];} ?>" required/>
                                                 </div>
                                             </div>
                                         </div>
@@ -377,21 +427,21 @@
                                                 <label>Estado *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-globe"></i></span> 
-                                                <input name="estado" type="text" class="form-control" placeholder="Emplo: Guerrero" maxlength="30" required/>
+                                                <input name="estado" type="text" class="form-control" placeholder="Emplo: Guerrero" maxlength="30" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['estado'];} ?>" required/>
                                             </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Ciudad *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
-                                                <input name="ciudad" type="text" class="form-control" placeholder="Emplo: Cliapa de Àlvarez" maxlength="30" required/>
+                                                <input name="ciudad" type="text" class="form-control" placeholder="Emplo: Cliapa de Àlvarez" maxlength="30" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['ciudad'];} ?>" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>CP: </label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-building-o"></i></span> 
-                                                <input name="cp" type="text" class="form-control" placeholder="Emplo: 41100" maxlength="5" onkeypress="return numeros(event)" required/>
+                                                <input name="cp" type="text" class="form-control" placeholder="Emplo: 41100" maxlength="5" onkeypress="return numeros(event)" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['cp'];} ?>" required/>
                                                 </div>
                                             </div>
                                         </div>
@@ -401,21 +451,21 @@
                                                 <label>Colonia *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
-                                                <input name="colonia" type="text" class="form-control" placeholder="Ejemplo: Los Pinos" maxlength="50" required/>
+                                                <input name="colonia" type="text" class="form-control" placeholder="Ejemplo: Los Pinos" maxlength="50" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['colonia'];} ?>" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Calle *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
-                                                <input name="calle" type="text" class="form-control" placeholder="Ejemplo: Emiliano Zapata"  maxlength="50" required/>
+                                                <input name="calle" type="text" class="form-control" placeholder="Ejemplo: Emiliano Zapata"  maxlength="50" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['calle'];} ?>" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Nª casa *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>    
-                                                <input name="n_casa" type="text" class="form-control" placeholder="Emplo: 231" maxlength="10" onkeypress="return numeros(event)">
+                                                <input name="n_casa" type="text" class="form-control" placeholder="Emplo: 231" maxlength="10" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['n_casa'];} ?>" onkeypress="return numeros(event)">
                                                 </div>
                                             </div>
                                         </div>
@@ -425,26 +475,35 @@
                                                 <label>Email *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                                <input name="mail" type="email" class="form-control" placeholder="usuario@outlook.com" maxlength="50">
+                                                <input name="mail" type="email" class="form-control" placeholder="usuario@outlook.com" maxlength="50" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['e_mail'];} ?>">
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <label>Telefono *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa  fa-phone"></i></span>
-                                                <input name="tel" type="text" class="form-control" placeholder="Ejemplo: 7561187854"  maxlength="10" onkeypress="return numeros(event)">
+                                                <input name="tel" type="text" class="form-control" placeholder="Ejemplo: 7561187854"  maxlength="10" onkeypress="return numeros(event)" value="<?php if(isset($_GET['trabajador_actualizar'])){echo $_GET['telefono'];} ?>">
                                                 </div>
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    <label>Categoria *</label>
+                                                    <label>Categoria * <a href="admin_categorias.php" data-toggle="tooltip" data-placement="top" title="Aqui Podras editar las categorias!">Editar categorias</a></label>
                                                     <select name="categoria" class="form-control" required/>
-                                                        <option></option>
                                                         <?php 
+                                                            if(isset($_GET['trabajador_actualizar'])){
+                                                                echo "<option value='".$_GET['trabajador_actualizar']."'>".$_GET['puesto']."</option>";
+                                                            }else{
+                                                                echo "<option></option>";
+                                                            } 
+
                                                             while($reg_combobox = mysqli_fetch_array($v_query_box, MYSQLI_ASSOC)){
-                                                                echo "<option value='".$reg_combobox['id_categoria']."'>".$reg_combobox['puesto']."</option> </br>";
+                                                                     echo "<option value='".$reg_combobox['id_categoria']."'>"
+                                                                     .$reg_combobox['puesto'].
+                                                                     "</option> </br>";
                                                             }
+
                                                         ?>
+                                                    
                                                     </select>
                                                 </div>
                                             </div>
@@ -452,6 +511,78 @@
                                 </br>
                                 <div class='box-footer'>
                                     <button name="insert_trabajador" type="submit" class="btn btn-success" value="1">Ingresar Trabajador</button>
+                                    <?php
+                                                // Boton se activa si se pulsa el boton actualizar y manda los datos para
+                                                // actualizarse por post el nombre del boton es actualizar_product_start
+                                                if(isset($_GET['trabajador_actualizar'])){
+                                                    $_SESSION['id_trabajador'] = $_GET['trabajador_actualizar'];
+                                                    $time = time();
+                                                    echo "
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='ActualizarModalLabel'>Actualizar trabajador</h4>
+                                                          </div>
+                                                          <div class='modal-body'>                   
+                                                              <div class='row'>
+                                                                  <div class=' col-xs-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/producto_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  </div>
+                                                                  <div class=' col-xs-7 col-md-7'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    ".date('d-m-Y',$time)."
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
+
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                                                                    <h3 class='timeline-header'><a>Trabajador</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                    Actualizar datos de: 
+                                                                                    </br>
+                                                                                    </br>
+                                                                                    <!-- Datos mandados via GET semuestran a qui tambin -->
+                                                                                    <code>".$_GET['nombre']." ".$_GET['apel_p']." ".$_GET['apel_m']."</code> </br>
+                                                                                        Telefono: ".$_GET['telefono']." </br>
+                                                                                        Puesto: ".$_GET['puesto']." </br>
+                                                                                        Sueldo: $".$_GET['sueldo'].".00
+                                                                                        </br>
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+                                                              
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='trabajador_actualizar_start' type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    ";
+                                                }
+                                            ?>
                                 </div>
 
                                      </div>
@@ -469,9 +600,74 @@
                                  </div>
                                  </br> 
                              <!-- INICIO de los mensajes de las alertas para las acciones del usuario -->
-                                 CONTENIDO
+                                
+                                <?php 
+                                    // Mensaje de alerta si se inserta el trabajador
+                                    if(!empty($_mjfull_insert_trabajador)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Trabajador ingresado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta el trabajador ya existe
+                                    if(!empty($_mjerror_exist_trabajador)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El trabajador ya existe!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    } 
+
+                                    // Mensaje de alerta si se actualiza el trabajador
+                                    if(!empty($_mjwarning_actualizado_trabajador)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El rabajador a sido actualizado 
+                                                    or!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta si se a eliminado el trabajador
+                                    if(!empty($_mjwarning_delete_trabajador)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Trabajador Eliminado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                ?>
+                                
+                                
+    
                              <!-- FIN de los mensajes de las alertas para las acciones del usuario -->
-                             ------------------------
                              </div>
                          </div>
                     </div>
@@ -499,6 +695,10 @@
                                     </thead>
                                     <?php
                                         while($reg_show_table = mysqli_fetch_array($v_query_trabajadores_table, MYSQLI_ASSOC)){
+                                            $time = time();
+                                            $v_name_trabajador = $reg_show_table['nombre']." ".
+                                                                 $reg_show_table['apellido_p']." ".
+                                                                 $reg_show_table['apellido_m'];
                                             echo "
                                             <tr>
                                                 <td>".$reg_show_table['id_trabajador']."</td>
@@ -520,12 +720,80 @@
                                                 <td>".$reg_show_table['e_mail']."</td>
                                                 <td>".$reg_show_table['puesto']."</td>
                                                 <td> $".$reg_show_table['sueldo'].".00 </td>
-                                                <td style='text-align:center'>Botones</td>
+                                                <td style='text-align:center'>
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg_show_table['id_trabajador']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a> 
+
+<div class='modal fade' id='".$reg_show_table['id_trabajador']."' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_trabajador']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='".$reg_show_table['id_trabajador']."Label'>Eliminar trabajador</h4>
+      </div>
+      <div class='modal-body'>                   
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png'alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Trabajador</a></h3>
+
+                                <div class='timeline-body'>
+                                </br>
+                                <code>".$v_name_trabajador."</code> </br>
+                                Telefono: ".$reg_show_table['telefono']." </br>
+                                Puesto: ".$reg_show_table['puesto']." </br>
+                                Sueldo: $".$reg_show_table['sueldo'].".00
+                                </br>
+                                </br>
+                                    <!-- <code>producto</code> -->
+                                </div>
+
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='admin_trabajadores.php?trabajador_eliminar=".$reg_show_table['id_trabajador']."' class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comienza el primer boton para actualizar -->
+
+<a href='admin_trabajadores.php?trabajador_actualizar=".$reg_show_table['id_trabajador']."&nombre=".$reg_show_table['nombre']."&apel_p=".$reg_show_table['apellido_p']."&apel_m=".$reg_show_table['apellido_m']."&estado=".$reg_show_table['estado']."&ciudad=".$reg_show_table['ciudad']."&cp=".$reg_show_table['codigo_postal']."&colonia=".$reg_show_table['colonia']."&calle=".$reg_show_table['calle']."&n_casa=".$reg_show_table['no_casa']."&telefono=".$reg_show_table['telefono']."&e_mail=".$reg_show_table['e_mail']."&sueldo=".$reg_show_table['sueldo']."&puesto=".$reg_show_table['puesto']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a> 
+                                                
+                                                </td>
                                             </tr>
                                             ";
                                         }
                                     ?>
-                                    
                                     <tbody>
                                         
                                     </tbody>
