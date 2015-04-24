@@ -359,6 +359,7 @@ CREATE TABLE `usuarios` (
 -- ----------------------------
 INSERT INTO `usuarios` VALUES ('1', '2', 'luis enrique', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '1', 'imagenes/luis.png', '2015-04-13');
 INSERT INTO `usuarios` VALUES ('3', '3', 'hermenegildo', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '2', 'imagenes/herme.jpg', '2015-04-13');
+INSERT INTO `usuarios` VALUES ('4', '4', 'jorge luis', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '1', 'imagenes/jorge.png', '2015-04-13');
 
 -- ----------------------------
 -- Table structure for ventas
