@@ -360,39 +360,6 @@
 
 
                                         <!-- Modal -->
-                                        <script>
-function datos(cod,nom,lug,nro){
-    opener.document.ventas.codigo.value = cod;
-    opener.document.ventas.origen.value = nom;
-    opener.document.ventas.lugar.value = lug;
-    opener.document.ventas.lstname.value = nro;
-    window.close();
-}
-
-
-function Resaltar_On(GridView)
-{
-    if(GridView != null)
-    {
-    GridView.originalBgColor = GridView.style.backgroundColor;
-    GridView.style.backgroundColor='#DBE7F6';
-    GridView.style.cursor = 'hand';
-    }
-}
-
-function Resaltar_Off(GridView)
-{
-    if(GridView != null)
-    {
-    GridView.style.backgroundColor = GridView.originalBgColor;
-    }
-}
-function Close() {
-    window.close();
-}
-
-//]]>
-</script>
                                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                           <div class="modal-dialog">
                                             <div class="modal-content">
@@ -431,7 +398,6 @@ function Close() {
                                             echo    "<td>".$reg['stock']."</td>";
                                             echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
                                             echo"</tr>";
-                                            "OnClick=datos('$codigo','$colegio','$lugar','$id')><td>$i</td><td>$codigo</td><td>$colegio</td><td>".$row{'nivel'}."</td><td>$lugar</td></tr>";
                                         }
                                     ?>
                                 </tbody>
