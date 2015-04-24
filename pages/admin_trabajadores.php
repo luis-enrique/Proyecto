@@ -487,7 +487,7 @@
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    <label>Categoria * <a href="admin_categorias.php" data-toggle="tooltip" data-placement="top" title="Aqui Podras editar las categorias!">Editar categorias</a></label>
+                                                    <label>Puesto de trabajo * <a href="admin_categorias.php" data-toggle="tooltip" data-placement="top" title="Aqui podras editar los puestos de trabajo!">Editar puestos!</a></label>
                                                     <select name="categoria" class="form-control" required/>
                                                         <?php 
                                                             if(isset($_GET['trabajador_actualizar'])){
@@ -793,9 +793,6 @@
                                             ";
                                         }
                                     ?>
-                                    <tbody>
-                                        
-                                    </tbody>
                                 </table>
                             </div>
                             <!-- FIN contenido de la tabla de trabajadpres -->
@@ -828,6 +825,7 @@
                 }
             }
         </script>
+
         <!-- jQuery 2.0.2 -->
         <script src="../js/jquery.min.js"></script>
         <!-- Bootstrap -->
