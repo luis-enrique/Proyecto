@@ -9,7 +9,7 @@
         session_destroy ();
         header('Location: index.php');
     }
-    
+
     include("conexion.php");
 ?>
 
@@ -52,29 +52,29 @@
                         <?php
                          $v_query = "SELECT * FROM pedidos";
                          $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
-                         $v_total = mysqli_num_rows($v_registros);                                      
+                         $v_total = mysqli_num_rows($v_registros);
                         ?>
-                        <!--termina la consulta de cuantos pedidos hay  --> 
-                        
+                        <!--termina la consulta de cuantos pedidos hay  -->
+
 
                         <!--Inicia consulta de pedidos que deben ser entreados hoy  -->
                         <?php
                          $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega = CURDATE()";
                          $v_registro = mysqli_query($link,$v_query2) or die ("Problemas en el select:".mysql_error());
-                         $v_tota = mysqli_num_rows($v_registro);                                     
+                         $v_tota = mysqli_num_rows($v_registro);
                         ?>
                           <!--Termina consulta de pedidos que deben ser entreados hoy  -->
-                        
-                        
+
+
                          <!--Inicia consulta de pedidos atrasados -->
                         <?php
                          $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega < CURDATE()";
                          $v_reg = mysqli_query($link,$v_query3) or die ("Problemas en el select:".mysql_error());
-                         $v_to = mysqli_num_rows($v_reg);                        
+                         $v_to = mysqli_num_rows($v_reg);
                         ?>
                         <!--Termina consulta de pedidosatrasados -->
-                        
-                        
+
+
                         <!--Inicia consulta de pedidos con fecha faltante -->
                         <?php
                          $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega > CURDATE()";
@@ -82,7 +82,7 @@
                          $v_t = mysqli_num_rows($v_re);
                          ?>
                          <!--Termina consulta  -->
-                          
+
 
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -90,16 +90,16 @@
                                 <span class="label label-warning"><?php echo "$v_total";?> </span>
                             </a>
                             <ul class="dropdown-menu">
-                                
-                                
+
+
                                 <li class="header"><?php
                                if ($v_total< "1") {
-                                   
+
                                  echo "Usted tiene $v_total pedido pendiente";
 
                                  } else {
                                     echo "Usted tiene $v_total pedidos pendientes";
-                               
+
                                }
                                  ?></li>
                                 <li>
@@ -113,13 +113,13 @@
                                             <a href="pedidos_hoy.php">
                                                <i class="ion ion-ios7-cart success"></i><?php echo "Pedidos del dìa $v_tota";?>                                                  </a>
                                         </li>
-                                        
+
 
                                         <li>
                                             <a href="pedidos_proximos.php">
-                                                 <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>   
+                                                 <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>
                                         </li>
-                                       
+
                                     </ul>
                                 </li>
                                 <li class="footer"><a></a></li>
@@ -180,7 +180,7 @@
 
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-                        
+
                         <li>
                             <a href='ventas.php'>
                                 <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
@@ -280,76 +280,223 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Ventas
+                        Bienvenido
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="sistema.php"><i class="fa fa-dashboard"></i> Inico</a></li>
-                        <li class="active">Ventas</li>
+                        <li class="active">ventas</li>
                     </ol>
                 </section>
 
                 <!-- Main content -->
                 <section class="content">
-                    
-                    <div class="box box-primary">
-                        </br>
-                        <!-- Inicia titulo -->
-                        <div class="box-header">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6">
-                                    <h3 class="box-title">Realiza una venta!</h3>
+                         <div class="box box-primary">
+                                <div class="box-header">
+                                    <h3 class="box-title">Realizar ventas</h3>
                                 </div>
-                                <div class="col-sm-6 col-md-6 text-right">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                <div class="box-body">
+                                    <div class="input-group">
+                                      <span class="glyphicon glyphicon-user input-group-addon"> Vendedor</span>
+                                      <input type="text" class="form-control" placeholder="<?php echo $_SESSION['nombre']; ?>"disabled>
+                                    </div><br>
+
+                                    <?php
+                                       $conexion= include("conexion.php");
+                                        $query = 'SELECT * FROM clientes';
+                                         $result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_error());
+                                    ?>
+                                    <select class="form-control">
+                                        <option value=" <?php echo" " ?> " >
+                                        <?php
+                                        while ( $row = $result->fetch_array() )
+                                        {
+                                            ?>
+
+                                            <option value=" <?php echo $row['id_cliente'] ?> " >
+                                            <?php echo $row['nombre']." ".$row['apellido_p']." ".$row['apellido_m']; ?>
+                                            </option>
+                                            <?php
+                                         }
+                                        ?>
+                                    </select><br>
+
+                                </div>
+                                </div><!-- primeros formularios izqierdos -->
+                                <div class="col-xs-6">
                                     <div class="box-body">
-                                        <div class="row">
-                                            <div class="col-xs-7"></div>
-                                            <div class="col-xs-4">
-                                            <div class="input-group">
-                                                <div class="input-group-addon">Folio: </div>
-                                                <input name="c_sueldo" type="text" class="form-control" disabled>
-                                            </div>
-                                            </div>
-                                            <div class="col-xs-1"></div>
-                                        </div>
-                                    </div>
+                                    <div class="input-group">
+                                      <span class="glyphicon glyphicon-calendar input-group-addon"> Fecha</span>
+                                      <input type="text" class="form-control" placeholder="<?php echo $fecha=strftime( "%Y-%m-%d", time() );?>"disabled>
+                                </div><br>
+
+                                <div class="input-group">
+                                      <span class="glyphicon glyphicon-heart-empty input-group-addon"> Folio</span>
+                                      <input type="text" class="form-control">
+                                </div><br>
+
+                                </div><!-- formularios derechos -->
                                 </div>
-                            </div>
-                        </div>
-                        <!-- FIN titulo -->
-                        <div class="row">
-                            <div class="col-sm-7 col-md-7">
-                                <!-- Inicio de formulario -->
-                                <div class="box-body">
-                                    <form class="form-group" action="ventas.php" method="post">
+
+                                <div class="col-xs-3">
+                                    <h3>Agregar Productos</h3><br>
+                                </div>
+                                <script>
+                                     var myModal;
+                                     function modal()
+                                     {
+                                        myModal = window.open("ventas.php","ventas");
+                                        myModal.focus();
+                                     }
+
+                                </script>
+                                <div class="col-xs-3">
+                                     <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-primary btn-lg glyphicon glyphicon-remove-sign" data-toggle="modal" data-target="#myModal">
+
+                                        </button><br>
+
+
+                                        <!-- Modal -->
+                                        <script>
+function datos(cod,nom,lug,nro){
+    opener.document.ventas.codigo.value = cod;
+    opener.document.ventas.origen.value = nom;
+    opener.document.ventas.lugar.value = lug;
+    opener.document.ventas.lstname.value = nro;
+    window.close();
+}
+
+
+function Resaltar_On(GridView)
+{
+    if(GridView != null)
+    {
+    GridView.originalBgColor = GridView.style.backgroundColor;
+    GridView.style.backgroundColor='#DBE7F6';
+    GridView.style.cursor = 'hand';
+    }
+}
+
+function Resaltar_Off(GridView)
+{
+    if(GridView != null)
+    {
+    GridView.style.backgroundColor = GridView.originalBgColor;
+    }
+}
+function Close() {
+    window.close();
+}
+
+//]]>
+</script>
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title" id="myModalLabel">Productos</h4>
+                                              </div>
+                                              <div class="modal-body">
+                                                <!-- INICIO tabla de productos -->
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Tabla de Productos</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body table-responsive">
+                            <table id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nombre</th>
+                                        <th>Descripciòn</th>
+                                        <th>Stock</th>
+                                        <th>Precio de venta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $v_query = "SELECT * FROM productos";
+                                        $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
+
+                                        while($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
+                                            echo"<tr>";
+                                            echo    "<td>".$reg['id_producto']."</td>";
+                                            echo    "<td>".$reg['nombre']."</td>";
+                                            echo    "<td>".$reg['descripcion']."</td>";
+                                            echo    "<td>".$reg['stock']."</td>";
+                                            echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
+                                            echo"</tr>";
+                                            "OnClick=datos('$codigo','$colegio','$lugar','$id')><td>$i</td><td>$codigo</td><td>$colegio</td><td>".$row{'nivel'}."</td><td>$lugar</td></tr>";
+                                        }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                    <!-- FIN tabla de productos -->
+                                              </div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                <button type="button" class="btn btn-primary">Enviar</button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                               </div>
+
+                                <div class="col-xs-12">
+                                    <div class="panel panel-default">
+                                         <!-- Default panel contents -->
+                                         <div class="panel-heading">Tabla de ventas</div>
+                                         <div class="panel-body">
+                                         </div>
+                                         <!-- Table -->
+                                         <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Nombre</th>
+                                                        <th>Precio</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Sub Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td>Mark</td>
+                                                        <td>Otto</td>
+                                                        <td>@mdo</td>
+                                                    </tr>
+                                                <tr>
+                                                <tr>
+                                                </tbody>
+                                         </table>
+                                        </div><br>
+                                </div>
+
+                                  <div class="col-md-6 ">
+                                    <button type="button" class="btn btn-primary btn-lg btn-block">Realizar Venta</button>
+                                    </div><br>
+
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Seleciona un cliente</label>
-                                            </br>
-                                            <select class="form-control">
-                                                <option>option 1</option>
-                                                <option>option 2</option>
-                                                <option>option 3</option>
-                                                <option>option 4</option>
-                                                <option>option 5</option>
-                                            </select>
-                                        </div>
-                                        </br>
-                                        </br>
-                                        ba el boton
-                                        
-                                        
-                                    </form>
-                                </div>
-                                <!-- Fin de formulario -->
-                            </div>
-                            <div class="col-sm-5 col-md-5">
-                                <div class="box-body">
-                                    Hola2
+                                             <label for="ejemplo_email_3" class="col-lg-2 control-label">Total</label>
+                                             <div class="col-lg-10">
+                                               <input type="email" class="form-control" id="ejemplo_email_3"
+                                                      placeholder="Email">
+                                             </div><br>
+                                         </div>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    
+                         </div>
+                     </div>
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->
