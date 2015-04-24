@@ -1,0 +1,30 @@
+.img_usuario{
+    
+    margin: auto;
+    margin-bottom: 10px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+    
+    
+    border-style: dashed;
+    border-color: #BDBDBD;
+    
+    padding: 5px;
+    
+    width: 140px;
+    height: 140px;
+    max-width: 140px;
+    max-height: 140px;
+    min-width: 140px;
+    min-height: 140px;
+    
+    background-size: 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+    
+    background-size: 100%;
+    background-repeat: no-repeat;
+    text-align: center;
+}

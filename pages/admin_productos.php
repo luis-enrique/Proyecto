@@ -579,9 +579,34 @@
                         <div class="box-header">
                             </br>
                             <h3 class="box-title">Tabla de Productos</h3>                                    
-                        </div><!-- /.box-header -->
+                        </div>
+                        <!-- /.box-header -->
+            
+                        <!-- Inicio celda de busqueda de tabla -->
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <!-- aqui puede ir algo como el que tediga cuantos registros mostrar -->
+                            </div>
+                            <div class="col-sm-6 col-md-6 text-right">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin celda de busqueda de tabla -->
+            
                         <div class="box-body table-responsive">
-                            <table id="example2" class="table table-bordered table-hover">
+                            <table id="regTable" id="example2" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th style='text-align:center'>Id</th>
@@ -718,6 +743,29 @@
 
                 if(letras.indexOf(tecla)==-1 && !tecla_especial){
                     return false;
+                }
+            }
+        </script>
+
+        <!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
                 }
             }
         </script>

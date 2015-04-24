@@ -291,7 +291,7 @@
 
                 <!-- Main content -->
                 <?php
-                    // Si se preciona el boton ingresar trabajador se entra en esta condicion para insertar el puesto
+                    // Si se preciona el boton ingresar puesto se entra en esta condicion para insertar el puesto
                     // si no existe lo inserta
                     if(isset($_POST['insert_categoria'])){
                         
@@ -308,6 +308,21 @@
                             $_mjfull_insert_categoria = "activo";
                         }     
                     }
+
+
+                     // Si se preciona el boton actualizar del emergente entrara a esta condicion para actualizar
+                     if(isset($_POST['actualizar_categoria_start'])){
+                         $v_update_categoria = "UPDATE categorias SET 
+                                                                  puesto='".$_POST['c_puesto']."', 
+                                                                  sueldo='".$_POST['c_sueldo']."'
+                                                 WHERE id_categoria = ".$_SESSION['id_categoria'];
+                                                 
+                         mysqli_query($link,$v_update_categoria) or die("Problemas Actualizar:".mysql_error());
+                         
+                         $_mjwarning_actualizado_categoria = "activo";
+                             
+                     }
+
 
                     //Si se preiona el boton el eliminar del formulario emergente se entra en esta condicion para eliminar la categoria
                     if(isset($_GET['eliminar_categoria'])){
@@ -341,14 +356,14 @@
                                                 <label>Puesto de trabajador *</label>
                                                 <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                <input name="c_puesto" type="text" class="form-control" placeholder="Ejemplo: Administrador" value='' required/>
+                                                <input name="c_puesto" type="text" class="form-control" placeholder="Ejemplo: Administrador" value="<?php if(isset($_GET['actualizar_categoria'])){echo $_GET['puesto'];}?>" maxlength="50" required/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6 col-sm-6">
                                                 <label>Sueldo quincenal *</label>
                                                 <div class="input-group">
                                                     <div class="input-group-addon">$</div>
-                                                    <input name="c_sueldo" type="text" class="form-control" maxlength="10" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['producto_actualizar'])){ echo $v_precio_venta;}?>" onkeypress="return numeros(event)" required/>
+                                                    <input name="c_sueldo" type="text" class="form-control" maxlength="10" placeholder="Ejemplo: 20" value="<?php if(isset($_GET['actualizar_categoria'])){echo $_GET['sueldo'];}?>" onkeypress="return numeros(event)" required/>
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
@@ -356,6 +371,74 @@
                                         </br>
                                         <div class='box-footer'>
                                             <button name="insert_categoria" type="submit" class="btn btn-success" value="1">Ingresar puesto</button>
+                                            <?php
+                                                // Boton se activa si se pulsa el boton actualizar y manda los datos para
+                                                // actualizarse por post el nombre del boton es actualizar_categoria_start
+                                                if(isset($_GET['actualizar_categoria'])){
+                                                    $_SESSION['id_categoria'] = $_GET['id_categoria'];
+                                                    $time = time();
+                                                    echo "
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='ActualizarModalLabel'>Actualizar puesto</h4>
+                                                          </div>
+                                                          <div class='modal-body'>                   
+                                                              <div class='row'>
+                                                                  <div class=' col-sm-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/puesto_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  </div>
+                                                                  <div class=' col-sm-7 col-md-7'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    ".date('d-m-Y',$time)."
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
+
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                                                                    <h3 class='timeline-header'><a>Puesto</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                    </br>
+                                                                                    <!-- Datos mandados via GET semuestran a qui tambin -->
+                                                                                    <code>".$_GET['puesto']."</code> </br>
+                                                                                    Sueldo: $".$_GET['sueldo'].".00 </br>
+                                                                                        </br>
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+                                                              
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='actualizar_categoria_start' type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    ";
+                                                }
+                                            ?>
                                         </div>
                                     </form>
                                     </div>
@@ -365,8 +448,30 @@
                                     <div class="box-header">
                                         <h3 class="box-title">Tabla de categorias</h3>
                                     </div>
+                                    <!-- Inicio celda de busqueda de tabla -->
+                                    <div class="row">
+                                        <div class="col-sm-6 col-md-6">
+                                            <!-- aqui puede ir algo como el que tediga cuantos registros mostrar -->
+                                        </div>
+                                        <div class="col-sm-6 col-md-6 text-right">
+                                            <div class="box-body">
+                                                <div class="row">
+                                                    <div class="col-xs-3"></div>
+                                                    <div class="col-xs-9">
+                                                        <div class="input-group input-group-sm">
+                                                            <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                            <span class="input-group-btn">
+                                                                <a class="btn btn-info btn-flat">Go!</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Fin celda de busqueda de tabla -->
                                     <div class="box-body table-responsive">
-                                        <table id="example2" class="table table-bordered table-hover">
+                                        <table id="regTable" id="example2" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
                                                     <th style='text-align:center'>Id</th>
@@ -383,7 +488,7 @@
                                                             <tr>
                                                                 <th style='text-align:center'>".$v_show_categorias['id_categoria']."</th>
                                                                 <th>".$v_show_categorias['puesto']."</th>
-                                                                <th>".$v_show_categorias['sueldo']."</th>
+                                                                <th>$".$v_show_categorias['sueldo'].".00</th>
                                                                 <th style='text-align:center'>
                                                                 
 <!-- Comienza el primer boton para eliminar -->
@@ -399,7 +504,7 @@
       <div class='modal-body'>                   
           <div class='row'>
               <div class=' col-xs-5 col-md-5'>
-                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png'alt='Responsive image' class='img-rounded'>
+                  <img style='max-width: 250px' src='img_pages/puesto_eliminar.png'alt='Responsive image' class='img-rounded'>
               </div>
               <div class=' col-xs-7 col-md-7'>
                   <ul class='timeline text-left'>
@@ -447,7 +552,10 @@
     </div>
   </div>
 </div>
-                                                                
+
+<!-- Comienza el primer boton para actualizar -->
+
+<a href='admin_categorias.php?actualizar_categoria=activo&id_categoria=".$v_show_categorias['id_categoria']."&puesto=".$v_show_categorias['puesto']."&sueldo=".$v_show_categorias['sueldo']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>
                                                                 
                                                                 
                                                                 </th>
@@ -465,7 +573,7 @@
                                 <div class="col-sm-5 col-md-5">
                                     <div class="box-body">
                                     <!--Inicio de los mensajes de alerta -->
-                                    <a href="admin_trabajadores.php" data-toggle="tooltip" data-placement="top" title="Volver al apartado de trabajadores!"><samp class="fa fa-mail-reply"></samp> volver</a>
+                                    <a href="admin_trabajadores.php" data-toggle="tooltip" data-placement="top" title="Volver al apartado de trabajadores!"><samp class="fa fa-mail-reply"></samp> Volver</a>
                                     <!--Inicio de los mensajes de alerta -->
                                     <div class="box-body">
                                         <div class="callout callout-info">
@@ -503,6 +611,22 @@
                                                     </div>
                                                 ";
                                             } 
+
+                                            // Mensaje de alerta si se actualiza la categoria
+                                            if(!empty($_mjwarning_actualizado_categoria)){
+                                                echo  "
+                                                    <div class='box-body'>
+                                                        <div class='box-body'>
+                                                        <div class='alert alert-success alert-dismissable'>
+                                                            <i class='fa fa-check'></i>
+                                                            <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                            <b>Categoria actualizada!</b>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                ";
+                                            }
+
 
                                             // Mensaje de alerta si se a eliminado la categoria o el puesto
                                             if(!empty($_mjwarning_delete_puesto)){
@@ -570,6 +694,28 @@
                 }
             }
         </script>
+
+        <!-- Escrip solo deja insertar numeros en un imput de un formulario sele agrega: onkeypress="return numeros(event)" -->
+        <script>
+            function numeros(e){
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = " 0123456789";
+                especiales = [8,37,39,46];
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    } 
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+        </script>
+
 
         <!-- jQuery 2.0.2 -->
         <script src="../js/jquery.min.js"></script>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-04-20 20:42:41
+Date: 2015-04-24 16:14:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -122,6 +122,22 @@ INSERT INTO `clientes` VALUES ('1', 'Rosario', 'Meneses', 'Corrales', 'Guerrero'
 INSERT INTO `clientes` VALUES ('2', 'Isabel', 'Myao', 'Salazar', 'Guerrero', 'Chilapa de Àlvarez', '41100', 'Zàpata', 'Esperanza', '42', '75610372', 'isa.moyao_89@gmail.com', '2015-04-14');
 
 -- ----------------------------
+-- Table structure for folio_auto
+-- ----------------------------
+DROP TABLE IF EXISTS `folio_auto`;
+CREATE TABLE `folio_auto` (
+  `folio_key` int(6) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`folio_key`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of folio_auto
+-- ----------------------------
+INSERT INTO `folio_auto` VALUES ('000001');
+INSERT INTO `folio_auto` VALUES ('000002');
+INSERT INTO `folio_auto` VALUES ('000003');
+
+-- ----------------------------
 -- Table structure for pedidos
 -- ----------------------------
 DROP TABLE IF EXISTS `pedidos`;
@@ -159,7 +175,7 @@ CREATE TABLE `productos` (
   `stock` int(10) NOT NULL,
   `precio_venta` int(10) NOT NULL,
   PRIMARY KEY (`id_producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of productos
@@ -168,12 +184,8 @@ INSERT INTO `productos` VALUES ('1', 'Garrafon vacio', '', '50', '25');
 INSERT INTO `productos` VALUES ('2', 'Garrafon con agua', null, '50', '13');
 INSERT INTO `productos` VALUES ('3', 'Llenado de garrafon', null, '50', '10');
 INSERT INTO `productos` VALUES ('4', 'Hielo 1/4', null, '50', '15');
-INSERT INTO `productos` VALUES ('5', 'Hielo 1/2', null, '51', '30');
+INSERT INTO `productos` VALUES ('5', 'Hielo 1/2', '', '51', '30');
 INSERT INTO `productos` VALUES ('6', 'Hielo entero', null, '50', '60');
-INSERT INTO `productos` VALUES ('14', 'perro', 'ladra mucho\r\nno se calla\r\nmuerde', '0', '500');
-INSERT INTO `productos` VALUES ('15', 'perro 2', 'corre', '0', '100');
-INSERT INTO `productos` VALUES ('16', 'perr3', '', '0', '12');
-INSERT INTO `productos` VALUES ('17', 'nacho', 'es listo', '0', '0');
 
 -- ----------------------------
 -- Table structure for productos_adquisicion
@@ -319,9 +331,9 @@ CREATE TABLE `trabajadores` (
 -- ----------------------------
 -- Records of trabajadores
 -- ----------------------------
-INSERT INTO `trabajadores` VALUES ('1', 'Flora', 'Trinidad', 'Tlatempa', '3', 'Guerrero', 'Zitlala', '41160', 'San Francisco', 'Francisco I Madero', '126', '7561177640', 'trinidadflora@outlook.com', '2015-04-13');
-INSERT INTO `trabajadores` VALUES ('2', 'Luis Enrique', 'Morales', 'Tomatzin', '1', 'Guerrero', 'Chilapa de Àlvarez', '41100', 'Los Pinos', 'Emiliano Zapata', '27', '7561182068', 'luis.enrique.mt@outlook.com', '2015-04-13');
-INSERT INTO `trabajadores` VALUES ('3', 'Hrmenegildo', 'Diaz', 'Renteria', '2', 'Guerrero', 'Guerrero', '41100', 'Rubèn Fiegeroa', 'Ribi', '', '7561039507', 'hermengildodiazrenteria@gmail.com', '2015-04-13');
+INSERT INTO `trabajadores` VALUES ('1', 'Flora', 'Trinidad', 'Tlatempa', '1', 'Guerrero', 'Zitlala', '41160', 'San Francisco', 'Francisco I Madero', '126', '7561177640', 'trinidadflora@outlook.com', '2015-04-13');
+INSERT INTO `trabajadores` VALUES ('2', 'Luis Enrique', 'Morales', 'Tomatzin', '1', 'Guerrero', 'Chilapa de ï¿½lvare', '4', ' Los Pinos', 'Emiliano Zapata', '          ', '7561183234', 'luis.enrique.mt@outlook.com', '2015-04-13');
+INSERT INTO `trabajadores` VALUES ('3', 'Hermenegildo', 'Diaz', 'Renteria', '3', 'Guerrero', 'Guerrero', '41100', 'Rubï¿½n Fiegeroa', 'Ribi', '', '7561039507', 'hermengildodiazrenteria@gmail.com', '2015-04-13');
 
 -- ----------------------------
 -- Table structure for usuarios
@@ -365,7 +377,7 @@ CREATE TABLE `ventas` (
   KEY `fk_ventas_clientes_idx` (`id_cliente`),
   CONSTRAINT `fk_ventas_clientes` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ventas_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of ventas
@@ -384,5 +396,12 @@ DELIMITER ;;
 CREATE TRIGGER `resta_productos` AFTER INSERT ON `productos_venta` FOR EACH ROW BEGIN
  UPDATE productos SET stock = (stock - NEW.cantidad) WHERE id_producto = NEW.id_producto;
  END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `foilio_auto_insert`;
+DELIMITER ;;
+CREATE TRIGGER `foilio_auto_insert` BEFORE INSERT ON `ventas` FOR EACH ROW BEGIN
+    INSERT INTO folio_auto VALUES ("");
+END
 ;;
 DELIMITER ;
