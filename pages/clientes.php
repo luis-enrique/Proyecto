@@ -363,7 +363,7 @@
                                <div class="col-xs-3">
                                 <div class="input-group">
                                      <span class="input-group-addon glyphicon glyphicon-envelope" id="Femail"></span>
-                                     <input type="text" class="form-control" placeholder="Ejem:  Ahelik@gmail.com" aria-describedby="<basic->   </basic->addon1">
+                                     <input type="text" class="form-control" placeholder="Ejemplo: Ahelik@gmail.com" aria-describedby="<basic->   </basic->addon1">
                                 </div>
                                </div>
                                <div class="col-xs-3">
