@@ -224,12 +224,12 @@
                                     </a>
                                     <ul class='treeview-menu'>
 
-                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
-                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
                                         <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
                                         <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
@@ -287,7 +287,6 @@
                 <section class="content-header">
                     <h1>
                         Bienvenido
-
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -300,6 +299,26 @@
                 <section class="content">
            
                     Hola mundo
+
+<?php 
+
+    $x = 1; 
+
+    while($x<=5) {
+        echo "tu numero es: $x <br>";
+        $x++;
+    } 
+
+
+
+for($x = 0; $x < $arrlength; $x++) {
+    echo $cars[$x];
+    
+    echo "<br>";
+}
+?>
+
+
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->

@@ -16,7 +16,8 @@ admin_usuaios.php
 admin_trabajadores.php
 
 ----------vendedor-----------
-seller_ventas_dia
+ventas_del_dia.php
+pedidos_vendedor.php
 seller_pedidos_realizados.php
 seller_adquisiciones_realizadas
 seller_asistenca_trabajadores

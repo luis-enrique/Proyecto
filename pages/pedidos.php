@@ -35,6 +35,8 @@
             <a class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 A h u e l i k
+   
+                
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -83,12 +85,6 @@
                          ?>
                          <!--Termina consulta  -->
                           
-                         <!--Inicia consulta de pedidos con fecha faltante -->
-                       
-                         <!--Termina consulta  -->
-                        
-                        
-                        
 
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -225,11 +221,11 @@
                                     <ul class='treeview-menu'>
 
                                         <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
-                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
                                         <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
                                         <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
@@ -287,7 +283,6 @@
                 <section class="content-header">
                     <h1>
                         Bienvenido
-
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -297,12 +292,199 @@
                 </section>
 
                 <!-- Main content -->
+                
+                
                 <section class="content">
-           
-                    Hola mundo
-                </section>
-                <!-- /.content -->
-            </aside><!-- /.right-side -->
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                             <div class="box box-danger">
+                                <div class="box-header">
+                                   <h1 class="box-title">Datos del cliente</h3>
+                                </div>
+                                 <div class="box-body table-responsive">
+             <label>Fecha de entrega</label>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">Fecha</div>
+                            <input name="p_presio" type="date" class="form-control"       placeholder=value="" required/>                                                                        
+                        </div>
+                    </div>
+                </div>
+                <br>
+                                    
+                 <div style="font-size: 150%; "></div>
+                 <label>Hora de entrega</label>
+                <div class="row">
+                    <div class="col-xs-3">
+                        <div class="input-group">
+                            <div class="input-group-addon">Hora</div>
+                            <input name="p_presio" type="time" class="form-control" placeholder="10:51"                                    value="" required/>                                                                     
+                        </div>
+                    </div>
+                </div>
+                                     
+                <br>
+                    
+              
+               <!-- select -->
+                    <div style="font-size: 150%; "></div>
+                 <label>Clientes</label>
+                     <br>
+               
+<!-- Cobombo Box consulta datos de la BD  -->
+                        
+<?php
+   $conexion= include("conexion.php");
+$query = 'SELECT * FROM clientes';
+$result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_error());
+?>
+<select>   
+    <option value=" <?php echo" " ?> " >
+    <?php    
+    while ( $row = $result->fetch_array() )    
+    {
+        ?>
+               
+        <option value=" <?php echo $row['id_cliente'] ?> " >
+        <?php echo $row['nombre']." ".$row['apellido_p']." ".$row['apellido_m']; ?>
+               
+
+        </option>
+        
+        <?php
+    } 
+
+    ?>        
+</select>
+  <br>
+<br>
+                                    
+    
+  </div>  
+  </div>
+      </div>                   
+                                             
+                        <div class="col-sm-8 ol-md-8">
+                            <div class="box box-danger">
+                                <div class="box-header">
+                                    <h1 class="box-title">Productos</h1>
+                                </div>
+                                <div class="box-body table-responsive">
+         <table id="example1" class="table table-bordered table-striped">
+                                        
+                                        
+                                        
+               <?php
+
+                         echo "<thead>";
+                         echo '<th>Producto</th>';
+                         echo '<th>Precio<th>';
+                         echo "</thead>";
+                         echo "<tbody>";
+$v_query6 = "SELECT * FROM productos";
+$v_recibe = mysqli_query($link,$v_query6) or die ("Problemas en el   select:".mysql_error());
+while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                         echo '<tr>';
+                         echo '  <td>'.$rowss['nombre'].'.</td>';
+                         echo '  <td>$'.$rowss['precio_venta'].'.00</td>';
+                        echo "   <td style='text-align:center'>";
+                        echo "        
+                        <button type='button' class='btn btn-success' data-toggle='modal' data-target='#".$rowss['id_producto']."' data-whatever='@mdo'>Realizar</button>
+
+                                                    <div class='modal fade' id='".$rowss['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='".$rowss['id_producto']."Label' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='".$rowss['id_producto']."Label'>Actualización de productos</h4>
+                                                          </div>
+                                                          
+                                                          
+                                                          <div class='modal-body'>
+
+                                                              contenido
+                              
+                              <form method='post' name='fromulario' action''> 
+<input type='text' name='nombre'/> 
+<input type='submit' value='enviar'/> 
+            
+                           
+                      
+                              
+                              
+                              
+
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <a type='submit' class='btn btn-success' href='pedidos.php?enviar=activo&id_producto=".$rowss['id_producto']."& producto=".$rowss['nombre']."&precio=".$rowss['precio_venta']."'>Enviar</a>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>   ";
+    
+    
+                        echo "</td>";
+
+                        echo "</tr>";
+                           }
+                        echo "</body>";
+                        echo "</table>";
+
+             ?>
+             
+             
+          
+             
+            </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                 </div>
+               </div>
+                        
+
+                        
+            <div class="box">
+            <div class="box-header">
+            <h3 class="box-title">Pedidos</h3>                                    
+            </div><!-- /.box-header -->
+            <div class="box-body table-responsive">
+            <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                
+                
+                
+                
+                
+                
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+                    <tbody>
+                     <tr>
+                         <?php
+
+                
+
+
+                if(isset($_GET['enviar'])){
+                       echo" <td>".$_GET['producto'];"</td>";
+                       echo" <td>".$_GET['precio'];"</td>";
+                             }
+
+                         ?>
+                        <td><a href="cancelar.php">cancelar</a> <br>                                                         <a href="actualizar.php">Actualizar</a> </td> 
+                      </tr>
+                    </tbody>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
 

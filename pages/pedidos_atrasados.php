@@ -299,7 +299,7 @@
                         <?php               
                  $sql="SELECT ped.id_pedido AS 'id_pedidos',
                  CONCAT(c.nombre,' ',c.apellido_p,' ',c.apellido_m) AS 'nombre',
-                 CONCAT('Estado: ',c.estado,' Ciudad: ',c.ciudad,' CP: ',c.codigo_postal,' Calle: ',c.calle,' ',c.no_casa) AS 'direccion',
+                 CONCAT('Estado: ',c.estado,' Ciudad: ',c.ciudad,' CP: ',c.codigo_postal,' Calle: ',c.calle,'                  ',c.no_casa) AS 'direccion',
                  CONCAT('Tel:',c.telefono,' e-mail',c.e_mail) AS 'contacto',
                  CONCAT(ped.fecha_entrega,' / ', ped.hora_entrega) AS 'fecha_entrega'
                  FROM clientes c,pedidos ped      
@@ -313,8 +313,26 @@
                                 <div class="box-header">
                                     <h3 class="box-title">Pedidos atrasados</h3>                                    
                                 </div><!-- /.box-header -->
+                         
+                         <!-- complemto de el filtro  -->
+                         <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                         
+                         <!-- complemto de el filtro  -->
+                         
+                         
+                         
                                 <div class="box-body table-responsive">
-                                    <table id="example1" class="table table-bordered table-striped">
+                                    <table id="regTable"  id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Id pedido</th>
@@ -336,9 +354,9 @@
                                                     echo "<td>".$row['id_pedidos']."</td>";
                                                     echo "<td>";
                                                     echo "<table >";
-                                    $productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal 
-                                    FROM productos_pedido pp, productos p
-                                    WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
+$productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal 
+FROM productos_pedido pp, productos p
+WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
                                     $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
                         while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
                                                    echo " <tr>";
@@ -390,10 +408,10 @@
                                                     
                                                          echo "<td>";
                                                     echo "<table >";
-                                    $productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal,                                     sum(pp.subtotal) AS 'TOTAL'
-                                    FROM productos_pedido pp, productos p
-                                    WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
-                                    $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
+$productos_pedidos="SELECT pp.id_pedido,p.nombre, pp.id_producto,pp.precio_unitario, pp.cantidad, pp.subtotal, sum(pp.subtotal) AS 'TOTAL'
+FROM productos_pedido pp, productos p
+WHERE pp.id_producto=p.id_producto AND pp.id_pedido=".$row['id_pedidos']; //código MySQL
+     $productos=mysqli_query($link,$productos_pedidos) or die ("Problemas en el select:".mysql_error()); 
                         while ($rowss=mysqli_fetch_array($productos, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
                                                    echo " <tr>";
                                                    echo " <td>$".$rowss['TOTAL'].".00</td>";
@@ -401,18 +419,21 @@
                                                    }
                                                     echo " </table>";
                                                     echo "</td>";
-                                                    
-                                                    
-                                                    
-                                                    
-                                                   
+
                                                    echo "<td>".$row['nombre']."</td>";
                                                    echo "<td>".$row['direccion']."</td>";
                                                    echo "<td>".$row['contacto']."</td>";
                                                    echo "<td>".$row['fecha_entrega']."</td>";
                                                    echo "</tr>";
-                                                }
-                                            ?>                                     
+                                                } ?> 
+                                            
+                                            
+                                            
+                                            
+ 
+                                            
+                                            
+                                            
                                     </table>
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
@@ -436,7 +457,30 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
         
-        
+        <!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
+
+        <!-- jQuery 2.0.2 -->
         
         
         
