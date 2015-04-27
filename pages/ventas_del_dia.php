@@ -225,7 +225,7 @@
                                     <ul class='treeview-menu'>
 
                                         <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
@@ -298,13 +298,96 @@
 
                 <!-- Main content -->
                 <section class="content">
+                         <div class='box-header'>
+                                <h3 class='box-title'>Ventas del dia</h3>                                    
+                                </div><!-- /.box-header -->
+                                
+                                <!-- complemto de el filtro  -->
+                         <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                         
+                         <!-- complemto de el filtro  -->
+                    <br>
+                    
+                    
+                    
+                    
+                    <?php
+echo"<div class='box'>
+                                <div class='box-header'>
+                                <h3 class='box-title'>Ventas del dia</h3>                                    
+                                </div><!-- /.box-header -->
+                                <div class='box-body table-responsive'>
+                                    <table id='regTable' id='example1' class='table table-bordered table-striped'>
+                                        <thead>
+                                            <tr>
+                                                <th>vendedor</th>
+                                                <th>folio de la venta</th>
+                                                <th>Nombre del cliente</th>
+                                                <th>Fecha de la venta</th>
+                                                <th>Total</th> 
+                                            </tr>
+                                        </thead>
+ ";
+                                        
+$v_query6 = "SELECT ventas.id_usuario, ventas.folio, CONCAT(clientes.nombre,   clientes.apellido_p,clientes.apellido_m) AS 'Nombre del cliente', ventas.fecha_venta,ventas.total FROM ventas, clientes where clientes.id_cliente=ventas.id_cliente AND ventas.fecha_venta=CURDATE() AND ventas.id_usuario=".$_SESSION['id_usuario'];
+ $v_recibe = mysqli_query($link,$v_query6) or die ('Problemas en el select:'.mysql_error());
+ $v_toma = mysqli_num_rows($v_recibe);
+ echo "Usted a realizado $v_toma ventas";
+
+    while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+       echo ' <tr>';
+       echo ' <td>'.$_SESSION['usuario'].'</td>';
+       echo ' <td>'.$rowss['folio'].'</td>';
+       echo ' <td>'.$rowss['Nombre del cliente'].'</td>';
+       echo ' <td>'.$rowss['fecha_venta'].'</td>';
+       echo ' <td>'.$rowss['total'].'</td>';
+       echo "</tr>";
+       }
+        echo " </table>";
+        echo "</td>";
+
+                           "</tbody>"
+                                       
+?>
            
-                    Hola mundo
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+<!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
 
+        <!-- jQuery 2.0.2 -->
 
         <!-- jQuery 2.0.2 -->
         <script src="../js/jquery.min.js"></script>
