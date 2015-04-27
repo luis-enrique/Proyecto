@@ -275,6 +275,72 @@
                 </section>
             </aside>
 
+            <!-- Caciones para cuando se pulza un boton  -->
+                        <?php
+                            // se inserta en la base de datos si preciona el boton insertar
+                            if(isset($_POST["insertar_producto"])){
+
+                                $v_query = "SELECT * FROM productos WHERE nombre='".$_POST["p_nombre"]."'";
+                                $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
+
+                                if($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
+                                    $_mjerror_exist_articulo = "activo";
+                                }else{
+
+                                    $v_query = "INSERT INTO productos
+                                    VALUES('','".$_POST["p_nombre"]."','".$_POST['p_descripcion']."','','".$_POST['p_presio']."')";
+
+                                    $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+                                    $_mjfull_ingresed_articulo = "activo";
+                                }
+
+                            }
+
+                            // si se presiona un boton con el icono actualizar entra a esta condicion
+                            // y ase una consulta y almasena los datos en variables para mostrarlas en las cajas de texto
+                            if(isset($_GET['cliente_actualizar'])){
+                                $v_query_actualizar_clientes = " SELECT * FROM cliente WHERE id_cliente = ".$_GET['cliente_actualizar'];
+                                $v_query_actualizar_mf = mysqli_query($link,$v_query_actualizar_clientes) or die("Problemas:".mysql_error());
+
+                                if($v_registro_mf = mysqli_fetch_array($v_query_actualizar_mf, MYSQLI_ASSOC)){
+                                    $_SESSION['p_id_cliente']  =  $v_registro_mf['id_cliente'];
+                                    $v_nombre                   =  $v_registro_mf['nombre'];
+                                    $v_apellido_p              =  $v_registro_mf['apellido_p'];
+                                    $v_apellido_m                    =  $v_registro_mf['apellido_m'];
+                                    $v_estado             =  $v_registro_mf['estado'];
+                                }
+                            }
+
+                            // Si se preciona el boton actualizar del emergente se actualiza el producto
+                            if(isset($_POST["actualizar_product_start"])){
+                                $v_query_actualizar_productos_start = "UPDATE productos SET
+                                nombre='".$_POST['p_nombre']."',
+                                descripcion='".$_POST['p_descripcion']."',
+                                precio_venta=".$_POST['p_presio']."
+                                WHERE id_producto= ".$_SESSION['p_id_producto']."";
+                                $v_actualizar_producto_start = mysqli_query($link,$v_query_actualizar_productos_start) or die("Problemas:".mysql_error());
+                                $_mjwarning_articulo_actualizado = "activo";
+                            }
+
+
+
+
+                            // si se presiona un boton con el icono eliminar entra a esta condicion
+                            // y ase una consulta y almasena los datos en variables para tomar el id_productos y mandarla a una variable sesion
+                            //para mostrarlos en el emergente
+                            if(isset($_GET['producto_eliminar'])){
+                                $v_query_eliminar_productos = "DELETE FROM productos WHERE id_producto=".$_GET['producto_eliminar'];
+                                $v_query_eliminar_me = mysqli_query($link,$v_query_eliminar_productos) or die("Problemas:".mysql_error());
+                                $_mjwarning_articulo_eliminado = "activo";
+                            }
+
+                        ?>
+
+
+
+
+
+
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
@@ -375,6 +441,158 @@
                            </div><br>
                         </div>
                     </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            </br>
+                            <h3 class="box-title">Tabla de Productos</h3>
+                        </div>
+                        <!-- /.box-header -->
+
+                        <!-- Inicio celda de busqueda de tabla -->
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <!-- aqui puede ir algo como el que tediga cuantos registros mostrar -->
+                            </div>
+                            <div class="col-sm-6 col-md-6 text-right">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin celda de busqueda de tabla -->
+
+                        <div class="box-body table-responsive">
+                            <table id="regTable" id="example2" class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style='text-align:center'>Id</th>
+                                        <th>Nombre</th>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>Estado</th>
+                                        <th>Ciudad</th>
+                                        <th>Cod. Postal</th>
+                                        <th>Colonia</th>
+                                        <th>Calle</th>
+                                        <th>N° Casa</th>
+                                        <th>Telefono</th>
+                                        <th>Email</th>
+                                        <th>Fecha</th>
+                                        <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $time = time();
+                                        $v_query = "SELECT * FROM clientes";
+                                        $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
+
+                                        while($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
+                                            echo"<tr>";
+                                            echo    "<td style='text-align:center'>".$reg['id_cliente']."</td>";
+                                            echo    "<td>".$reg['nombre']."</td>";
+                                            echo    "<td>".$reg['apellido_p']."</td>";
+                                            echo    "<td>".$reg['apellido_m']."</td>";
+                                            echo    "<td>".$reg['estado']."</td>";
+                                            echo    "<td>".$reg['ciudad']."</td>";
+                                            echo    "<td>".$reg['codigo_postal']."</td>";
+                                            echo    "<td>".$reg['colonia']."</td>";
+                                            echo    "<td>".$reg['calle']."</td>";
+                                            echo    "<td>".$reg['no_casa']."</td>";
+                                            echo    "<td>".$reg['Telefono']."</td>";
+                                            echo    "<td>".$reg['e_mail']."</td>";
+                                            echo    "<td>".$reg['fecha']."</td>";
+                                            echo    "<td style='text-align:center'>
+
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg['id_cliente']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a>
+<div class='modal fade' id='".$reg['id_cliente']."' tabindex='-1' role='dialog' aria-labelledby='".$reg['id_cliente']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='".$reg['id_cliente']."Label'>Eliminación de un cliente</h4>
+      </div>
+      <div class='modal-body'>
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png'alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Cliente</a></h3>
+
+                                <div class='timeline-body'>
+                                Eliminaras el siguiente Cliente: </br>
+                                Id Cliente: <code>".$reg['id_cliente']."</code> </br>
+                                Nombre: ".$reg['nombre']." </br>
+                                Apellidos: ".$reg['apellido_p']." ".$reg['apellido_m']." </br>
+                                Telefono: ".$reg['Telefono']."</br>
+                                e_mail: ".$reg['e_mail']."
+                                </br>
+
+                                </div>
+
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='admin_productos.php?producto_eliminar=".$reg['id_cliente']."'  class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comienza el primer boton para actualizar -->
+
+<a href='admin_productos.php?producto_actualizar=".$reg['id_cliente']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>
+
+                                                    </td>";
+                                            echo"</tr>";
+                                        }
+                                    ?>
+
+                                </tbody>
+                            </table>
+                        </div><!-- /.box-body -->
+                    </div><!-- /.box -->
+                    <!-- FIN tabla de productos -->
+
                 </section>
 
                 <!-- /.content -->
