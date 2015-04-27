@@ -293,7 +293,6 @@
 
                 <!-- Main content -->
                 <section class="content">
-<<<<<<< HEAD
                     
                     <?php              
                         // Sise genera una venta se pone la variable sesion que muestra el totalde la venta en 0
@@ -398,45 +397,9 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <h3 class="box-title">Realiza una venta!</h3>
-=======
-                         <div class="box box-primary">
-                                <div class="box-header">
-                                    <h3 class="box-title">Realizar ventas</h3>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                <div class="box-body">
-                                    <div class="input-group">
-                                      <span class="glyphicon glyphicon-user input-group-addon"> Vendedor</span>
-                                      <input type="text" class="form-control" placeholder="<?php echo $_SESSION['nombre']; ?>"disabled>
-                                    </div><br>
-
-                                    <?php
-                                       $conexion= include("conexion.php");
-                                        $query = 'SELECT * FROM clientes';
-                                         $result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_error());
-                                    ?>
-                                    <select class="form-control">
-                                        <option value=" <?php echo" " ?> " >
-                                        <?php
-                                        while ( $row = $result->fetch_array() )
-                                        {
-                                            ?>
-
-                                            <option value=" <?php echo $row['id_cliente'] ?> " >
-                                            <?php echo $row['nombre']." ".$row['apellido_p']." ".$row['apellido_m']; ?>
-                                            </option>
-                                            <?php
-                                         }
-                                        ?>
-                                    </select><br>
-
->>>>>>> origin/master
-                                </div>
-                                </div><!-- primeros formularios izqierdos -->
                                 <div class="col-xs-6">
                                     <div class="box-body">
-<<<<<<< HEAD
                                         <div class="row">
                                             <div class="col-xs-7"></div>
                                             <div class="col-xs-5">
@@ -445,128 +408,10 @@
                                                 <input name="c_sueldo" type="text" class="form-control text-center" value="<?php echo $new_folio; ?>" disabled>
                                             </div>
                                             </div>
-=======
-                                    <div class="input-group">
-                                      <span class="glyphicon glyphicon-calendar input-group-addon"> Fecha</span>
-                                      <input type="text" class="form-control" placeholder="<?php echo $fecha=strftime( "%Y-%m-%d", time() );?>"disabled>
-                                </div><br>
-
-                                <div class="input-group">
-                                      <span class="glyphicon glyphicon-heart-empty input-group-addon"> Folio</span>
-                                      <input type="text" class="form-control">
-                                </div><br>
-
-                                </div><!-- formularios derechos -->
-                                </div>
-
-                                <div class="col-xs-3">
-                                    <h3>Agregar Productos</h3><br>
-                                </div>
-                                <script>
-                                     var myModal;
-                                     function modal()
-                                     {
-                                        myModal = window.open("ventas.php","ventas");
-                                        myModal.focus();
-                                     }
-
-                                </script>
-                                <div class="col-xs-3">
-                                     <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary btn-lg glyphicon glyphicon-remove-sign" data-toggle="modal" data-target="#myModal">
-
-                                        </button><br>
-
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                          <div class="modal-dialog">
-                                            <div class="modal-content">
-                                              <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="myModalLabel">Productos</h4>
-                                              </div>
-                                              <div class="modal-body">
-                                                <!-- INICIO tabla de productos -->
-
-                    <div class="box">
-                        <div class="box-header">
-                            <h3 class="box-title">Tabla de Productos</h3>
-                        </div><!-- /.box-header -->
-                        <div class="box-body table-responsive">
-                            <table id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Descripciòn</th>
-                                        <th>Stock</th>
-                                        <th>Precio de venta</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                        $v_query = "SELECT * FROM productos";
-                                        $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
-
-                                        while($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
-                                            echo"<tr>";
-                                            echo    "<td>".$reg['id_producto']."</td>";
-                                            echo    "<td>".$reg['nombre']."</td>";
-                                            echo    "<td>".$reg['descripcion']."</td>";
-                                            echo    "<td>".$reg['stock']."</td>";
-                                            echo    "<td>"."$ ".$reg['precio_venta'].".00"."</td>";
-                                            echo"</tr>";
-                                        }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                    <!-- FIN tabla de productos -->
-                                              </div>
-                                              <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                <button type="button" class="btn btn-primary">Enviar</button>
-                                              </div>
-                                            </div>
-                                          </div>
->>>>>>> origin/master
                                         </div>
-                               </div>
-
-                                <div class="col-xs-12">
-                                    <div class="panel panel-default">
-                                         <!-- Default panel contents -->
-                                         <div class="panel-heading">Tabla de ventas</div>
-                                         <div class="panel-body">
-                                         </div>
-                                         <!-- Table -->
-                                         <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Nombre</th>
-                                                        <th>Precio</th>
-                                                        <th>Cantidad</th>
-                                                        <th>Sub Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
-                                                    </tr>
-                                                <tr>
-                                                <tr>
-                                                </tbody>
-                                         </table>
-                                        </div><br>
+                                   </div>
                                 </div>
-<<<<<<< HEAD
                             </div>
-                        </div>
                         <!-- FIN titulo -->
                         <div class="row">
                             <div class="col-sm-7 col-md-7">
@@ -665,23 +510,6 @@
                                         </div>
                                         </div>
                                     </div>
-=======
-
-                                  <div class="col-md-6 ">
-                                    <button type="button" class="btn btn-primary btn-lg btn-block">Realizar Venta</button>
-                                    </div><br>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                             <label for="ejemplo_email_3" class="col-lg-2 control-label">Total</label>
-                                             <div class="col-lg-10">
-                                               <input type="email" class="form-control" id="ejemplo_email_3"
-                                                      placeholder="Email">
-                                             </div><br>
-                                         </div>
-                                    </div>
-
->>>>>>> origin/master
                                 </div>
                                 <!-- Termina boton de busqueda de productos -->
                                 
@@ -767,7 +595,6 @@
                                     </table>
                                 </div>
                                  <!-- Termina tabla de productos -->
-                                ---------------------------------
                             </div>
                          </div>
                      </div>
