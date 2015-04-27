@@ -334,6 +334,7 @@ CREATE TABLE `trabajadores` (
 INSERT INTO `trabajadores` VALUES ('1', 'Flora', 'Trinidad', 'Tlatempa', '1', 'Guerrero', 'Zitlala', '41160', 'San Francisco', 'Francisco I Madero', '126', '7561177640', 'trinidadflora@outlook.com', '2015-04-13');
 INSERT INTO `trabajadores` VALUES ('2', 'Luis Enrique', 'Morales', 'Tomatzin', '1', 'Guerrero', 'Chilapa de ï¿½lvare', '4', ' Los Pinos', 'Emiliano Zapata', '          ', '7561183234', 'luis.enrique.mt@outlook.com', '2015-04-13');
 INSERT INTO `trabajadores` VALUES ('3', 'Hermenegildo', 'Diaz', 'Renteria', '3', 'Guerrero', 'Guerrero', '41100', 'Rubï¿½n Fiegeroa', 'Ribi', '', '7561039507', 'hermengildodiazrenteria@gmail.com', '2015-04-13');
+INSERT INTO `trabajadores` VALUES ('4', 'Jorge Luis', 'Calleja', 'Alvarado', '4', 'Guerrero', 'tixtla', '13790', 'San Lucas', 'Galeana', '105', '7541049575', 'jorgelca1205@gmail.com', '2015-04-13');
 
 -- ----------------------------
 -- Table structure for usuarios
@@ -359,6 +360,7 @@ CREATE TABLE `usuarios` (
 -- ----------------------------
 INSERT INTO `usuarios` VALUES ('1', '2', 'luis enrique', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '1', 'imagenes/luis.png', '2015-04-13');
 INSERT INTO `usuarios` VALUES ('3', '3', 'hermenegildo', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '2', 'imagenes/herme.jpg', '2015-04-13');
+INSERT INTO `usuarios` VALUES ('4', '4', 'jorge luis', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '1', 'imagenes/jorge.png', '2015-04-13');
 
 -- ----------------------------
 -- Table structure for ventas
