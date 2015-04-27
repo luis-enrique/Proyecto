@@ -1,6 +1,5 @@
 <?php
     // verifica si ya se a iniciado una sesion 
-
     session_start ();
 
     if(!empty($_SESSION['session'])){

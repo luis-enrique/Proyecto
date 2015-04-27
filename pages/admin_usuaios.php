@@ -294,10 +294,71 @@
                 <!-- Main content -->
                 <section class="content">
                     
-                <!--
+
                     <?php
+
+                        // Si se preciona el boton ingresar usuario se entra en esta condicion para insertar al usuario
+                        // si las contrañas coinciden lo inserta y si no existe tambin lo inserta
+                        if(isset($_POST['insert_usuario'])){
+                            
+                            $v_query_comprovacion_usuario = "SELECT * FROM usuarios WHERE id_trabajador ='".$_POST['id_trabajador']."'";
+                            
+                            $_registro_comparacion = mysqli_query($link,$v_query_comprovacion_usuario) 
+                                                     or die("Problemas comparacion:".mysql_error());
+                            
+                            // Si ya exite un usuario con ese nombre manda un error sino entrea a 
+                            // comparar si sus contraseñas son correcatas
+                            if($reg = mysqli_fetch_array($_registro_comparacion, MYSQLI_ASSOC)){
+                                $_mjerror_exist_usuario = "activo";
+                            }else{
+                                // Si las contraseñas son correctas inserta 
+                                if($_POST['contrasena'] == $_POST['confirmar_contrasena']){
+                                    
+                                    $rutaEnServidor='imagenes';
+                                    $rutaTemporal = $_FILES['imagen']['tmp_name'];
+                                    $nombreImagen = $_FILES['imagen']['name'];
+                                    $rutaDestino = $rutaEnServidor.'/'.$nombreImagen;
+                                    move_uploaded_file($rutaTemporal, $rutaDestino);
+                                        
+                                    $v_insert_usuario = "INSERT INTO usuarios VALUES('',".$_POST['id_trabajador'].",'".$_POST['nombre_usuario']."',SHA1('".$_POST['contrasena']."'),".$_POST['tipo_usuario'].",'".$rutaDestino."',CURDATE())"; 
+        
+                                    mysqli_query($link,$v_insert_usuario) or die("Problemas comparacion:".mysql_error());  
+                                    $_mjfull_insert_usuario = "activo";
+                                                                   
+                                }else{
+                                    $_mjerror_pass_error = "activo";
+                                }
+                            }
+                            
+                            
+                            
+                        }
+
+
+                    // Consulta para mostrar en el combo box las categorias
+                    $v_query_trabajadores_box = mysqli_query($link,"SELECT id_trabajador, CONCAT(nombre,' ',apellido_p,' ',apellido_m) AS nombre FROM trabajadores") or die ("Problemas Consulta_trabajadores".mysql_error());
+
+                    // Consulta para obtener los usuarios y los datos del trabajador
+                    $v_query_usuarios_table =  "SELECT 
+
+                                                  u.id_usuario,
+
+                                                    t.id_trabajador, 
+                                                    t.nombre AS 'nombre', t.apellido_p, t.apellido_m,
+                                                    t.estado, t.ciudad, t.codigo_postal, t.colonia, t.calle, t.no_casa, 
+                                                    t.telefono, 
+                                                    t.e_mail, 
+
+                                                    u.usuario, u.contrasena, 
+
+                                                    tu.nombre AS 'tipo_usuario', tu.privilegios
+
+                                                FROM usuarios u, trabajadores t, tipo_usuario tu
+                                                WHERE u.id_trabajador = t.id_trabajador AND u.id_tipo_usuario = tu.id_tipo_usuario ";
+                    
+                        
                     ?>
-                -->
+                
                     
                     <div class="box box-primary">
                          <!-- Inicia titulo -->
@@ -309,14 +370,20 @@
                          <div class="row">
                              <div class="col-sm-8 col-md-8">
                                  <!-- INICIO del formulario para ingresar los usuarios -->
-                                 <form action="admin_usuaios.php" method="post">
+                                 <form action="admin_usuaios.php" method="post" enctype="multipart/form-data">
                                      <div class="box-body">
                                          <div class="row">
                                              <div class="col-xs-8">
                                                  <div class="form-group">                                             
                                                      <label>Elige un trabajador *</label>
                                                      <select name="id_trabajador" class="form-control" required/>
-                                                        <option>opciones</option>
+                                                        <option></option>
+                                                         <?php
+                                                            while($reg_tra = mysqli_fetch_array($v_query_trabajadores_box, MYSQLI_ASSOC))
+                                                            {
+                                                  echo "<option value ='".$reg_tra['id_trabajador']."'>".$reg_tra['nombre']."</option>";
+                                                            }
+                                                         ?>
                                                      </select>
                                                  </div>
                                              </div> 
@@ -327,21 +394,21 @@
                                                  <label>Nombre de Usuario *</label>
                                                  <div class="input-group">
                                                  <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                 <input name="contraseña" type="text" class="form-control" placeholder="Flora_t" maxlength="20" value="" required/>
+                                                 <input name="nombre_usuario" type="text" class="form-control" placeholder="Flora_t" maxlength="20" value="" required/>
                                                  </div>                                                   
                                              </div>
                                              <div class="col-xs-4">
                                                  <label>Contraseña *</label>
-                                                 <div class="input-group">
+                                                 <div class="input-group" data-toggle="tooltip" data-placement="left" title="Solo 10 caracteres">
                                                  <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                 <input name="contraseña" type="password" class="form-control" placeholder="*****" maxlength="20" value="" required/>
+                                                 <input name="contrasena" type="password" class="form-control" placeholder="*****" maxlength="10" value="" required/>
                                                  </div>                             
                                              </div>
                                              <div class="col-xs-4">
                                                  <label>Confirmar ontraseña *</label>
-                                                 <div class="input-group">
+                                                 <div class="input-group" data-toggle="tooltip" data-placement="left" title="Solo 10 caracteres">
                                                  <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                 <input name="contraseña" type="password" class="form-control" placeholder="*****" maxlength="20" value="" required/>
+                                                 <input name="confirmar_contrasena" type="password" class="form-control" placeholder="*****" maxlength="10" value="" required/>
                                                  </div>
                                              </div>
                                          </div>
@@ -350,7 +417,7 @@
                                              <div class="col-xs-4" style="text-align:center">
                                                  <label>Foto de perfil *</label> 
                                                  <div id="fileOutput" class="img_usuario"></div>
-                                                 <input type="file" size="50" onchange="processFiles(files)" required/>      
+                                                 <input type="file" name="imagen" size="50" onchange="processFiles(files)" required/>      
                                              </div>
                                              <div class="col-xs-4">
                                                  <label>Pribilegios *</label>
@@ -366,6 +433,9 @@
                                          </div>
                                          </br>
                                      </div>
+                                     <div class="box-footer">
+                                         <button name="insert_usuario" type="submit" class="btn btn-success" value="1">Ingresar Trabajador</button>
+                                     </div>
                                  </form>
                                  <!-- Fin del formulario para ingresar los usuarios -->
                              </div>
@@ -379,9 +449,25 @@
                                     </div>
                                  </div>
                                  </br> 
+        
+        
                                 <!-- INICIO de los mensajes de las alertas para las acciones del usuario -->
-
                                 <?php 
+                                    // Mensaje de alerta el usuario ya existe
+                                    if(!empty($_mjerror_pass_error)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Las contraseñas que ingresaste no coinciden!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    } 
+
                                     // Mensaje de alerta si se inserta el usuario
                                     if(!empty($_mjfull_insert_usuario)){
                                         echo  "
@@ -444,6 +530,99 @@
 
                                 ?>
                              </div>
+                        </div>
+                    </div>
+
+
+                    <div class="box box-primary">
+                        <div class="box-header">
+                            </br>
+                            <h3 class="box-title">Tabla de trabajadores</h3>
+                        </div>
+                        <!-- Inicio celda de busqueda de tabla -->
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <!-- aqui puede ir algo como el que tediga cuantos registros mostrar -->
+                            </div>
+                            <div class="col-sm-6 col-md-6 text-right">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin celda de busqueda de tabla -->
+                        <div class="box-body">
+                            <!-- INICIO contenido de la tabla de trabajadpres -->
+                            <div class="box-body table-responsive">
+                                <table id="regTable" id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Trabajador</th>
+                                            <th>Usuario</th>
+                                            <th>Contraseña</th>
+                                            <th>Tipo de usuario</th>
+                                            <th>Privilegios</th>
+                                            <th style="text-align:center">Foto de perfil</th>
+                                            <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>trabajador
+                                                                    
+<!-- TInicia el boton ver mas -->
+</br>
+<a type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal'>
+  Ver mas
+</a>
+
+<!-- Ventana Modal -->
+<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        <h4 class='modal-title' id='myModalLabel'>Datos del trabajador!</h4>
+      </div>
+      <div class='modal-body'>
+          <div class='row'>
+              <div class='col-xs-5 col-sm-5 col-md-5'>
+                  <h3>Foto de perfil</h3>
+              </div>
+              <div class='col-xs-5 col-sm-5 col-md-5'>
+              </div>
+          </div>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Volver</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Termina el boton ver mas-->
+                                     
+                                            </td>
+                                            <td>usuario</td>
+                                            <td>contraseña</td>
+                                            <td>tipo_usuario</td>
+                                            <td>privilegios</td>
+                                            <td style='text-align:center'><img src='<?php echo $_SESSION['foto_perfil'];?>' alt="Responsive image" class="img-rounded"></td>
+                                            <td style='text-align:center'>botones</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- FIN contenido de la tabla de trabajadpres -->
                         </div>
                     </div>
                     
