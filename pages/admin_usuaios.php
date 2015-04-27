@@ -581,6 +581,9 @@
                                             <td>trabajador
                                                                     
 <!-- TInicia el boton ver mas -->
+<?php 
+$time = time();
+echo "
 </br>
 <a type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal'>
   Ver mas
@@ -597,9 +600,80 @@
       <div class='modal-body'>
           <div class='row'>
               <div class='col-xs-5 col-sm-5 col-md-5'>
-                  <h3>Foto de perfil</h3>
+                  <div style='text-align:center'>
+                      <h3>Foto de perfil</h3>
+                      <img src='".$_SESSION['foto_perfil']."' alt='Responsive image' class='img-rounded'>
+                  </div>
               </div>
               <div class='col-xs-5 col-sm-5 col-md-5'>
+                 <ul class='timeline'>
+                    <!-- timeline time label -->
+                    <li class='time-label'>
+                    <li class='time-label'>
+                        <span class='bg-red'>
+                            ".date('d-m-Y',$time)."
+                        </span>
+                    </li>
+                    <!-- /.timeline-label -->
+
+                    <!-- timeline item -->
+                    <li>
+                        <!-- timeline icon -->
+                        <i class='fa fa-envelope bg-blue'></i>
+                        <div class='timeline-item'>
+                            <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                            <h3 class='timeline-header'><a>Datos</a></h3>
+
+                            <div class='timeline-body'>
+                            </br>
+                            <!-- Datos mandados via GET semuestran a qui tambin -->
+                                </br>
+                            </div>
+
+                            <div class='timeline-footer'>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- END timeline item -->
+                </ul>
+                
+";
+?>
+                  
+                  
+            
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+
               </div>
           </div>
       </div>
