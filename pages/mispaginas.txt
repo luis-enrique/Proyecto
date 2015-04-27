@@ -9,7 +9,7 @@ pedidos.php
 clientes.php
 adquisicion_productos.php
 
--------administrador-------
+-------administrad'r-------
 admin_productos.php
 admin_proveedores.php
 admin_usuaios.php
@@ -18,6 +18,6 @@ admin_trabajadores.php
 ----------vendedor-----------
 ventas_del_dia.php
 pedidos_vendedor.php
-seller_pedidos_realizados.php
-seller_adquisiciones_realizadas
-seller_asistenca_trabajadores
+pedidos_realizados.php
+adquisiciones_realizadas.php
+asistencia_trabajadores.php

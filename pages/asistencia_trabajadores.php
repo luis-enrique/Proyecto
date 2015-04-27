@@ -207,10 +207,6 @@
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-
-                                    <a href='#'>
-                                        <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
-
                                     <a href='adquisicion_productos.php'>
                                         <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
 
@@ -224,15 +220,12 @@
                                     </a>
                                     <ul class='treeview-menu'>
 
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
-
-                                        <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
-                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
-                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+                                        <li><a href='asistencia_trabajadores.php'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
 
                                     </ul>
@@ -287,6 +280,7 @@
                 <section class="content-header">
                     <h1>
                         Bienvenido
+
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -298,27 +292,91 @@
                 <!-- Main content -->
                 <section class="content">
            
-                    Hola mundo
+                                <div class='box-header'>
+                                <h3 class='box-title'>Sus pedidos</h3>                                    
+                                </div><!-- /.box-header -->
+                                
+                                <!-- complemto de el filtro  -->
+                         <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                         
+                         <!-- complemto de el filtro  -->
+                    <br>
+                    
+                    
+                    
+                    
+                    <?php
+echo"<div class='box'>
+                                <div class='box-header'>
+                                </div><!-- /.box-header -->
+                                <div class='box-body table-responsive'>
+                                    <table id='regTable' id='example1' class='table table-bordered table-striped'>
+                                        <thead>
+                                            <tr>
+                                                <th>Id del trabajador</th>
+                                                <th>Nombre del trabajador</th>
+                                                <th>Asistencia</th>
+                                            </tr>
+                                        </thead>
+ ";
+                                        
+$v_query6 = "SELECT a.id_trabajador AS 'Id del trabajador', CONCAT(t.nombre,t.apellido_p,t.apellido_m) AS 'nombre',a.asistencia FROM asistencia a, trabajadores t
+WHERE a.id_trabajador= t.id_trabajador AND a.facha=CURDATE()";
+ $v_recibe = mysqli_query($link,$v_query6) or die ('Problemas en el select:'.mysql_error());
+ $v_toma = mysqli_num_rows($v_recibe);
+ echo "Usted tiene $v_toma pedidos";
+ echo "<br>";
+ echo "<br>";
+    while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+       echo ' <tr>';
+       echo ' <td>'.$rowss['Id del trabajador'].'</td>';
+       echo ' <td>'.$rowss['nombre'].'</td>';
+       echo ' <td>'.$rowss['asistencia'].'</td>';
+       echo "</tr>";
+       }
+        echo " </table>";
+        echo "</td>";
 
-<?php 
-
-    $x = 1; 
-
-    while($x<=5) {
-        echo "tu numero es: $x <br>";
-        $x++;
-    } 
-
-
-
-for($x = 0; $x < $arrlength; $x++) {
-    echo $cars[$x];
-    
-    echo "<br>";
-}
+                           "</tbody>"
+                                       
 ?>
-
-
+           
+                </section>
+                <!-- /.content -->
+            </aside><!-- /.right-side -->
+        </div><!-- ./wrapper -->
+<!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->

@@ -202,15 +202,16 @@
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-
-                                    <a href='#'>
-                                        <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
-
                                     <a href='adquisicion_productos.php'>
                                         <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
 
@@ -227,12 +228,9 @@
                                         <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
                                         <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
-
-                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
-                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
-                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+                                        <li><a href='asistencia_trabajadores.php'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
 
                                     </ul>
