@@ -35,7 +35,7 @@
         // Verifica si la contraseña es correcta o no y se ejuta una toma de desisiones
         if($reg = mysqli_fetch_array($registro, MYSQLI_ASSOC)){
             
-            if($reg['contrasena'] == SHA1("$v_pass")){
+            if($reg['contrasena'] == $v_pass){
                 session_start();
                 $_SESSION['session']       = "activo";
                 $_SESSION['id_usuario']    = $reg['id_usuario'];

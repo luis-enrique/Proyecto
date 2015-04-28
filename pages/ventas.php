@@ -314,13 +314,27 @@
                             
 //                            $_SESSION['aray'][$_id ] = $_nombre ;
                             
+//                            $_areglo = array("id"=>$_id,"nombre"=>$_nombre, "preciouni"=>$_precioun, "cantidad"=>$_cantidad ,"subtotal"=>$_subtotal);
+                            
+                            $_areglo[0] = array("Nombre"=>"luis","Activo"=>"si");
+                            $_areglo[1] = array("Nombre"=>"flora","Activo"=>"no");
+                            $_areglo[2] = array("Nombre"=>"gusman","Activo"=>"quiensabe");                           
+                            
+                            $_con = 0;
+                            
+                            while($_con<3){
+                                var_dump($_areglo[$_con]);
+                                $_con = $_con +1;
+                            }
+                            
+
+//                            var_dump($_areglo[1]);
+//                            var_dump($_areglo[2]);
                             
                             
-                            $_array_porductos_venta[$_id] = array("id"=>$_id,"nombre"=>$_nombre, "preciouni"=>$_precioun, "cantidad"=>$_cantidad ,"subtotal"=>$_subtotal);
                             
                             
-                            
-                            var_dump($_array_porductos_venta );
+//                            var_dump($_array_porductos_venta);
                           
                            $_SESSION['show_total'] = ($_SESSION['show_total'] + ($_GET['presio'] * $_GET['cantidad']));  
                             
@@ -541,6 +555,8 @@
 
 <a class='btn btn-success btn-sm' data-toggle='modal' data-target='#".$reg_show_table['id_producto']."'>
   <samp class='glyphicon glyphicon-plus'></samp>
+  
+  
 </a>
 
 <!-- Modal -->

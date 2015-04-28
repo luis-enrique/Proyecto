@@ -487,7 +487,7 @@
                                             </div>
                                             <div class="col-xs-4">
                                                 <div class="form-group">
-                                                    <label>Puesto de trabajo * <a href="admin_categorias.php" data-toggle="tooltip" data-placement="top" title="Aqui podras editar los puestos de trabajo!">Editar puestos!</a></label>
+                                                    <label>Puesto de trabajo * <a href='admin_categorias.php' data-toggle='tooltip' data-placement='top' title='Aqui podras editar los puestos de trabajo!'>Editar puestos!</a></label>
                                                     <select name="categoria" class="form-control" required/>
                                                         <?php 
                                                             if(isset($_GET['trabajador_actualizar'])){
@@ -755,7 +755,7 @@
       <div class='modal-body'>                   
           <div class='row'>
               <div class=' col-xs-5 col-md-5'>
-                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png'alt='Responsive image' class='img-rounded'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png' alt='Responsive image' class='img-rounded'>
               </div>
               <div class=' col-xs-7 col-md-7'>
                   <ul class='timeline text-left'>

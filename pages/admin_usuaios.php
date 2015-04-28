@@ -295,69 +295,103 @@
                 <section class="content">
                     
 
-                    <?php
+<?php
 
-                        // Si se preciona el boton ingresar usuario se entra en esta condicion para insertar al usuario
-                        // si las contrañas coinciden lo inserta y si no existe tambin lo inserta
-                        if(isset($_POST['insert_usuario'])){
-                            
-                            $v_query_comprovacion_usuario = "SELECT * FROM usuarios WHERE id_trabajador ='".$_POST['id_trabajador']."'";
-                            
-                            $_registro_comparacion = mysqli_query($link,$v_query_comprovacion_usuario) 
-                                                     or die("Problemas comparacion:".mysql_error());
-                            
-                            // Si ya exite un usuario con ese nombre manda un error sino entrea a 
-                            // comparar si sus contraseñas son correcatas
-                            if($reg = mysqli_fetch_array($_registro_comparacion, MYSQLI_ASSOC)){
-                                $_mjerror_exist_usuario = "activo";
-                            }else{
-                                // Si las contraseñas son correctas inserta 
-                                if($_POST['contrasena'] == $_POST['confirmar_contrasena']){
-                                    
-                                    $rutaEnServidor='imagenes';
-                                    $rutaTemporal = $_FILES['imagen']['tmp_name'];
-                                    $nombreImagen = $_FILES['imagen']['name'];
-                                    $rutaDestino = $rutaEnServidor.'/'.$nombreImagen;
-                                    move_uploaded_file($rutaTemporal, $rutaDestino);
-                                        
-                                    $v_insert_usuario = "INSERT INTO usuarios VALUES('',".$_POST['id_trabajador'].",'".$_POST['nombre_usuario']."',SHA1('".$_POST['contrasena']."'),".$_POST['tipo_usuario'].",'".$rutaDestino."',CURDATE())"; 
-        
-                                    mysqli_query($link,$v_insert_usuario) or die("Problemas comparacion:".mysql_error());  
-                                    $_mjfull_insert_usuario = "activo";
-                                                                   
-                                }else{
-                                    $_mjerror_pass_error = "activo";
-                                }
-                            }
-                            
-                            
-                            
-                        }
+    // Si se preciona el boton ingresar usuario se entra en esta condicion para insertar al usuario
+    // si las contrañas coinciden lo inserta y si no existe tambin lo inserta
+    if(isset($_POST['insert_usuario'])){
+
+        $v_query_comprovacion_usuario = "SELECT * FROM usuarios WHERE id_trabajador ='".$_POST['id_trabajador']."'";
+
+        $_registro_comparacion = mysqli_query($link,$v_query_comprovacion_usuario) 
+                                 or die("Problemas comparacion:".mysql_error());
+
+        // Si ya exite un usuario con ese nombre manda un error sino entrea a 
+        // comparar si sus contraseñas son correcatas
+        if($reg = mysqli_fetch_array($_registro_comparacion, MYSQLI_ASSOC)){
+            $_mjerror_exist_usuario = "activo";
+        }else{
+            // Si las contraseñas son correctas inserta 
+            if($_POST['contrasena'] == $_POST['confirmar_contrasena']){
+
+                $rutaEnServidor='imagenes';
+                $rutaTemporal = $_FILES['imagen']['tmp_name'];
+                $nombreImagen = $_FILES['imagen']['name'];
+                $rutaDestino = $rutaEnServidor.'/'.$nombreImagen;
+                move_uploaded_file($rutaTemporal, $rutaDestino);
+
+                $v_insert_usuario = "INSERT INTO usuarios VALUES('',".$_POST['id_trabajador'].",'".$_POST['nombre_usuario']."','".$_POST['contrasena']."',".$_POST['tipo_usuario'].",'".$rutaDestino."',CURDATE())"; 
+
+                mysqli_query($link,$v_insert_usuario) or die("Problemas comparacion:".mysql_error());  
+                $_mjfull_insert_usuario = "activo";
+
+            }else{
+                $_mjerror_pass_error = "activo";
+            }
+        }
+
+    }
+
+    // // SI se pica el boton actualizar se entra en esta condicion para actualizar el usuario el usuario
+    if(isset($_POST['usuario_actualizar_start'])){
+
+        if($_POST['contrasena'] == $_POST['confirmar_contrasena']){
+
+            $rutaEnServidor='imagenes';
+            $rutaTemporal = $_FILES['imagen']['tmp_name'];
+            $nombreImagen = $_FILES['imagen']['name'];
+            $rutaDestino = $rutaEnServidor.'/'.$nombreImagen;
+            move_uploaded_file($rutaTemporal, $rutaDestino);
+
+            $v_update_trabajador = "UPDATE usuarios SET id_trabajador = ".$_POST['id_trabajadortext'].",
+                                                    usuario = '".$_POST['nombre_usuario']."', 
+                                                    contrasena = '".$_POST['contrasena']."', 
+                                                    id_tipo_usuario = ".$_POST['tipo_usuario'].", 
+                                                    foto_perfil = '".$rutaDestino."'
+                                                    WHERE id_usuario =".$_SESSION['id_usuario'];
+
+             mysqli_query($link,$v_update_trabajador) or die("Problemas en la actualizacion:".mysql_error());  
+             $_mjwarning_actualizado_usuario = "activo";
+
+        }else{
+            $_mjerror_pass_error = "activo";
+        }
+    }
 
 
-                    // Consulta para mostrar en el combo box las categorias
-                    $v_query_trabajadores_box = mysqli_query($link,"SELECT id_trabajador, CONCAT(nombre,' ',apellido_p,' ',apellido_m) AS nombre FROM trabajadores") or die ("Problemas Consulta_trabajadores".mysql_error());
 
-                    // Consulta para obtener los usuarios y los datos del trabajador
-                    $v_query_usuarios_table =  "SELECT 
+    // SI se pica el boton eliminar se entra en esta condicion para eliminar el usuario
+    if(isset($_GET['usuario_eliminar'])){
+        $v_delete_usuario = "DELETE FROM usuarios WHERE id_usuario=".$_GET['id_usuario']; 
+        mysqli_query($link,$v_delete_usuario) or die("Problemas eliminar:".mysql_error());
+        $_mjwarning_delete_usuario = "activo";
+    }
 
-                                                  u.id_usuario,
 
-                                                    t.id_trabajador, 
-                                                    t.nombre AS 'nombre', t.apellido_p, t.apellido_m,
-                                                    t.estado, t.ciudad, t.codigo_postal, t.colonia, t.calle, t.no_casa, 
-                                                    t.telefono, 
-                                                    t.e_mail, 
+    // Consulta para mostrar en el combo box las categorias
+    $v_query_trabajadores_box = mysqli_query($link,"SELECT id_trabajador, CONCAT(nombre,' ',apellido_p,' ',apellido_m) AS nombre FROM trabajadores") or die ("Problemas Consulta_trabajadores".mysql_error());
 
-                                                    u.usuario, u.contrasena, 
+    // Consulta para obtener los usuarios y los datos del trabajador
+    $v_query_usuarios_table =  "SELECT 
 
-                                                    tu.nombre AS 'tipo_usuario', tu.privilegios
+                                  u.id_usuario,
 
-                                                FROM usuarios u, trabajadores t, tipo_usuario tu
-                                                WHERE u.id_trabajador = t.id_trabajador AND u.id_tipo_usuario = tu.id_tipo_usuario ";
-                    
-                        
-                    ?>
+                                    t.id_trabajador, 
+                                    t.nombre AS 'nombre', t.apellido_p, t.apellido_m,
+                                    t.estado, t.ciudad, t.codigo_postal, t.colonia, t.calle, t.no_casa, 
+                                    t.telefono, 
+                                    t.e_mail, 
+
+                                    u.usuario, u.contrasena, u.foto_perfil,
+
+                                    tu.nombre AS 'tipo_usuario', tu.privilegios
+
+                                FROM usuarios u, trabajadores t, tipo_usuario tu
+                                WHERE u.id_trabajador = t.id_trabajador AND u.id_tipo_usuario = tu.id_tipo_usuario ";
+
+     $v_query_usuarios_table2 = mysqli_query($link,$v_query_usuarios_table) or die ("Error en la consulta usuarios".mysql_error); 
+
+?>
                 
                     
                     <div class="box box-primary">
@@ -375,15 +409,24 @@
                                          <div class="row">
                                              <div class="col-xs-8">
                                                  <div class="form-group">                                             
-                                                     <label>Elige un trabajador *</label>
-                                                     <select name="id_trabajador" class="form-control" required/>
-                                                        <option></option>
-                                                         <?php
-                                                            while($reg_tra = mysqli_fetch_array($v_query_trabajadores_box, MYSQLI_ASSOC))
-                                                            {
-                                                  echo "<option value ='".$reg_tra['id_trabajador']."'>".$reg_tra['nombre']."</option>";
-                                                            }
-                                                         ?>
+                                                     <label>Elige un trabajador * <?php if(isset($_GET['usuaios_actualizar'])){ echo "<a href='admin_usuaios.php' data-toggle='tooltip' data-placement='top' title='Aqui podras regresar para ingresar un usuario nuevo!'>ingresar nuevo usuario!</a>";}?></label>
+                                                     <?php 
+if(isset($_GET['usuaios_actualizar'])){
+    echo "<input name='id_trabajadortext' type='text' value='".$_GET['id_trabajador']."' hidden='hidden'>";
+    
+    echo "<select name='id_trabajador' class='form-control' disabled>";
+    $_combonombre = $_GET['nombre']." ".$_GET['apel_p']." ".$_GET['apel_m'];
+    echo "<option>".$_combonombre."</option>";
+}else{
+    echo "<select name='id_trabajador' class='form-control' required/>";
+    echo "<option></option>";
+    while($reg_tra = mysqli_fetch_array($v_query_trabajadores_box, MYSQLI_ASSOC)){
+         echo "<option value='".$reg_tra['id_trabajador']."'>"
+         .$reg_tra['nombre'].
+         "</option> </br>";
+    } 
+}
+                                                        ?>
                                                      </select>
                                                  </div>
                                              </div> 
@@ -394,11 +437,11 @@
                                                  <label>Nombre de Usuario *</label>
                                                  <div class="input-group">
                                                  <span class="input-group-addon"><i class="fa fa-font"></i></span>
-                                                 <input name="nombre_usuario" type="text" class="form-control" placeholder="Flora_t" maxlength="20" value="" required/>
+                                                 <input name="nombre_usuario" type="text" class="form-control" placeholder="Flora_t" maxlength="20" value="<?php if(isset($_GET['usuaios_actualizar'])){ echo $_GET['usuario'];} ?>" required/>
                                                  </div>                                                   
                                              </div>
                                              <div class="col-xs-4">
-                                                 <label>Contraseña *</label>
+                                                 <label>Contraseña * <?php if(isset($_GET['usuaios_actualizar'])){ echo "<a>Nueva contraseña!</a>";}?></label>
                                                  <div class="input-group" data-toggle="tooltip" data-placement="left" title="Solo 10 caracteres">
                                                  <span class="input-group-addon"><i class="fa fa-font"></i></span>
                                                  <input name="contrasena" type="password" class="form-control" placeholder="*****" maxlength="10" value="" required/>
@@ -415,12 +458,12 @@
                                          </br>
                                          <div class="row">
                                              <div class="col-xs-4" style="text-align:center">
-                                                 <label>Foto de perfil *</label> 
+                                                 <label>Foto de perfil * <?php if(isset($_GET['usuaios_actualizar'])){ echo "<a>Nueva foto!</a>";}?></label> 
                                                  <div id="fileOutput" class="img_usuario"></div>
                                                  <input type="file" name="imagen" size="50" onchange="processFiles(files)" required/>      
                                              </div>
                                              <div class="col-xs-4">
-                                                 <label>Pribilegios *</label>
+                                                 <label>Pribilegios * <?php if(isset($_GET['usuaios_actualizar'])){ echo "<a data-toggle='tooltip' data-placement='top' title='Estas actualizando, ingesa los privielegio!'>ingresar una opción!</a>";}?></label>
                                                  <select name="tipo_usuario" class="form-control" required/>
                                                     <option></option>
                                                     <option value="1">Todos</option>
@@ -434,7 +477,79 @@
                                          </br>
                                      </div>
                                      <div class="box-footer">
-                                         <button name="insert_usuario" type="submit" class="btn btn-success" value="1">Ingresar Trabajador</button>
+                                         <button name="insert_usuario" type="submit" class="btn btn-success" value="1">Ingresar usuario</button>
+                                         
+<?php
+    // Boton se activa si se pulsa el boton actualizar y manda los datos para
+    // actualizarse por post el nombre del boton es usuaios_actualizar
+    if(isset($_GET['usuaios_actualizar'])){
+        $_SESSION['id_usuario'] = $_GET['id_usuario'];
+        $time = time();
+        echo "
+        <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
+
+        <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
+          <div class='modal-dialog'>
+            <div class='modal-content'>
+              <div class='modal-header'>
+                <h4 class='modal-title' id='ActualizarModalLabel'>Actualizar usuario</h4>
+              </div>
+              <div class='modal-body'>                   
+                  <div class='row'>
+                      <div class=' col-sm-5 col-md-5'>
+                          <img style='max-width: 250px' src='img_pages/usuario_actualizar.png'alt='Responsive image' class='img-rounded'>
+                      </div>
+                      <div class=' col-sm-7 col-md-7'>
+                          <ul class='timeline'>
+                                <!-- timeline time label -->
+                                <li class='time-label'>
+                                <li class='time-label'>
+                                    <span class='bg-red'>
+                                        ".date('d-m-Y',$time)."
+                                    </span>
+                                </li>
+                                <!-- /.timeline-label -->
+
+                                <!-- timeline item -->
+                                <li>
+                                    <!-- timeline icon -->
+                                    <i class='fa fa-envelope bg-blue'></i>
+                                    <div class='timeline-item'>
+                                        <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                        <h3 class='timeline-header'><a>Usuario</a></h3>
+
+                                        <div class='timeline-body'>
+                                        Actualizar datos de: 
+                                        </br>
+                                        </br>
+                                        <!-- Datos mandados via GET semuestran a qui tambin -->
+                                        Actualizaras al siguiente usuario </br>
+                                        <code>".$_GET['nombre']." ".$_GET['apel_p']." ".$_GET['apel_m']."</code>
+                                            </br>
+                                        </div>
+
+                                        <div class='timeline-footer'>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- END timeline item -->
+                            </ul>
+                      </div>
+                  </div>
+
+              </div>
+              <div class='modal-footer'>
+                <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                <button name='usuario_actualizar_start' type='submit' class='btn btn-primary'>Actualizar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        ";
+    }
+?>
+                                         
                                      </div>
                                  </form>
                                  <!-- Fin del formulario para ingresar los usuarios -->
@@ -562,7 +677,7 @@
                         </div>
                         <!-- Fin celda de busqueda de tabla -->
                         <div class="box-body">
-                            <!-- INICIO contenido de la tabla de trabajadpres -->
+                            <!-- INICIO contenido de la tabla de usuarios -->
                             <div class="box-body table-responsive">
                                 <table id="regTable" id="example2" class="table table-bordered table-hover">
                                     <thead>
@@ -577,105 +692,80 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>trabajador
-                                                                    
-<!-- TInicia el boton ver mas -->
 <?php 
 $time = time();
-echo "
-</br>
-<a type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#myModal'>
-  Ver mas
-</a>
+while($reg_show_table = mysqli_fetch_array($v_query_usuarios_table2, MYSQLI_ASSOC)){
+                                            $time = time();
+                                            $v_name_usuario = $reg_show_table['nombre']." ".
+                                                                 $reg_show_table['apellido_p']." ".
+                                                                 $reg_show_table['apellido_m'];
+    
+                                            
+    
+                                            $v_direccion = "Estado: ".$reg_show_table['estado']."</br> Ciudad: ".$reg_show_table['ciudad']."</br> C.P: ".$reg_show_table['codigo_postal']."</br> Colonia: ".$reg_show_table['colonia']."</br> Calle: ".$reg_show_table['calle']."</br> Numero: ".$reg_show_table['no_casa'];
+    
 
-<!-- Ventana Modal -->
-<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+
+    echo "                                       
+                                        <tr>
+                                            <td> ".$v_name_usuario."</br>
+                                                                    
+<!-- Inicia el boton ver mas -->
+
+
+<button type='button' class='btn btn-primary btn-xs' data-toggle='modal' data-target='#".$reg_show_table['id_usuario']."Modal' data-whatever='@mdo'>ver màs..</button>
+
+<div class='modal fade' id='".$reg_show_table['id_usuario']."Modal' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_usuario']."ModalLabel' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
       <div class='modal-header'>
-        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-        <h4 class='modal-title' id='myModalLabel'>Datos del trabajador!</h4>
+        <h4 class='modal-title' id='".$reg_show_table['id_usuario']."ModalLabel'>Usario</h4>
       </div>
-      <div class='modal-body'>
+      <div class='modal-body'>                   
           <div class='row'>
-              <div class='col-xs-5 col-sm-5 col-md-5'>
-                  <div style='text-align:center'>
-                      <h3>Foto de perfil</h3>
-                      <img src='".$_SESSION['foto_perfil']."' alt='Responsive image' class='img-rounded'>
-                  </div>
+              <div class=' col-sm-4 col-md-4' style='text-align:center'>
+                  <h4>Foto de perfil</h4>
+                  <img src='".$reg_show_table['foto_perfil']."'alt='Responsive image' class='img_usuarios_tabla img-rounded'> 
               </div>
-              <div class='col-xs-5 col-sm-5 col-md-5'>
-                 <ul class='timeline'>
-                    <!-- timeline time label -->
-                    <li class='time-label'>
-                    <li class='time-label'>
-                        <span class='bg-red'>
-                            ".date('d-m-Y',$time)."
-                        </span>
-                    </li>
-                    <!-- /.timeline-label -->
+              <div class=' col-sm-8 col-md-8'>
+                  <ul class='timeline'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
 
-                    <!-- timeline item -->
-                    <li>
-                        <!-- timeline icon -->
-                        <i class='fa fa-envelope bg-blue'></i>
-                        <div class='timeline-item'>
-                            <span class='time'><i class='fa fa-clock-o'></i></span>
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-blue'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
 
-                            <h3 class='timeline-header'><a>Datos</a></h3>
+                                <h3 class='timeline-header'><a>Usuario</a></h3>
 
-                            <div class='timeline-body'>
-                            </br>
-                            <!-- Datos mandados via GET semuestran a qui tambin -->
+                                <div class='timeline-body'>
                                 </br>
+                                <!-- Datos mandados via GET semuestran a qui tambin -->
+                                <code>".$v_name_usuario."</code> </br></br>
+                                Tipo de usuario: ".$reg_show_table['tipo_usuario']." </br>
+                                Privilegios: ".$reg_show_table['privilegios']."</br>
+                                Direcciòn: ".$v_direccion." </br>
+                                Telefono: ".$reg_show_table['telefono']."</br>
+                                e_mail: ".$reg_show_table['e_mail']."
+                                </div>
+                                <div class='timeline-footer'>
+                                </div>
                             </div>
-
-                            <div class='timeline-footer'>
-                            </div>
-                        </div>
-                    </li>
-                    <!-- END timeline item -->
-                </ul>
-                
-";
-?>
-                  
-                  
-            
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-                  
-
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
               </div>
           </div>
+
       </div>
       <div class='modal-footer'>
         <button type='button' class='btn btn-default' data-dismiss='modal'>Volver</button>
@@ -686,20 +776,108 @@ echo "
 <!-- Termina el boton ver mas-->
                                      
                                             </td>
-                                            <td>usuario</td>
-                                            <td>contraseña</td>
-                                            <td>tipo_usuario</td>
-                                            <td>privilegios</td>
-                                            <td style='text-align:center'><img src='<?php echo $_SESSION['foto_perfil'];?>' alt="Responsive image" class="img-rounded"></td>
-                                            <td style='text-align:center'>botones</td>
-                                        </tr>
+                                            <td>".$reg_show_table['usuario']."</td>
+                                            <td>".$reg_show_table['contrasena']."</td>
+                                            <td>".$reg_show_table['tipo_usuario']."</td>
+                                            <td>".$reg_show_table['privilegios']."</td>
+                                            <td style='text-align:center'><img src='".$reg_show_table['foto_perfil']."' alt='Responsive image' class='img_tabla2 img-rounded'></td>
+                                            <td style='text-align:center'>
+    
+                                            
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg_show_table['id_usuario']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a> 
+
+<div class='modal fade' id='".$reg_show_table['id_usuario']."' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_usuario']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='".$reg_show_table['id_usuario']."Label'>Eliminar usuario</h4>
+      </div>
+      <div class='modal-body'>                   
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png' alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Usuario</a></h3>
+
+                                <div class='timeline-body'>
+                                </br>
+                                <code>".$v_name_usuario."</code> </br></br>
+                                Tipo de usuario: ".$reg_show_table['tipo_usuario']." </br>
+                                Privilegios: ".$reg_show_table['privilegios']."</br>
+                                Direcciòn: ".$v_direccion." </br>
+                                Telefono: ".$reg_show_table['telefono']."</br>
+                                e_mail: ".$reg_show_table['e_mail']."
+                                </br>
+                                </br>
+                                </div>
+
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='admin_usuaios.php?usuario_eliminar=activo&id_usuario=".$reg_show_table['id_usuario']."' class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comienza el primer boton para actualizar -->
+
+<a href='admin_usuaios.php?
+usuaios_actualizar=activo&id_usuario=".$reg_show_table['id_usuario']."&nombre=".$reg_show_table['nombre']." &apel_p=".$reg_show_table['apellido_p']."&apel_m=".$reg_show_table['apellido_m']."&usuario=".$reg_show_table['usuario']."&id_trabajador=".$reg_show_table['id_trabajador']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>                                   
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            
+                                            </td>
+                                        </tr>";
+                                        
+}
+  
+
+?>
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- FIN contenido de la tabla de trabajadpres -->
+                            <!-- FIN contenido de la tabla de usuarios -->
                         </div>
                     </div>
-                    
                     
                 </section>
                 <!-- /.content -->
