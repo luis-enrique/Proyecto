@@ -4,7 +4,11 @@
     $_insession = "activo";
 
     if($_SESSION['session'] == $_insession){
-
+        if($_SESSION['privilegios'] == "Todos"){
+            // Eres un administrador
+        }else{
+            header('Location: index.php');
+        }
     }else{
         session_destroy ();
         header('Location: index.php');

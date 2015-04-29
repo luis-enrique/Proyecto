@@ -4,7 +4,11 @@
     $_insession = "activo";
 
     if($_SESSION['session'] == $_insession){
-
+        if($_SESSION['privilegios'] == "Todos"){
+            // Eres un administrador
+        }else{
+            header('Location: index.php');
+        }
     }else{
         session_destroy ();
         header('Location: index.php');
@@ -196,11 +200,6 @@
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
-                        <li>
-                            <a href='lista_asitencia.php'>
-                                <i class='fa fa-users'></i> <span>Pase de lista</span>
-                            </a>
-                        </li>
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){
@@ -275,6 +274,11 @@
                        }
                     ?>
                     <!-- Fin Apartado solo para el administrador -->
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>

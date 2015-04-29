@@ -4,7 +4,11 @@
     $_insession = "activo";
 
     if($_SESSION['session'] == $_insession){
-
+        if($_SESSION['privilegios'] == "Todos"){
+            // Eres un administrador
+        }else{
+            header('Location: index.php');
+        }
     }else{
         session_destroy ();
         header('Location: index.php');
@@ -297,12 +301,552 @@
 
                 <!-- Main content -->
                 <section class="content">
-           
-                    Hola mundo
+                    
+                    
+                    <!-- Inicia el codigo php que ase las acaciones -->
+                    <?php
+
+                    // Si se preciona el boton ingresar trabajador se entra en esta condicion para insertar al proveedor
+                    // si no existe lo inserta
+                    if(isset($_POST['insert_proveedor'])){
+                        
+                        $v_query_comprovacio_proveedores = "SELECT * FROM proveedores
+                        WHERE nombre_empresa='".$_POST['nombre_empresa']."'";
+                        
+                        $registros_comparacion = mysqli_query($link,$v_query_comprovacio_proveedores) 
+                                                 or die("Problemas comparacion:".mysql_error());
+                        
+                        
+                        if($reg = mysqli_fetch_array($registros_comparacion, MYSQLI_ASSOC)){
+                            
+                            $_mjerror_exist_proveedor = "activo";
+                            
+                        }else{
+                            $v_insert_proveedores = "INSERT INTO proveedores VALUES (
+                                               '',
+                                               '".$_POST['nombre_empresa']."',
+                                               '".$_POST['estado']."', 
+                                               '".$_POST['ciudad']."', 
+                                               '".$_POST['cp']."', 
+                                               '".$_POST['colonia']." ', 
+                                               '".$_POST['calle']."', 
+                                               '".$_POST['no_establesimiento']."', 
+                                               '".$_POST['telefono']."', 
+                                               '".$_POST['fax']."', 
+                                               '".$_POST['mail']."',
+                                               '".$_POST['web']."', 
+                                               'CURDATE()'
+                                               )";
+                        
+                            $v_query_insert_proveedores = mysqli_query($link,$v_insert_proveedores) 
+                                                         or die ("Problemas insertar".mysql_errno());
+                            
+                            $_mjfull_insert_proveedor = "activo";
+                            
+                        }
+                        
+                    } 
+
+
+                    // Si se preciona el boton actualizar del emergente entrara a esta condicion para actualizar
+                     if(isset($_POST['proveedor_actualizar_start'])){
+                         $v_update_proveedor = "UPDATE proveedores SET 
+                                                   nombre_empresa     =  '".$_POST['nombre_empresa']."',
+                                                   estado             =  '".$_POST['estado']."', 
+                                                   ciudad             =  '".$_POST['ciudad']."', 
+                                                   codigo_postal      =  '".$_POST['cp']."', 
+                                                   colonia	          =  '".$_POST['colonia']." ', 
+                                                   calle              =  '".$_POST['calle']."', 
+                                                   no_establesimiento =  '".$_POST['no_establesimiento']."', 
+                                                   telefono           =  '".$_POST['telefono']."', 
+                                                   fax                =  '".$_POST['fax']."', 
+                                                   e_mail             =  '".$_POST['mail']."',
+                                                   pagina_web         =  '".$_POST['web']."' 
+                                                WHERE id_proveedor=".$_SESSION['id_proveedor'];
+                                                 
+                         mysqli_query($link,$v_update_proveedor) or die("Problemas Actualizar:".mysql_error());
+                         $_mjwarning_update_proveedor = "activo";
+                     }
+
+
+                    // Si se preciona el boton eliminar del emergente entrara a esta condicion para eliminarlo
+                    if(isset($_GET['proveedor_eliminar'])){
+                        $v_delete_proveedor = "DELETE FROM proveedores WHERE id_proveedor=".$_GET['proveedor_eliminar']; 
+                        mysqli_query($link,$v_delete_proveedor) or die("Problemas eliminar:".mysql_error());
+                        $_mjwarning_delete_proveedor = "activo";
+                    }
+
+
+                    $v_query_tabla_proveedores = "SELECT * FROM proveedores";
+                    $v_query_proveedores_table = mysqli_query($link, $v_query_tabla_proveedores) or die ("Problemas
+                    Consulta_categorias:".mysql_error());
+                    
+                    ?>                    
+                    
+                    
+                    
+                    
+                    <div class="box box-primary">
+                        <!-- Inicia titulo -->
+                        <div class="box-header">
+                            </br>
+                            <h3 class="box-title">Ingresa a tus proveedores!</h3>
+                        </div>
+                         <!-- FIN titulo -->                    
+                         <div class="row">
+                             <div class="col-sm-8 col-md-8">
+                                 <div class="box-body">
+                                     <!-- Inicia el forulario de proveedores -->
+                                     <form action="admin_proveedores.php" method="post">
+                                         <div class="row">
+                                            <div class="col-xs-4">
+                                                <label>Nombre de la empresa *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-font"></i></span>
+                                                <input name="nombre_empresa" type="text" class="form-control" placeholder="Ejemplo: Productos y Reactivos" maxlength="20" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['nombre_empresa'];} ?>" required/>
+                                                </div>
+                                                </br> 
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Estado *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-globe"></i></span> 
+                                                <input name="estado" type="text" class="form-control" placeholder="Emplo: Guerrero" maxlength="30" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['estado'];} ?>" required/>
+                                                </div>
+                                                </br>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Ciudad *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
+                                                <input name="ciudad" type="text" class="form-control" placeholder="Emplo: Cliapa de Àlvarez" maxlength="30" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['ciudad'];} ?>" required/>
+                                                </div>
+                                        </br>
+                                            </div>
+                                         </div>
+                                         <div class="row">
+                                             <div class="col-xs-4">
+                                                <label>CP: *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-building-o"></i></span> 
+                                                <input name="cp" type="text" class="form-control" placeholder="Emplo: 41100" maxlength="5" onkeypress="return numeros(event)" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['cp'];} ?>" required/>
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">
+                                                <label>Colonia *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                                                <input name="colonia" type="text" class="form-control" placeholder="Ejemplo: Los Pinos" maxlength="50" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['colonia'];} ?>" required/>
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">
+                                                <label>Calle *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                                                <input name="calle" type="text" class="form-control" placeholder="Ejemplo: Emiliano Zapata"  maxlength="50" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['calle'];} ?>" required/>
+                                                </div>
+                                                </br>
+                                             </div>
+                                         </div>
+                                         <div class="row">
+                                             <div class="col-xs-4">
+                                                <label>Nª establesimiento *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>    
+                                                <input name="no_establesimiento" type="text" class="form-control" placeholder="Emplo: 231" maxlength="10" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['no_establesimiento'];} ?>" onkeypress="return numeros(event)" required>
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">
+                                                <label>Telefono *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa  fa-phone"></i></span>
+                                                <input name="telefono" type="text" class="form-control" placeholder="Ejemplo: 7561187854"  maxlength="10" onkeypress="return numeros(event)" value="<?php if(isset($_GET['telefono'])){echo $_GET['calle'];} ?>" required>
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">
+                                                <label>Fax</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa  fa-phone"></i></span>
+                                                <input name="fax" type="text" class="form-control" placeholder="Ejemplo: 433326562" maxlength="10" onkeypress="return numeros(event)" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['fax'];} ?>">
+                                                </div>
+                                                </br>
+                                            </div>
+                                         </div>
+                                         <div class="row">
+                                             <div class="col-xs-4">
+                                                <label>E_mail </label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                                <input name="mail" type="email" class="form-control" placeholder="usuario@outlook.com" maxlength="50" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['e_mail'];} ?>">
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">
+                                                <label>Pagina web </label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                                                <input name="web" type="text" class="form-control" placeholder="Ejemplo: www.sitio.com"  maxlength="50" value="<?php if(isset($_GET['proveedor_actualizar'])){echo $_GET['pagina_web'];} ?>">
+                                                </div>
+                                                </br>
+                                             </div>
+                                             <div class="col-xs-4">otro item</div>
+                                         </div>
+                                         <div class='box-footer'>
+                                             <!-- Inicio de los botones dentro del formulario -->
+                                             <button name="insert_proveedor" type="submit" class="btn btn-success" value="1">Ingresar proveedor</button>
+                                             
+ <?php
+                                                // Boton se activa si se pulsa el boton actualizar y manda los datos para
+                                                // actualizarse por post el nombre del boton es actualizar
+                                                if(isset($_GET['proveedor_actualizar'])){
+                                                    $_SESSION['id_proveedor'] = $_GET['proveedor_actualizar'];
+                                                    $time = time();
+                                                    echo "
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='ActualizarModalLabel'>Actualizar proveedor</h4>
+                                                          </div>
+                                                          <div class='modal-body'>                   
+                                                              <div class='row'>
+                                                                  <div class=' col-sm-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/usuario_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  </div>
+                                                                  <div class=' col-sm-7 col-md-7'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    ".date('d-m-Y',$time)."
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
+
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                                                                    <h3 class='timeline-header'><a>Proveedor</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                    Actualizar datos de: 
+                                                                                    </br>
+                                                                                    </br>
+                                                                                    <!-- Datos mandados via GET semuestran a qui tambin -->
+                                                                                    <code>".$_GET['nombre_empresa']."</code> 
+                                                                                        </br>
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+                                                              
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='proveedor_actualizar_start' type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    ";
+                                                }
+                                            ?>
+                                             
+                                             
+                                             
+                                             <!-- Fin de los botones dentro del formulario -->
+                                         </div>
+                                     </form>
+                                     <!-- Inicia el forulario de proveedores -->
+                                 </div>
+                             </div>
+                             <div class="col-sm-4 col-md-4">
+                                 <div class="box-body">
+                                    <div class="box-body">
+                                    <div class="callout callout-info">
+                                        <h4>Información!</h4>
+                                        <p>En esta parte podras visualizar tus alertas.</p>
+                                    </div>
+                                    </div>
+                                 </div>
+                                 </br> 
+                             <!-- INICIO de los mensajes de las alertas para las acciones del usuario -->
+                                <?php 
+                                    // Mensaje de alerta si se inserta el trabajador
+                                    if(!empty($_mjfull_insert_proveedor)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Proveedor ingresado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta el trabajador ya existe
+                                    if(!empty($_mjerror_exist_proveedor)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El proveedor ya existe!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    } 
+
+                                    // Mensaje de alerta si se actualiza el trabajador
+                                    if(!empty($_mjwarning_update_proveedor)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El proveedor a sido actualizado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta si se a eliminado el trabajador
+                                    if(!empty($_mjwarning_delete_proveedor)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Proveedor Eliminado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                ?>
+                             </div>
+                         </div>
+                    </div>
+
+<!-- ************************************************************************************************************** -->
+<div class="box box-primary">
+                        <div class="box-header">
+                            </br>
+                            <h3 class="box-title">Tabla de proveedores</h3>
+                        </div>
+                        <!-- Inicio celda de busqueda de tabla -->
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <!-- aqui puede ir algo como el que tediga cuantos registros mostrar -->
+                            </div>
+                            <div class="col-sm-6 col-md-6 text-right">
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-xs-6"></div>
+                                        <div class="col-xs-6">
+                                            <div class="input-group input-group-sm">
+                                                <input id="searchTerm" type="text" onkeyup="doSearch()" placeholder="Buscar..." class="form-control" />
+                                                <span class="input-group-btn">
+                                                    <a class="btn btn-info btn-flat">Go!</a>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin celda de busqueda de tabla -->
+                        <div class="box-body">
+                            <!-- INICIO contenido de la tabla de trabajadpres -->
+                            <div class="box-body table-responsive">
+                                <table id="regTable" id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style='text-align:center'>Id</th>
+                                            <th>Nombre de empresa</th>
+                                            <th>Dirección</th>
+                                            <th>Telefono</th>
+                                            <th>Fax</th>
+                                            <th>E-mail</th>
+                                            <th>Pagina Web</th>
+                                            <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <?php
+                                        while($reg_show_table = mysqli_fetch_array($v_query_proveedores_table, MYSQLI_ASSOC)){
+                                            $time = time();
+                                            echo "
+                                            <tr>
+                                                <td>".$reg_show_table['id_proveedor']."</td>
+                                                
+                                                <td>".$reg_show_table['nombre_empresa']."</td>
+                                                
+                                                <td>"."Estado: ".$reg_show_table['estado']." </br> "
+                                                     ."Ciudad: ".$reg_show_table['ciudad']." </br> "
+                                                     ."CP: ".$reg_show_table['codigo_postal']." </br> "
+                                                     ."Col. ".$reg_show_table['colonia']." </br> "
+                                                     ."Clle: ".$reg_show_table['calle']." </br>" 
+                                                     ."N°: ".$reg_show_table['no_establesimiento']
+                                                ."</td>
+                                                
+                                                <td>".$reg_show_table['telefono']."</td>
+                                                <td>".$reg_show_table['fax']."</td>
+                                                <td>".$reg_show_table['e_mail']."</td>
+                                                <td>".$reg_show_table['pagina_web']." </td>
+                                                <td style='text-align:center'>
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg_show_table['id_proveedor']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a> 
+
+<div class='modal fade' id='".$reg_show_table['id_proveedor']."' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_proveedor']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='".$reg_show_table['id_proveedor']."Label'>Eliminar proveedor</h4>
+      </div>
+      <div class='modal-body'>                   
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png' alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                                ".date('d-m-Y',$time)."
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Proveedor</a></h3>
+
+                                <div class='timeline-body'>
+                                </br>
+                                <code>".$reg_show_table['nombre_empresa']."</code> </br>
+                                Telefono: ".$reg_show_table['telefono']." </br>
+                                Fax: ".$reg_show_table['fax']." </br>
+                                E_mail: ".$reg_show_table['e_mail']." </br>
+                                Pagina Web: ".$reg_show_table['pagina_web']."
+                                </br>
+                                </br>
+                                </div>
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='admin_proveedores.php?proveedor_eliminar=".$reg_show_table['id_proveedor']."' class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Comienza el primer boton para actualizar -->
+
+<a href='admin_proveedores.php?proveedor_actualizar=".$reg_show_table['id_proveedor']."&nombre_empresa=".$reg_show_table['nombre_empresa']."&estado=".$reg_show_table['estado']."&ciudad=".$reg_show_table['ciudad']."&cp=".$reg_show_table['codigo_postal']."&colonia=".$reg_show_table['colonia']."&calle=".$reg_show_table['calle']."&no_establesimiento=".$reg_show_table['no_establesimiento']."&telefono=".$reg_show_table['telefono']."&e_mail=".$reg_show_table['e_mail']."&fax=".$reg_show_table['fax']."&pagina_web=".$reg_show_table['pagina_web']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a> 
+                                                
+                                                </td>
+                                            </tr>
+                                            ";
+                                        }
+                                    ?>
+                                </table>
+                            </div>
+                            <!-- FIN contenido de la tabla de trabajadpres -->
+                        </div>
+                    </div>                                 
+                                 
+                                 
                 </section>
                 <!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+    
+        <!-- Escrip solo deja insertar numeros en un imput de un formulario sele agrega: onkeypress="return numeros(event)" -->
+        <script>
+            function numeros(e){
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = " 0123456789";
+                especiales = [8,37,39,46];
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    } 
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+        </script>
+
+        <!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
 
 
         <!-- jQuery 2.0.2 -->
