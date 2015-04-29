@@ -196,6 +196,11 @@
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){

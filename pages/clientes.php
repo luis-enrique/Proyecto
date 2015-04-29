@@ -9,7 +9,7 @@
         session_destroy ();
         header('Location: index.php');
     }
-
+    
     include("conexion.php");
 ?>
 
@@ -52,29 +52,29 @@
                         <?php
                          $v_query = "SELECT * FROM pedidos";
                          $v_registros = mysqli_query($link,$v_query) or die ("Problemas en el select:".mysql_error());
-                         $v_total = mysqli_num_rows($v_registros);
+                         $v_total = mysqli_num_rows($v_registros);                                      
                         ?>
-                        <!--termina la consulta de cuantos pedidos hay  -->
-
+                        <!--termina la consulta de cuantos pedidos hay  --> 
+                        
 
                         <!--Inicia consulta de pedidos que deben ser entreados hoy  -->
                         <?php
                          $v_query2 = " SELECT * FROM PEDIDOS WHERE fecha_entrega = CURDATE()";
                          $v_registro = mysqli_query($link,$v_query2) or die ("Problemas en el select:".mysql_error());
-                         $v_tota = mysqli_num_rows($v_registro);
+                         $v_tota = mysqli_num_rows($v_registro);                                     
                         ?>
                           <!--Termina consulta de pedidos que deben ser entreados hoy  -->
-
-
+                        
+                        
                          <!--Inicia consulta de pedidos atrasados -->
                         <?php
                          $v_query3 = " SELECT * FROM PEDIDOS WHERE fecha_entrega < CURDATE()";
                          $v_reg = mysqli_query($link,$v_query3) or die ("Problemas en el select:".mysql_error());
-                         $v_to = mysqli_num_rows($v_reg);
+                         $v_to = mysqli_num_rows($v_reg);                        
                         ?>
                         <!--Termina consulta de pedidosatrasados -->
-
-
+                        
+                        
                         <!--Inicia consulta de pedidos con fecha faltante -->
                         <?php
                          $v_query4 = " SELECT * FROM PEDIDOS WHERE fecha_entrega > CURDATE()";
@@ -82,7 +82,13 @@
                          $v_t = mysqli_num_rows($v_re);
                          ?>
                          <!--Termina consulta  -->
-
+                          
+                         <!--Inicia consulta de pedidos con fecha faltante -->
+                       
+                         <!--Termina consulta  -->
+                        
+                        
+                        
 
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -90,16 +96,16 @@
                                 <span class="label label-warning"><?php echo "$v_total";?> </span>
                             </a>
                             <ul class="dropdown-menu">
-
-
+                                
+                                
                                 <li class="header"><?php
                                if ($v_total< "1") {
-
+                                   
                                  echo "Usted tiene $v_total pedido pendiente";
 
                                  } else {
                                     echo "Usted tiene $v_total pedidos pendientes";
-
+                               
                                }
                                  ?></li>
                                 <li>
@@ -113,13 +119,13 @@
                                             <a href="pedidos_hoy.php">
                                                <i class="ion ion-ios7-cart success"></i><?php echo "Pedidos del dìa $v_tota";?>                                                  </a>
                                         </li>
-
+                                        
 
                                         <li>
                                             <a href="pedidos_proximos.php">
-                                                 <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>
+                                                 <i class="ion ion-ios7-people info"></i><?php echo "Pedidos proximos $v_t";?>   
                                         </li>
-
+                                       
                                     </ul>
                                 </li>
                                 <li class="footer"><a></a></li>
@@ -180,7 +186,7 @@
 
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
-
+                        
                         <li>
                             <a href='ventas.php'>
                                 <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
@@ -191,20 +197,17 @@
                                 <i class='fa fa-truck'></i> <span>Pedidos</span>
                             </a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href='clientes.php'>
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
+                        
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){
                            echo "
                                 <li>
-
-                                    <a href='#'>
-                                        <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
-
                                     <a href='adquisicion_productos.php'>
                                         <i class='fa fa-archive'></i> <span>Adquisición de productos</span>
 
@@ -218,15 +221,12 @@
                                     </a>
                                     <ul class='treeview-menu'>
 
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
+                                        <li><a href='ventas_del_dia.php'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        <li><a href='pedidos_vendedor.php'><i class='fa fa-angle-double-right'></i> Pedidos</a></li>
                                         <li><a href='#'><i class='fa fa-angle-double-right'></i> Adquisiciones realizadas</a></li>
-                                        <li><a href='#'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
-
-                                        <li><a href='seller_ventas_dia'><i class='fa fa-angle-double-right'></i> Ventas del dìa</a></li>
+                                        
                                         <li><a href='seller_pedidos_realizados.php'><i class='fa fa-angle-double-right'></i> Pedidos realizados</a></li>
-                                        <li><a href='seller_adquisiciones_realizadas'><i class='fa fa-angle-double-right'></i> Adquicisiones realizadas</a></li>
-                                        <li><a href='seller_asistenca_trabajadores'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
+                                        <li><a href='asistencia_trabajadores.php'><i class='fa fa-angle-double-right'></i> Asistencia de trabajadores</a></li>
 
 
                                     </ul>
@@ -269,84 +269,24 @@
                                ";
                        }
                     ?>
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     <!-- Fin Apartado solo para el administrador -->
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>
             </aside>
 
-            <!-- Caciones para cuando se pulza un boton  -->
-                        <?php
-                            // se inserta en la base de datos si preciona el boton insertar
-                            if(isset($_POST["insertar_producto"])){
-
-                                $v_query = "SELECT * FROM productos WHERE nombre='".$_POST["p_nombre"]."'";
-                                $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
-
-                                if($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
-                                    $_mjerror_exist_articulo = "activo";
-                                }else{
-
-                                    $v_query = "INSERT INTO productos
-                                    VALUES('','".$_POST["p_nombre"]."','".$_POST['p_descripcion']."','','".$_POST['p_presio']."')";
-
-                                    $v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
-                                    $_mjfull_ingresed_articulo = "activo";
-                                }
-
-                            }
-
-                            // si se presiona un boton con el icono actualizar entra a esta condicion
-                            // y ase una consulta y almasena los datos en variables para mostrarlas en las cajas de texto
-                            if(isset($_GET['cliente_actualizar'])){
-                                $v_query_actualizar_clientes = " SELECT * FROM cliente WHERE id_cliente = ".$_GET['cliente_actualizar'];
-                                $v_query_actualizar_mf = mysqli_query($link,$v_query_actualizar_clientes) or die("Problemas:".mysql_error());
-
-                                if($v_registro_mf = mysqli_fetch_array($v_query_actualizar_mf, MYSQLI_ASSOC)){
-                                    $_SESSION['p_id_cliente']  =  $v_registro_mf['id_cliente'];
-                                    $v_nombre                   =  $v_registro_mf['nombre'];
-                                    $v_apellido_p              =  $v_registro_mf['apellido_p'];
-                                    $v_apellido_m                    =  $v_registro_mf['apellido_m'];
-                                    $v_estado             =  $v_registro_mf['estado'];
-                                }
-                            }
-
-                            // Si se preciona el boton actualizar del emergente se actualiza el producto
-                            if(isset($_POST["actualizar_product_start"])){
-                                $v_query_actualizar_productos_start = "UPDATE productos SET
-                                nombre='".$_POST['p_nombre']."',
-                                descripcion='".$_POST['p_descripcion']."',
-                                precio_venta=".$_POST['p_presio']."
-                                WHERE id_producto= ".$_SESSION['p_id_producto']."";
-                                $v_actualizar_producto_start = mysqli_query($link,$v_query_actualizar_productos_start) or die("Problemas:".mysql_error());
-                                $_mjwarning_articulo_actualizado = "activo";
-                            }
-
-
-
-
-                            // si se presiona un boton con el icono eliminar entra a esta condicion
-                            // y ase una consulta y almasena los datos en variables para tomar el id_productos y mandarla a una variable sesion
-                            //para mostrarlos en el emergente
-                            if(isset($_GET['producto_eliminar'])){
-                                $v_query_eliminar_productos = "DELETE FROM productos WHERE id_producto=".$_GET['producto_eliminar'];
-                                $v_query_eliminar_me = mysqli_query($link,$v_query_eliminar_productos) or die("Problemas:".mysql_error());
-                                $_mjwarning_articulo_eliminado = "activo";
-                            }
-
-                        ?>
-
-
-
-
-
-
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side">
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        Bienvenido
+                        Clientes
+
                         <small> Sistema Ahuelik</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -357,98 +297,354 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="panel panel-success">
-                         <div class="panel-heading">control de clientes</div>
-                         <div class="panel-body">
-                           <div class="row">
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-user" id="Fnombre"></span>
-                                     <input type="text" class="form-control" placeholder="Nombre" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="FapellidoP"></span>
-                                     <input type="text" class="form-control" placeholder="Apellido Paterno" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="FapellidoM"></span>
-                                     <input type="text" class="form-control" placeholder="Apellido Materno" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-star-empty" id="Festado"></span>
-                                     <input type="text" class="form-control" placeholder="Estado" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                           </div><br>
-                           <div class="row">
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="Fciudad"></span>
-                                     <input type="text" class="form-control" placeholder="Ciudad" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="FcodigoP"></span>
-                                     <input type="text" class="form-control" placeholder="Codigo Postal" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="Fcolonia"></span>
-                                     <input type="text" class="form-control" placeholder="Colonia" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-asterisk" id="Fcalle"></span>
-                                     <input type="text" class="form-control" placeholder="Calle" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                           </div><br>
+                    
+                    <?php
+                    // Si se preciona el boton ingresar cliente se entra en esta condicion para insertar al cliente
+                    // si no existe lo inserta
+                    if(isset($_POST['insert_cliente'])){
+                        
+                        $v_query_comprovacio_cliente = "SELECT * FROM clientes WHERE 
+                                                           nombre='".$_POST["nombre"]."' AND 
+                                                           apellido_p='".$_POST["ap_p"]."' AND 
+                                                           apellido_m='".$_POST["ap_m"]."'";
+                        
+                        $registros_comparacion = mysqli_query($link,$v_query_comprovacio_cliente) 
+                                                 or die("Problemas comparacion:".mysql_error());
+                        
+                        
+                        if($reg = mysqli_fetch_array($registros_comparacion, MYSQLI_ASSOC)){
+                            
+                            $_mjerror_exist_cliente = "activo";
+                            
+                        }else{
+                            $v_insert_cliente = "INSERT INTO clientes VALUES (
+                                               '',
+                                               '".$_POST['nombre']."', '".$_POST['ap_p']."', '".$_POST['ap_m']."', 
+                                               '".$_POST['estado']."', 
+                                               '".$_POST['ciudad']."', 
+                                               '".$_POST['cp']."', 
+                                               '".$_POST['colonia']." ', 
+                                               '".$_POST['calle']."', 
+                                               '".$_POST['n_casa']."', 
+                                               '".$_POST['tel']."', 
+                                               '".$_POST['mail']."', 
+                                               'CURDATE()'
+                                               )";
+                        
+                            $v_query_insert_cliente = mysqli_query($link,$v_insert_cliente) 
+                                                         or die ("Problemas insertar".mysql_errno());
+                            
+                            $_mjfull_insert_cliente = "activo";
+                            
+                        }
+                    }  
 
-                           <div class="row">
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-home" id="FnCasa"></span>
-                                     <input type="text" class="form-control" placeholder="N° De Casa" aria-describedby="<basic->   </basic->addon1">
+                    // Si se preciona el boton actualizar del emergente entrara a esta condicion para actualizar
+                     if(isset($_POST['cliente_actualizar_start'])){
+                         $v_update_cliente = "UPDATE clientes SET 
+                                                     nombre=            '".$_POST['nombre']."',
+                                                     apellido_p=        '".$_POST['ap_p']."',
+                                                     apellido_m=        '".$_POST['ap_m']."',
+                                                     estado=            '".$_POST['estado']."',
+                                                     ciudad=            '".$_POST['ciudad']."',
+                                                     codigo_postal=     '".$_POST['cp']."',
+                                                     colonia=           '".$_POST['colonia']."',
+                                                     calle=             '".$_POST['calle']."',
+                                                     no_casa=           '".$_POST['n_casa']."',
+                                                     Telefono=          '".$_POST['tel']."',
+                                                     e_mail=            '".$_POST['mail']."'
+                                                 WHERE id_cliente=".$_SESSION['id_cliente'];
+                                                 
+                         mysqli_query($link,$v_update_cliente) or die("Problemas Actualizar:".mysql_error());
+                         $_mjwarning_actualizado_cliente = "activo";
+                     }
+
+
+                    // Si se preciona el boton eliminar del emergente entrara a esta condicion para eliminarlo
+                    if(isset($_GET['cliente_eliminar'])){
+                        $v_delete_cliente = "DELETE FROM clientes WHERE id_cliente=".$_GET['cliente_eliminar']; 
+                        mysqli_query($link,$v_delete_cliente) or die("Problemas eliminar:".mysql_error());
+                        $_mjwarning_delete_cliente = "activo";
+                    }
+
+
+
+
+                    $v_query_tabla_clientes= "SELECT * FROM clientes";
+                    $v_query_clientes_table = mysqli_query($link, $v_query_tabla_clientes) or die ("Problemas
+                    Consulta_categorias:".mysql_error());
+                    ?>
+                    
+                    
+                    
+                    <div class="box box-primary">
+                         <!-- Inicia titulo -->
+                         <div class="box-header">
+                             </br>
+                             <h3 class="box-title">Ingresa a tus clientes!</h3>
+                         </div>
+                         <!-- FIN titulo -->                    
+                         <div class="row">
+                             <div class="col-sm-8 col-md-8">
+                                 <!-- INICIO del formulario para ingresar los clientes -->
+                                 <form action="clientes.php" method="post">
+                                     <div class="box-body">
+                                         <div class="row">
+                                            <div class="col-xs-4">
+                                                <label>Nombre del cliente *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-font"></i></span>
+                                                <input name="nombre" type="text" class="form-control" placeholder="Ejemplo: Juan" maxlength="20" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['nombre'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Apellido paterno *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-font"></i></span>
+                                                <input name="ap_p" type="text" class="form-control" placeholder="Ejemplo: Morales"  maxlength="20" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['apel_p'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Apellido materno *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-font"></i></span>    
+                                                <input name="ap_m" type="text" class="form-control" placeholder="Emplo: Gracia" maxlength="20" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['apel_m'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label>Estado *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-globe"></i></span> 
+                                                <input name="estado" type="text" class="form-control" placeholder="Emplo: Guerrero" maxlength="30" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['estado'];} ?>" required/>
+                                            </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Ciudad *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
+                                                <input name="ciudad" type="text" class="form-control" placeholder="Emplo: Cliapa de Àlvarez" maxlength="30" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['ciudad'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>CP: </label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-building-o"></i></span> 
+                                                <input name="cp" type="text" class="form-control" placeholder="Emplo: 41100" maxlength="5" onkeypress="return numeros(event)" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['cp'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                     </br>
+                                     <div class="row">
+                                            <div class="col-xs-4">
+                                                <label>Colonia *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                                                <input name="colonia" type="text" class="form-control" placeholder="Ejemplo: Los Pinos" maxlength="50" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['colonia'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Calle *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>
+                                                <input name="calle" type="text" class="form-control" placeholder="Ejemplo: Emiliano Zapata"  maxlength="50" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['calle'];} ?>" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Nª casa *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-chevron-right"></i></span>    
+                                                <input name="n_casa" type="text" class="form-control" placeholder="Emplo: 231" maxlength="10" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['n_casa'];} ?>" onkeypress="return numeros(event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <label>Email *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                                                <input name="mail" type="email" class="form-control" placeholder="usuario@outlook.com" maxlength="50" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['e_mail'];} ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                <label>Telefono *</label>
+                                                <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa  fa-phone"></i></span>
+                                                <input name="tel" type="text" class="form-control" placeholder="Ejemplo: 7561187854"  maxlength="10" onkeypress="return numeros(event)" value="<?php if(isset($_GET['cliente_actualizar'])){echo $_GET['telefono'];} ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                            </div>
+                                        </div>
+                                </br>
+                                <div class='box-footer'>
+                                    <button name="insert_cliente" type="submit" class="btn btn-success" value="1">Ingresar cliente</button>
+                                    <?php
+                                                // Boton se activa si se pulsa el boton actualizar y manda los datos para
+                                                // actualizarse por post el nombre del boton es actualizar_clirnte_start
+                                                if(isset($_GET['cliente_actualizar'])){
+                                                    $_SESSION['id_cliente'] = $_GET['cliente_actualizar'];
+                                                    $time = time();
+                                                    echo "
+                                                    <button type='button' class='btn btn-primary' data-toggle='modal' data-target='#ActualizarModal' data-whatever='@mdo'>Actualizar</button>
+
+                                                    <div class='modal fade' id='ActualizarModal' tabindex='-1' role='dialog' aria-labelledby='ActualizarModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='ActualizarModalLabel'>Actualizar cliente</h4>
+                                                          </div>
+                                                          <div class='modal-body'>                   
+                                                              <div class='row'>
+                                                                  <div class=' col-sm-5 col-md-5'>
+                                                                      <img style='max-width: 250px' src='img_pages/usuario_actualizar.png'alt='Responsive image' class='img-rounded'>
+                                                                  </div>
+                                                                  <div class=' col-sm-7 col-md-7'>
+                                                                      <ul class='timeline'>
+                                                                            <!-- timeline time label -->
+                                                                            <li class='time-label'>
+                                                                            <li class='time-label'>
+                                                                                <span class='bg-red'>
+                                                                                    ".date('d-m-Y',$time)."
+                                                                                </span>
+                                                                            </li>
+                                                                            <!-- /.timeline-label -->
+
+                                                                            <!-- timeline item -->
+                                                                            <li>
+                                                                                <!-- timeline icon -->
+                                                                                <i class='fa fa-envelope bg-blue'></i>
+                                                                                <div class='timeline-item'>
+                                                                                    <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                                                                    <h3 class='timeline-header'><a>Cliente</a></h3>
+
+                                                                                    <div class='timeline-body'>
+                                                                                    Actualizar datos de: 
+                                                                                    </br>
+                                                                                    </br>
+                                                                                    <!-- Datos mandados via GET semuestran a qui tambin -->
+                                                                                    <code>".$_GET['nombre']." ".$_GET['apel_p']." ".$_GET['apel_m']."</code> </br>
+                                                                                        </br>
+                                                                                    </div>
+
+                                                                                    <div class='timeline-footer'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                            <!-- END timeline item -->
+                                                                        </ul>
+                                                                  </div>
+                                                              </div>
+                                                              
+                                                          </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='cliente_actualizar_start' type='submit' class='btn btn-primary'>Actualizar</button>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    ";
+                                                }
+                                            ?>
                                 </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon  glyphicon glyphicon-earphone" id="Ftelefono"></span>
-                                     <input type="text" class="form-control" placeholder="Telefono" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-envelope" id="Femail"></span>
-                                     <input type="text" class="form-control" placeholder="Ejem:  Ahelik@gmail.com" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                               <div class="col-xs-3">
-                                <div class="input-group">
-                                     <span class="input-group-addon glyphicon glyphicon-calendar" id="Ffecha"></span>
-                                     <input type="text" class="form-control" placeholder="Fecha" aria-describedby="<basic->   </basic->addon1">
-                                </div>
-                               </div>
-                           </div><br>
-                        </div>
+                                     </div>
+                                </form>
+                                <!-- FIN del formulario para ingresar clientes -->
+                             </div>
+                             <div class="col-sm-4 col-md-4">
+                                 <div class="box-body">
+                                    <div class="box-body">
+                                    <div class="callout callout-info">
+                                        <h4>Información!</h4>
+                                        <p>En esta parte podras visualizar tus alertas.</p>
+                                    </div>
+                                    </div>
+                                 </div>
+                                 </br> 
+                             <!-- INICIO de los mensajes de las alertas para las acciones del usuario -->
+                                
+                                <?php 
+                                    // Mensaje de alerta si se inserta el trabajador
+                                    if(!empty($_mjfull_insert_cliente)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>C
+                                                    liente ingresado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta el trabajador ya existe
+                                    if(!empty($_mjerror_exist_cliente)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El cliente ya existe!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    } 
+
+                                    // Mensaje de alerta si se actualiza el cliente
+                                    if(!empty($_mjwarning_actualizado_cliente)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El cliente a sido actualizado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                    // Mensaje de alerta si se a eliminado el cliente
+                                    if(!empty($_mjwarning_delete_cliente)){
+                                        echo  "
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert alert-success alert-dismissable'>
+                                                    <i class='fa fa-check'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>Cliente Eliminado!</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
+
+                                ?>
+                             <!-- FIN de los mensajes de las alertas para las acciones del usuario -->
+                             </div>
+                         </div>
                     </div>
+           
 
-                    <div class="box">
+
+
+
+<div class="box box-primary">
                         <div class="box-header">
                             </br>
-                            <h3 class="box-title">Tabla de Productos</h3>
+                            <h3 class="box-title">Tabla de trabajadores</h3>
                         </div>
-                        <!-- /.box-header -->
-
                         <!-- Inicio celda de busqueda de tabla -->
                         <div class="row">
                             <div class="col-sm-6 col-md-6">
@@ -471,63 +667,60 @@
                             </div>
                         </div>
                         <!-- Fin celda de busqueda de tabla -->
-
-                        <div class="box-body table-responsive">
-                            <table id="regTable" id="example2" class="table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <th style='text-align:center'>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Apellido Paterno</th>
-                                        <th>Apellido Materno</th>
-                                        <th>Estado</th>
-                                        <th>Ciudad</th>
-                                        <th>Cod. Postal</th>
-                                        <th>Colonia</th>
-                                        <th>Calle</th>
-                                        <th>N° Casa</th>
-                                        <th>Telefono</th>
-                                        <th>Email</th>
-                                        <th>Fecha</th>
-                                        <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        <div class="box-body">
+                            <!-- INICIO contenido de la tabla de trabajadpres -->
+                            <div class="box-body table-responsive">
+                                <table id="regTable" id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th style='text-align:center'>Id</th>
+                                            <th>Nombre</th>
+                                            <th>Dirección</th>
+                                            <th>Telefono</th>
+                                            <th>E-mail</th>
+                                            <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciones</th>
+                                        </tr>
+                                    </thead>
                                     <?php
-                                        $time = time();
-                                        $v_query = "SELECT * FROM clientes";
-                                        $registros = mysqli_query($link,$v_query) or die("Problemas en el select:".mysql_error());
-
-                                        while($reg = mysqli_fetch_array($registros, MYSQLI_ASSOC)){
-                                            echo"<tr>";
-                                            echo    "<td style='text-align:center'>".$reg['id_cliente']."</td>";
-                                            echo    "<td>".$reg['nombre']."</td>";
-                                            echo    "<td>".$reg['apellido_p']."</td>";
-                                            echo    "<td>".$reg['apellido_m']."</td>";
-                                            echo    "<td>".$reg['estado']."</td>";
-                                            echo    "<td>".$reg['ciudad']."</td>";
-                                            echo    "<td>".$reg['codigo_postal']."</td>";
-                                            echo    "<td>".$reg['colonia']."</td>";
-                                            echo    "<td>".$reg['calle']."</td>";
-                                            echo    "<td>".$reg['no_casa']."</td>";
-                                            echo    "<td>".$reg['Telefono']."</td>";
-                                            echo    "<td>".$reg['e_mail']."</td>";
-                                            echo    "<td>".$reg['fecha']."</td>";
-                                            echo    "<td style='text-align:center'>
-
+                                        while($reg_show_table = mysqli_fetch_array($v_query_clientes_table, MYSQLI_ASSOC)){
+                                            $time = time();
+                                            $v_name_cliente = $reg_show_table['nombre']." ".
+                                                                 $reg_show_table['apellido_p']." ".
+                                                                 $reg_show_table['apellido_m'];
+                                            echo "
+                                            <tr>
+                                                <td>".$reg_show_table['id_cliente']."</td>
+                                                
+                                                <td>".$reg_show_table['nombre']." "
+                                                     .$reg_show_table['apellido_p']." "
+                                                     .$reg_show_table['apellido_m']
+                                                ."</td>
+                                                
+                                                <td>"."Estado: ".$reg_show_table['estado']." </br> "
+                                                     ."Ciudad: ".$reg_show_table['ciudad']." </br> "
+                                                     ."CP: ".$reg_show_table['codigo_postal']." </br> "
+                                                     ."Col. ".$reg_show_table['colonia']." </br> "
+                                                     ."Clle: ".$reg_show_table['calle']." </br>" 
+                                                     ."N°: ".$reg_show_table['no_casa']
+                                                ."</td>
+                                                
+                                                <td>".$reg_show_table['Telefono']."</td>
+                                                <td>".$reg_show_table['e_mail']."</td>
+                                                <td style='text-align:center'>
 <!-- Comienza el primer boton para eliminar -->
 
-<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg['id_cliente']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a>
-<div class='modal fade' id='".$reg['id_cliente']."' tabindex='-1' role='dialog' aria-labelledby='".$reg['id_cliente']."Label' aria-hidden='true'>
+<a class='btn btn-danger' data-toggle='modal' data-target='#".$reg_show_table['id_cliente']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a> 
+
+<div class='modal fade' id='".$reg_show_table['id_cliente']."' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_cliente']."Label' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
       <div class='modal-header text-left'>
-        <h4 class='modal-title' id='".$reg['id_cliente']."Label'>Eliminación de un cliente</h4>
+        <h4 class='modal-title' id='".$reg_show_table['id_cliente']."Label'>Eliminar cliente</h4>
       </div>
-      <div class='modal-body'>
+      <div class='modal-body'>                   
           <div class='row'>
               <div class=' col-xs-5 col-md-5'>
-                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png'alt='Responsive image' class='img-rounded'>
+                  <img style='max-width: 250px' src='img_pages/usuario_eliminar.png' alt='Responsive image' class='img-rounded'>
               </div>
               <div class=' col-xs-7 col-md-7'>
                   <ul class='timeline text-left'>
@@ -550,14 +743,11 @@
                                 <h3 class='timeline-header'><a>Cliente</a></h3>
 
                                 <div class='timeline-body'>
-                                Eliminaras el siguiente Cliente: </br>
-                                Id Cliente: <code>".$reg['id_cliente']."</code> </br>
-                                Nombre: ".$reg['nombre']." </br>
-                                Apellidos: ".$reg['apellido_p']." ".$reg['apellido_m']." </br>
-                                Telefono: ".$reg['Telefono']."</br>
-                                e_mail: ".$reg['e_mail']."
                                 </br>
-
+                                <code>".$v_name_cliente."</code> </br>
+                                </br>
+                                </br>
+                                    <!-- <code>producto</code> -->
                                 </div>
 
                                 <div class='timeline-footer'>
@@ -572,7 +762,7 @@
       </div>
       <div class='modal-footer'>
         <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
-        <a href='admin_productos.php?producto_eliminar=".$reg['id_cliente']."'  class='btn btn-danger'>Eliminar</a>
+        <a href='clientes.php?cliente_eliminar=".$reg_show_table['id_cliente']."' class='btn btn-danger'>Eliminar</a>
       </div>
     </div>
   </div>
@@ -580,24 +770,88 @@
 
 <!-- Comienza el primer boton para actualizar -->
 
-<a href='admin_productos.php?producto_actualizar=".$reg['id_cliente']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a>
-
-                                                    </td>";
-                                            echo"</tr>";
+<a href='clientes.php?cliente_actualizar=".$reg_show_table['id_cliente']."&nombre=".$reg_show_table['nombre']."&apel_p=".$reg_show_table['apellido_p']."&apel_m=".$reg_show_table['apellido_m']."&estado=".$reg_show_table['estado']."&ciudad=".$reg_show_table['ciudad']."&cp=".$reg_show_table['codigo_postal']."&colonia=".$reg_show_table['colonia']."&calle=".$reg_show_table['calle']."&n_casa=".$reg_show_table['no_casa']."&telefono=".$reg_show_table['Telefono']."&e_mail=".$reg_show_table['e_mail']."' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Actualizar'><i class='fa fa fa-pencil'></i></a> 
+                                                
+                                                </td>
+                                            </tr>
+                                            ";
                                         }
                                     ?>
+                                </table>
+                            </div>
+                            <!-- FIN contenido de la tabla de trabajadpres -->
+                        </div>
+                    </div>
 
-                                </tbody>
-                            </table>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                    <!-- FIN tabla de productos -->
-
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 </section>
-
                 <!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
+
+
+       <!-- Escrip solo deja insertar numeros en un imput de un formulario sele agrega: onkeypress="return numeros(event)" -->
+        <script>
+            function numeros(e){
+                key = e.keyCode || e.which;
+                tecla = String.fromCharCode(key).toLowerCase();
+                letras = " 0123456789";
+                especiales = [8,37,39,46];
+                tecla_especial = false
+                for(var i in especiales){
+                    if(key == especiales[i]){
+                        tecla_especial = true;
+                        break;
+                    } 
+                }
+
+                if(letras.indexOf(tecla)==-1 && !tecla_especial){
+                    return false;
+                }
+            }
+        </script>
+
+        <!-- script para aser filtro de busqueda-->
+        <script language="javascript">
+            function doSearch() {
+                var tableReg = document.getElementById('regTable');
+                var searchText = document.getElementById('searchTerm').value.toLowerCase();
+                for (var i = 1; i < tableReg.rows.length; i++) {
+                    var cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+                    var found = false;
+                    for (var j = 0; j < cellsOfRow.length && !found; j++) {
+                        var compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+                        if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                            found = true;
+                        }
+                    }
+                    if (found) {
+                        tableReg.rows[i].style.display = '';
+                    } else {
+                        tableReg.rows[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
 
 
         <!-- jQuery 2.0.2 -->

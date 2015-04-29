@@ -261,7 +261,7 @@
                                         <i class='fa fa-user'></i> <span>Usuarios</span>
                                     </a>
                                 </li>
-                                <li>
+                                <li class='active'>
                                     <a href='admin_trabajadores.php'>
                                         <i class='fa  fa-briefcase'></i> <span>Trabajadores</span>
                                     </a>
@@ -270,6 +270,11 @@
                        }
                     ?>
                     <!-- Fin Apartado solo para el administrador -->
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>
@@ -510,7 +515,7 @@
                                         </div>
                                 </br>
                                 <div class='box-footer'>
-                                    <button name="insert_trabajador" type="submit" class="btn btn-success" value="1">Ingresar Trabajador</button>
+                                    <button name="insert_trabajador" type="submit" class="btn btn-success" value="1">Ingresar trabajador</button>
                                     <?php
                                                 // Boton se activa si se pulsa el boton actualizar y manda los datos para
                                                 // actualizarse por post el nombre del boton es actualizar_product_start
@@ -664,8 +669,6 @@
 
                                 ?>
                                 
-                                
-    
                              <!-- FIN de los mensajes de las alertas para las acciones del usuario -->
                              </div>
                          </div>

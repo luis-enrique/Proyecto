@@ -270,6 +270,11 @@
                                ";
                        }
                     ?>
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     <!-- Fin Apartado solo para el administrador -->
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->

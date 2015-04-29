@@ -183,7 +183,7 @@
                     <!-- Inicio del menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
 
-                        <li>
+                        <li class="active">
                             <a href='ventas.php'>
                                 <i class='fa fa-shopping-cart'></i> <span>Realizar Venta</span>
                             </a>
@@ -198,6 +198,7 @@
                                 <i class='fa fa-users'></i> <span>Clientes</span>
                             </a>
                         </li>
+                        
                     <!-- Apartado solo para el vendedor -->
                     <?php
                        if($_SESSION['privilegios'] == "Solo venta"){
@@ -271,6 +272,11 @@
                                ";
                        }
                     ?>
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     <!-- Fin Apartado solo para el administrador -->
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->

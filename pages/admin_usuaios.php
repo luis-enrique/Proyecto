@@ -258,7 +258,7 @@
                                         <li><a href='admin_proveedores.php'><i class='fa fa-angle-double-right'></i> Proveedores</a></li>
                                     </ul>
                                 </li>
-                                <li>
+                                <li class='active'>
                                     <a href='admin_usuaios.php'>
                                         <i class='fa fa-user'></i> <span>Usuarios</span>
                                     </a>
@@ -272,6 +272,11 @@
                        }
                     ?>
                     <!-- Fin Apartado solo para el administrador -->
+                        <li>
+                            <a href='lista_asitencia.php'>
+                                <i class='fa fa-users'></i> <span>Pase de lista</span>
+                            </a>
+                        </li>
                     </ul>
                     <!-- Fin del menu: : style can be found in sidebar.less -->
                 </section>
@@ -287,7 +292,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li><a href="sistema.php"><i class="fa fa-dashboard"></i> Inico</a></li>
-                        <li class="active">Usuario</li>
+                        <li class="active">Usuarios</li>
                     </ol>
                 </section>
 
