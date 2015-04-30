@@ -376,9 +376,11 @@
                                                     <div class="input-group-addon">.00</div>
                                                 </div>
                                             </div>
+                                            
                                         </div>
                                         </br>
-                                        <div class='box-footer'>
+                                        <div 
+                                             
                                             <button name="insert_categoria" type="submit" class="btn btn-success" value="1">Ingresar puesto</button>
                                             <?php
                                                 // Boton se activa si se pulsa el boton actualizar y manda los datos para

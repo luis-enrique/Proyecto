@@ -370,7 +370,7 @@
 
 
 
-                    $v_query_tabla_clientes= "SELECT * FROM clientes";
+                    $v_query_tabla_clientes= "SELECT * FROM clientes WHERE id_cliente > 0";
                     $v_query_clientes_table = mysqli_query($link, $v_query_tabla_clientes) or die ("Problemas
                     Consulta_categorias:".mysql_error());
                     ?>

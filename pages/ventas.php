@@ -300,51 +300,111 @@
                 <!-- Main content -->
                 <section class="content">
                     
-                    <?php              
+                    
+                    
+                    <?php         
+
                         // Sise genera una venta se pone la variable sesion que muestra el totalde la venta en 0
-                        if(isset($_POST['insert_venta'])){
-                            $_SESSION['show_total'] = 0;
-                        }
+                        if(isset($_POST['insert_venta'])){ 
+                            $v_query_folio = "SELECT id_venta FROM ventas WHERE id_venta = (SELECT MAX(id_venta) FROM ventas)";
 
+                            $registro_folio = mysqli_query($link,$v_query_folio) or die("Error consulta folio".mysql_error());
 
+                            if($reg = mysqli_fetch_array($registro_folio, MYSQLI_ASSOC)){
 
-                        // Si se agregan mas productos, la variable session que muestra el total de la venta, suma el total de los productos
-                        // que se agragan al carrito o tabla de productos
-                        if(isset($_GET['datos_producto'])){
-                            
-                            $_id       = $_GET['id'];
-                            $_nombre   = $_GET['nombre'];
-                            $_precioun = $_GET['presio'];
-                            $_cantidad = $_GET['cantidad'];
-                            $_subtotal = ($_GET['presio'] * $_GET['cantidad']);
-                            
-//                            $_SESSION['aray'][$_id ] = $_nombre ;
-                            
-//                            $_areglo = array("id"=>$_id,"nombre"=>$_nombre, "preciouni"=>$_precioun, "cantidad"=>$_cantidad ,"subtotal"=>$_subtotal);
-                            
-                            $_areglo[0] = array("Nombre"=>"luis","Activo"=>"si");
-                            $_areglo[1] = array("Nombre"=>"flora","Activo"=>"no");
-                            $_areglo[2] = array("Nombre"=>"gusman","Activo"=>"quiensabe");                           
-                            
-                            $_con = 0;
-                            
-                            while($_con<3){
-                                var_dump($_areglo[$_con]);
-                                $_con = $_con +1;
+                                $_folio = $reg['id_venta']+1;
+
+                                if($_folio < 10){ //Si es menor a 10
+                                    $new_folio = "000000000".$_folio;
+                                }else{
+                                    if($_folio>9 && $_folio<100){ //Si es menor a 100
+                                        $new_folio = "00000000".$_folio;
+                                    }else{
+                                        if($_folio>99 && $_folio<1000){ //Si es menor a 1000
+                                            $new_folio = "0000000".$_folio;
+                                        }else{
+                                            if($_folio>999 && $_folio<10000){ //Si es menor a 10000
+                                                $new_folio = "000000".$_folio;
+                                            }else{
+                                                if($_folio>9999 && $_folio<100000){ //Si es menor a 100000
+                                                    $new_folio = "00000".$_folio;
+                                                }else{
+                                                    if($_folio>99999 && $_folio<1000000){ //Si es menor a 1000000
+                                                        $new_folio = "0000".$_folio;
+                                                    }else{
+                                                        if($_folio>999999 && $_folio<10000000){ //Si es menor a 10000000
+                                                            $new_folio = "000".$_folio;
+                                                        }else{
+                                                            if($_folio>9999999 && $_folio<100000000){ //Si es menor a 100000000
+                                                                $new_folio = "00".$_folio;
+                                                            }else{
+                                                                if($_folio>99999999 && $_folio<1000000000){ //Si es menor a 1000000000
+                                                                    $new_folio = "0".$_folio;
+                                                                }else{
+                                                                    if($_folio>999999999 && $_folio<10000000000){ //Si es menor a 10000000000
+                                                                        $new_folio = $_folio;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }else{
+                                $new_folio = "0000000001";
                             }
                             
+                            echo $new_folio."</br>";
+                            echo $_POST['id_cliente']."</br>";
+                            echo $_SESSION['show_total']."</br>";
+                            echo $_SESSION['id_usuario']."</br>";
+                            
+                            //inserta los datos en la tabla ventas
+                            $v_query_venta_new = "INSERT INTO ventas VALUES ('',
+                                                                            '".$new_folio."',		
+                                                                            ".$_POST['id_cliente'].",
+                                                                            ".$_SESSION['show_total'].",
+                                                                            ".$_SESSION['id_usuario'].",
+                                                                            'CURDATE()'
+                                                                            )";
+                            
+                            mysqli_query($link,$v_query_venta_new) or die("Error insert new ven".mysql_error());
+                            
+                            //------------------------------------------------------------------------------
+                            
+                            //consulta el id relacionado a la venta
+                            $v_query_id = "SELECT id_venta FROM ventas WHERE id_venta = (SELECT MAX(id_venta) FROM ventas)";        
+                            $registro_id= mysqli_query($link,$v_query_id) or die("Error !!".mysql_error());
 
-//                            var_dump($_areglo[1]);
-//                            var_dump($_areglo[2]);
+                            if($reg_id = mysqli_fetch_array($registro_id, MYSQLI_ASSOC)){
+                                $id_por_venta = $reg_id['id_venta'];
+                            }
                             
+                            //------------------------------------------------------------------------------
+                            $v_query_productos_temp = mysqli_query($link,"SELECT * FROM productos_venta_temp ORDER BY id_producto") or die("Error !!".mysql_error());
+                            while($reg_insert_pro = mysqli_fetch_array($v_query_productos_temp, MYSQLI_ASSOC)){
+                                
+                                $v_query_pro_table_migra = "INSERT INTO productos_venta VALUES(
+                                ".$id_por_venta.",
+                                ".$reg_insert_pro['id_producto'].",
+                                ".$reg_insert_pro['precio_unitario'].",
+                                ".$reg_insert_pro['cantidad'].",
+                                ".$reg_insert_pro['subtotal']."
+                                )";        
+                                
+                                mysqli_query($link,$v_query_pro_table_migra) or die("Error !!".mysql_error());
+                            }
                             
-                            
-                            
-//                            var_dump($_array_porductos_venta);
-                          
-                           $_SESSION['show_total'] = ($_SESSION['show_total'] + ($_GET['presio'] * $_GET['cantidad']));  
+                            //----------------------------------------------------------------------------
+                            // ELIMINA TODOS LOS DATO DE LA TABLA TEMPORAL PARA LISTA DE PRODUCTOS
+                            mysqli_query($link,"DELETE FROM productos_venta_temp") or die("Error".mysql_error());
+                                                        
                             
                         }
+
 
                         // INICIO consilta para generar el folio
                         $v_query_folio = "SELECT id_venta FROM ventas WHERE id_venta = (SELECT MAX(id_venta) FROM ventas)";
@@ -394,13 +454,80 @@
                                     }
                                 }
                             }
+                        }else{
+                            $new_folio = "0000000001";
                         }
                         //FIN consilta para generar el folio
 
-                        // INICIO consilta para el los productos
-                        $v_query_trabajadores = "SELECT id_trabajador, CONCAT(nombre,' ',apellido_p,' ',apellido_m) AS nombre FROM trabajadores";
-                        $v_trabajadores_combo = mysqli_query($link,$v_query_trabajadores) 
+
+
+                        // Si se agregan mas productos, la variable session que muestra el total de la venta,
+                        // suma el total de los productos que se agragan al carrito o tabla de productos
+                        if(isset($_GET['datos_producto'])){
+                            
+                            $comparacion_carrito = mysqli_query($link,"SELECT * FROM productos_venta_temp WHERE id_producto=".$_GET['id']) or die("Error consulta carrito") or die("Error consulta carrito".mysql_error());
+                            
+                            if($reg_comp = mysqli_fetch_array($comparacion_carrito, MYSQLI_ASSOC)){
+                                // echo "el producto ya existe";
+                                // variable para el mensaje de que ya existe el producto
+                                $v_error_exist_producto = "Activo";
+                            }else{
+                                // echo "el producto no existe";   
+                                $_id       = $_GET['id'];
+                                $_nombre   = $_GET['nombre'];
+                                $_precioun = $_GET['presio'];
+                                $_cantidad = $_GET['cantidad'];
+                                $_subtotal = ($_GET['presio'] * $_GET['cantidad']);  
+
+                                $insert_carrito = "INSERT INTO productos_venta_temp VALUES
+                                (".$_id.",'".$_nombre."',".$_precioun.",".$_cantidad.",".$_subtotal.")";
+
+
+                                mysqli_query($link,$insert_carrito) or die("Error insert carrito".mysql_error());
+                            }
+                            
+                            
+                              
+                        }
+
+
+                        // Si se pica en el icono de actulizar se entra en esta condicion para que se acutalize la 
+                        // cantidad del producto y actulize el subtotal
+
+                        if(isset($_POST['btn_actualizar_producto'])){
+                             $upsate_producto = "UPDATE productos_venta_temp SET 
+                                                     cantidad =".$_POST['cantidad'].", 
+                                                     subtotal=(precio_unitario * ".$_POST['cantidad'].") 
+                                                 WHERE id_producto=".$_POST['id_producto'];
+                            
+                            mysqli_query($link,$upsate_producto) or die("Error actulizar carrito".mysql_error());      
+                        }
+
+
+                        //sise presiona le boton eliminar de los prodctos d ela lisat se entra qui a elimnarlo
+                        if(isset($_POST['btn_eliminar'])){
+                            $v_delete_p = "DELETE FROM productos_venta_temp WHERE id_producto=".$_POST['id_elimnar']; 
+                            mysqli_query($link,$v_delete_p) or die("Problemas eliminar:".mysql_error());
+                        }
+                        
+
+                        //consulta para mostrar los productos del carrito
+                        $registro_carrito = mysqli_query($link,"SELECT * FROM productos_venta_temp ORDER BY id_producto") or die("Error consulta carrito".mysql_error());
+
+
+
+                        //consulta pasa obtener el presio total de la venta
+                        $total_venta =  mysqli_query($link,"SELECT SUM(subtotal) AS total FROM productos_venta_temp") or die("Error consulta total".mysql_error());
+                        while($reg_total = mysqli_fetch_array($total_venta, MYSQLI_ASSOC)){
+                            $_SESSION['show_total'] = $reg_total['total'];
+                        }
+
+
+                        // INICIO consilta para los clientes
+                        $v_query_clientes = "SELECT id_cliente, CONCAT(nombre,' ',apellido_p,' ',apellido_m) AS nombre FROM clientes";
+                        $v_clientes_combo = mysqli_query($link,$v_query_clientes) 
                         or die ("Problemas Consulta_trabajadores:".mysql_error());
+
 
                         // INICIO consilta para el los productos
                         $v_query_productos = "SELECT * FROM productos";
@@ -408,6 +535,22 @@
                         
 
 
+                    ?>
+                    <?php
+                    // Mensaje de alerta el producto ya se agrego ya existe
+                                    if(!empty($v_error_exist_producto)){
+                                        echo  " 
+                                            <div class='box-body'>
+                                                <div class='box-body'>
+                                                <div class='alert  alert-danger alert-dismissable'>
+                                                    <i class='fa fa-ban'></i>
+                                                    <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                                                    <b>El producto ya esta garegado! actualiza la cantidad del producto</b>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        ";
+                                    }
                     ?>
                     
                     <div class="box box-primary">
@@ -443,18 +586,18 @@
                                             <div class="col-xs-6">
                                                 <div class="input-group">
                                                     <div class="input-group-addon">Vendedor</div>
-                                                    <input name="c_sueldo" type="text" class="form-control" value="<?php echo  $_SESSION['nombre'];?>" disabled>       
+                                                    <input type="text" class="form-control" value="<?php echo  $_SESSION['nombre'];?>" disabled>       
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <!-- Tola para la venta-->
                                                 <div class="total_venta">
                                                    <?php 
-                                                        if(isset($_GET['datos_producto'])){
-                                                            echo "$".$_SESSION['show_total'].".°°";
+                                                        if($_SESSION['show_total']){
+                                                            echo "$ ".$_SESSION['show_total'].".°°";
                                                         }else{
-                                                            echo"$ 000.00";
-                                                        }
+                                                            echo "$ 00.°°";
+                                                        }  
                                                     ?>
                                                 </div>
                                                 <!-- Fin para la venta-->
@@ -464,16 +607,19 @@
                                         <div class="form-group">
                                             <label>Seleciona un cliente</label>
                                             </br>
-                                            <select name="usuario" class="form-control">
-                                                <option></option>
+                                            <select name="id_cliente" class="form-control">
+                                                <option value='0'></option>
                                                 <?php 
-                                                while($reg_trabajadores = mysqli_fetch_array($v_trabajadores_combo, MYSQLI_ASSOC)){
-                                                    echo "<option value='".$reg_trabajadores['id_trabajador']."'>".$reg_trabajadores['nombre']."</option>";
+                                                while($reg_trabajadores = mysqli_fetch_array($v_clientes_combo, MYSQLI_ASSOC)){
+                                                    echo "<option  value='".$reg_trabajadores['id_cliente']."'>
+                                                            ".$reg_trabajadores['nombre']."
+                                                         </option>";
                                                 }
                                                 ?>
                                             </select>
                                         </div>
                                         </br>
+                            
                                         <!-- Comienza tabla para el listado de productos -->
                                         <div class="box-body table-responsive">
                                             <table id="example2" class="table table-bordered table-hover" style="">
@@ -487,13 +633,78 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <?php
+                                                    while($reg_carrito_table = mysqli_fetch_array($registro_carrito, MYSQLI_ASSOC)){
+                                                    echo "
                                                     <tr>
-                                                        <td>agua</td>
-                                                        <td>5</td>
-                                                        <td>2</td>
-                                                        <td>10</td>
-                                                        <td>Eliminar</td>
-                                                    </tr>
+                                                        <td>".$reg_carrito_table['nombre']."</td>
+                                                        <td>".$reg_carrito_table['precio_unitario']."</td>
+                                                        <td contenteditable='true'>".$reg_carrito_table['cantidad']."</td>
+                                                        <td>".$reg_carrito_table['subtotal']."</td>
+                                                        <td style='text-align:center'>
+                                                        
+<!-- Button trigger modal para el boton eliminar producto de la lista -->                                                       
+<button type='button' class='btn btn-danger btn-sm' data-toggle='modal' data-target='#elimina".$reg_carrito_table['id_producto']."'>
+    <i class='glyphicon glyphicon-remove'></i>
+</button>
+
+<!-- Inicio Modal -->
+<div class='modal fade' id='elimina".$reg_carrito_table['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='elimina".$reg_carrito_table['id_producto']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        <h4 class='modal-title' id='elimina".$reg_carrito_table['id_producto']."Label'>Eliminar</h4>
+      </div>
+      <form action='ventas.php' method='post'>
+      <div class='modal-body'>
+          <h4>Eliminaras el siguiente producto de la lista:</h4></br>
+          <h4><code>".$reg_carrito_table['nombre']."</code></h4></br>
+          <input name='id_elimnar' value='".$reg_carrito_table['id_producto']."' hidden='hidden'>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <button name='btn_eliminar' type='submit' class='btn btn-danger'>Eliminar</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Modal -->
+
+<!-- Button trigger modal para el boton actualizar producto de la lista -->                                                       
+<button type='button' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#actualiza".$reg_carrito_table['id_producto']."'>
+    <i class='fa fa-pencil'></i>
+</button>
+
+<!-- Inicio Modal -->
+<div class='modal fade' id='actualiza".$reg_carrito_table['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='actualiza".$reg_carrito_table['id_producto']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+        <h4 class='modal-title' id='actualiza".$reg_carrito_table['id_producto']."Label'>Cambiar la cantidad del producto</h4>
+      </div>
+      <form action='ventas.php' method='post'>
+      <div class='modal-body'>
+          <h4>Cambiaras la cantidad del siguiente producto de la lista: </h4></br>
+          <h4><code>".$reg_carrito_table['nombre']."</code></h4></br>
+          <input name='id_producto' value='".$reg_carrito_table['id_producto']."' hidden='hidden'>
+          <input name='cantidad'    value='".$reg_carrito_table['cantidad']."'>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <button name='btn_actualizar_producto' type='submit' class='btn btn-primary'>Aceptar</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fin Modal -->
+                                                        </td>
+                                                    </tr>";
+                                                    }
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -502,13 +713,6 @@
                                         </br>
                                         <div class='box-footer'>
                                             <button name="insert_venta" class="btn btn-success" type="submit">Realizar venta</button>
-                                            <?php 
-                                                if(isset($_GET['datos_producto'])){
-                                                    echo $_GET['id']."-".$_GET['nombre']."-".$_GET['presio']."-".$_GET['cantidad']."</br>";
-                                                    $_SESSION['show_total'] = ($_GET['cantidad'] * $_GET['presio']);
-                                                    echo $_SESSION['show_total'];
-                                                }
-                                            ?>
                                         </div>
             
                                     </form>
@@ -543,8 +747,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Nombre de producto</th>
-                                                <th>Precio U</th>
-                                                <th>Stock</th>
+                                                <th>Precio unitario</th>
                                                 <th style="text-align:center"><samp class="fa fa-cogs"></samp> Opciòn</th>
                                             </tr>
                                         </thead>
@@ -554,16 +757,11 @@
                                                     echo "<tr>
                                                             <td>".$reg_show_table['nombre']."</td>
                                                             <td>".$reg_show_table['precio_venta']."</td>
-                                                            <td>".$reg_show_table['stock']."</td>
                                                             <td style='text-align:center'>
                                                             
 <!-- INICIA Button modal agregar productos -->
 
-<a class='btn btn-success btn-sm' data-toggle='modal' data-target='#".$reg_show_table['id_producto']."'>
-  <samp class='glyphicon glyphicon-plus'></samp>
-  
-  
-</a>
+<a class='btn btn-success btn-sm' data-toggle='modal' data-target='#".$reg_show_table['id_producto']."'><samp class='glyphicon glyphicon-plus'></samp></a>
 
 <!-- Modal -->
 <div class='modal fade' id='".$reg_show_table['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='".$reg_show_table['id_producto']."Label' aria-hidden='true'>
