@@ -324,6 +324,12 @@
                     </div>
                 </div>
                                      
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
                 <br>
                     
               
@@ -331,7 +337,7 @@
                     <div style="font-size: 150%; "></div>
                  <label>Clientes</label>
                      <br>
-               
+            
 <!-- Cobombo Box consulta datos de la BD  -->
                         
 <?php
@@ -342,23 +348,30 @@ $result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_err
 <select>   
     <option value=" <?php echo" " ?> " >
     <?php    
-    while ( $row = $result->fetch_array() )    
+    while ( $romi = $result->fetch_array() )    
     {
         ?>
                
-        <option value=" <?php echo $row['id_cliente'] ?> " >
-        <?php echo $row['nombre']." ".$row['apellido_p']." ".$row['apellido_m']; ?>
-               
-
+        <option value=" <?php echo $romi['id_cliente'] ?> " >
+        <?php echo $romi['nombre']." ".$romi['apellido_p']." ".$romi['apellido_m']; ?>
         </option>
-        
         <?php
     } 
 
     ?>        
 </select>
-  <br>
-<br>
+  </br>
+  </br>
+                                    
+<div class="box-footer">
+
+<form method="post" action="">
+<input type="submit" name="guardar" value="Guardar">
+    
+</form>
+      
+</div>
+</br>
                                     
     
   </div>  
@@ -373,8 +386,7 @@ $result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_err
                                 <div class="box-body table-responsive">
          <table id="example1" class="table table-bordered table-striped">
                                         
-                                        
-                                        
+                                                 
                <?php
 
                          echo "<thead>";
@@ -390,13 +402,13 @@ while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver to
                          echo '  <td>$'.$rowss['precio_venta'].'.00</td>';
                         echo "   <td style='text-align:center'>";
                         echo "        
-                        <button type='button' class='btn btn-success' data-toggle='modal' data-target='#".$rowss['id_producto']."' data-whatever='@mdo'>Realizar</button>
+                        <button type='button' class='btn btn-success' data-toggle='modal' data-target='#".$rowss['id_producto']."' data-whatever='@mdo'>Agregar</button>
 
                                                     <div class='modal fade' id='".$rowss['id_producto']."' tabindex='-1' role='dialog' aria-labelledby='".$rowss['id_producto']."Label' aria-hidden='true'>
                                                       <div class='modal-dialog'>
                                                         <div class='modal-content'>
                                                           <div class='modal-header'>
-                                                            <h4 class='modal-title' id='".$rowss['id_producto']."Label'>Actualización de productos</h4>
+                                                            <h4 class='modal-title' id='".$rowss['id_producto']."Label'>Ingrese la cantidad de productos</h4>
                                                           </div>
                                                           
                                                           
@@ -404,20 +416,17 @@ while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver to
 
                                                               contenido
                               
-                              <form method='post' name='fromulario' action''> 
-<input type='text' name='nombre'/> 
-<input type='submit' value='enviar'/> 
-            
-                           
-                      
-                              
-                              
-                              
-
-                                                          </div>
+                                                            <form action ='pedidos.php' method='get'> 
+                            <input type='text' name='id' value='".$rowss['id_producto']."'hidden='hidden'/> 
+                            <input type='text' name='nombre' value='".$rowss['nombre']."'hidden='hidden'/> 
+                            <input type='text' name='precio'               value='".$rowss['precio_venta']."'hidden='hidden'/>
+                            <input type='text' name='cantidad'/>
+                            
+                                                           </div>
                                                           <div class='modal-footer'>
                                                             <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
-                                                            <a type='submit' class='btn btn-success' href='pedidos.php?enviar=activo&id_producto=".$rowss['id_producto']."& producto=".$rowss['nombre']."&precio=".$rowss['precio_venta']."'>Enviar</a>
+                                                            <button name='enviar' type='submit' class='btn btn-success'>Enviar</button>
+                                                            </form>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -461,23 +470,195 @@ while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver to
                 <th>Cantidad</th>
                 <th>Precio</th>
                 <th>Total</th>
-                <th>Subtotal</th>
+                <th>Acción</th>
             </tr>
             </thead>
                     <tbody>
                      <tr>
                          <?php
 
+
+
+if(isset($_GET['enviar'])){
+$v_query = "INSERT INTO pedido_temporal VALUES('','".$_GET["nombre"]."','".$_GET['cantidad']."','".$_GET['precio']."','".$_GET['precio']*$_GET['cantidad']."')";
+$v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+}
+if(isset($_POST['guardar'])){
+$query = 'SELECT * FROM clientes';
+$result = mysqli_query($link,$query) or die ("Problemas en el select:".mysql_error());
+while ( $row = $result->fetch_array() ){
+ echo $row['id_cliente'];
+
+}
+    
+$v_query9 = "SELECT producto, cantidad, precio, total, SUM(total) subtotal FROM pedido_temporal";
+ $v_rec = mysqli_query($link,$v_query9) or die ("Problemas en el select:".mysql_error());
+                     while ($rowss=mysqli_fetch_array($v_rec, MYSQLI_ASSOC)) {
+                         
+$v_query = "INSERT INTO pedidos values ('',2,'1',3,2015-04-02,'',2015-04-10,'seg')"; 
+$v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+    
+    
+    
                 
+    
+
+}
+}
+   
+
+if(isset($_GET['producto_eliminar'])){
+$v_eliminar_producto = "DELETE FROM pedido_temporal WHERE id=".$_GET['producto_eliminar'];
+$v_eliminar = mysqli_query($link,$v_eliminar_producto ) or die("Problemas al eliminar:".mysql_error());
+
+}
+
+if(isset($_GET['actualizar'])){
+$v_query = "DELETE FROM pedido_temporal WHERE id=".$_GET['id'];
+$v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+
+$v_query = "INSERT INTO pedido_temporal VALUES('','".$_GET["nombre"]."','".$_GET['cantidad']."','".$_GET['precio']."','".$_GET['precio']*$_GET['cantidad']."')";
+$v_registro = mysqli_query($link,$v_query) or die("Problemas al insertar:".mysql_error());
+    
+    
+    
+
+   
+}
+
+                        
+ $v_query6 = "SELECT *FROM pedido_temporal";
+ $v_recibe = mysqli_query($link,$v_query6) or die ("Problemas en el select:".mysql_error());
+                     while ($rowss=mysqli_fetch_array($v_recibe, MYSQLI_ASSOC)) { //Bucle para ver todos los registros
+                         echo '<tr>';
+                         echo '  <td>'.$rowss['producto'].'.</td>';
+                         echo '  <td>'.$rowss['cantidad'].'</td>';
+                         echo '  <td>'.$rowss['precio'].'</td>';
+                         echo '  <td>'.$rowss['total'].'</td>';
 
 
-                if(isset($_GET['enviar'])){
-                       echo" <td>".$_GET['producto'];"</td>";
-                       echo" <td>".$_GET['precio'];"</td>";
-                             }
+                        echo "   <td style='text-align:center'>";
+                        echo "        
+                        <button type='button' class='btn btn-success' data-toggle='modal' data-target='#".$rowss['id']."' data-whatever='@mdo'>Actualizar</button>
 
-                         ?>
-                        <td><a href="cancelar.php">cancelar</a> <br>                                                         <a href="actualizar.php">Actualizar</a> </td> 
+                                                    <div class='modal fade' id='".$rowss['id']."' tabindex='-1' role='dialog' aria-labelledby='".$rowss['id']."Label' aria-hidden='true'>
+                                                      <div class='modal-dialog'>
+                                                        <div class='modal-content'>
+                                                          <div class='modal-header'>
+                                                            <h4 class='modal-title' id='".$rowss['id']."Label'>Ingrese la cantidad de productos</h4>
+                                                          </div>
+                                                          
+                                                          
+                                                          <div class='modal-body'>
+
+                                                              contenido
+                              
+                                                            <form action ='pedidos.php' method='get'> 
+                            <input type='text' name='id' value='".$rowss['id']."'hidden='hidden'/> 
+                            <input type='text' name='nombre' value='".$rowss['producto']."'hidden='hidden'/> 
+                            <input type='text' name='precio' value='".$rowss['precio']."'hidden='hidden'/>
+                            <input type='text' name='cantidad'/>
+                            
+                                                           </div>
+                                                          <div class='modal-footer'>
+                                                            <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+                                                            <button name='actualizar' type='submit' class='btn btn-success'>Enviar</button>
+                                                            </form>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+<!-- Comienza el primer boton para eliminar -->
+
+<a class='btn btn-danger' data-toggle='modal' data-target='#eliminar".$rowss['id']."' data-whatever='@mdo'><i class='fa fa-times-circle' data-toggle='tooltip' data-placement='top' title='Eliminar'></i></a>                           
+<div class='modal fade' id='eliminar".$rowss['id']."' tabindex='-1' role='dialog' aria-labelledby='eliminar".$rowss['id']."Label' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header text-left'>
+        <h4 class='modal-title' id='eliminar".$rowss['id']."Label'>Eliminación de producto</h4>
+      </div>
+      <div class='modal-body'>                   
+          <div class='row'>
+              <div class=' col-xs-5 col-md-5'>
+                  <img style='max-width: 250px' src='img_pages/producto_eliminar.png'alt='Responsive image' class='img-rounded'>
+              </div>
+              <div class=' col-xs-7 col-md-7'>
+                  <ul class='timeline text-left'>
+                        <!-- timeline time label -->
+                        <li class='time-label'>
+                        <li class='time-label'>
+                            <span class='bg-red'>
+                            </span>
+                        </li>
+                        <!-- /.timeline-label -->
+
+                        <!-- timeline item -->
+                        <li>
+                            <!-- timeline icon -->
+                            <i class='fa fa-envelope bg-red'></i>
+                            <div class='timeline-item'>
+                                <span class='time'><i class='fa fa-clock-o'></i></span>
+
+                                <h3 class='timeline-header'><a>Producto</a></h3>
+
+                                <div class='timeline-body'>
+                                Eliminaras el siguiente producto: </br>
+                                <code>".$rowss['producto']."</code> </br>
+                              
+                                </br>
+                                </br>
+                                    <!-- <code>producto</code> -->
+                                </div>
+
+                                <div class='timeline-footer'>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- END timeline item -->
+                    </ul>
+              </div>
+          </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>
+        <a href='pedidos.php?producto_eliminar=".$rowss['id']."'  class='btn btn-danger'>Eliminar</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+                                                    
+                                                    
+                                                    
+                                                    ";
+                         
+
+    
+    
+                        echo "</td>";
+
+                        echo "</tr>";
+                           }
+                        echo "</body>";
+                        echo "</table>";
+$v_query9 = "SELECT producto, cantidad, precio, total, SUM(total) subtotal FROM pedido_temporal";
+ $v_rec = mysqli_query($link,$v_query9) or die ("Problemas en el select:".mysql_error());
+                     while ($rowss=mysqli_fetch_array($v_rec, MYSQLI_ASSOC)) { //Bucle para ver todos los
+                          echo " <td>Total $".$rowss['subtotal'].".00</td>";
+                        
+                          echo " </tr>";
+                         
+                         
+                     }
+
+                        ?>
+                         
                       </tr>
                     </tbody>
                   </div>
